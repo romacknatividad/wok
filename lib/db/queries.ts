@@ -1,39 +1,64 @@
+import { auth, currentUser } from '@clerk/nextjs/server';
 import { desc, and, eq, isNull } from 'drizzle-orm';
 import { db } from './drizzle';
 import { activityLogs, teamMembers, teams, users } from './schema';
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
 
-export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
+async function ensureCurrentUserRecord() {
+  const { userId } = await auth();
+  if (!userId) {
     return null;
   }
 
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (
-    !sessionData ||
-    !sessionData.user ||
-    typeof sessionData.user.id !== 'number'
-  ) {
+  const clerkUser = await currentUser();
+  const primaryEmail = clerkUser?.emailAddresses.find(
+    (email) => email.id === clerkUser.primaryEmailAddressId
+  )?.emailAddress;
+
+  if (!primaryEmail) {
     return null;
   }
 
-  if (new Date(sessionData.expires) < new Date()) {
-    return null;
-  }
-
-  const user = await db
+  const existingUser = await db
     .select()
     .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
+    .where(and(eq(users.email, primaryEmail), isNull(users.deletedAt)))
     .limit(1);
 
-  if (user.length === 0) {
-    return null;
+  if (existingUser.length > 0) {
+    return existingUser[0];
   }
 
-  return user[0];
+  const [createdUser] = await db
+    .insert(users)
+    .values({
+      email: primaryEmail,
+      name:
+        [clerkUser?.firstName, clerkUser?.lastName].filter(Boolean).join(' ') ||
+        clerkUser?.username ||
+        primaryEmail.split('@')[0],
+      passwordHash: 'clerk-auth',
+      role: 'owner'
+    })
+    .returning();
+
+  const [createdTeam] = await db
+    .insert(teams)
+    .values({
+      name: `${createdUser.name || createdUser.email}'s Team`
+    })
+    .returning();
+
+  await db.insert(teamMembers).values({
+    userId: createdUser.id,
+    teamId: createdTeam.id,
+    role: 'owner'
+  });
+
+  return createdUser;
+}
+
+export async function getUser() {
+  return await ensureCurrentUserRecord();
 }
 
 export async function getUserWithTeam(userId: number) {
