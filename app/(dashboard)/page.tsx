@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CreditCard, Database } from 'lucide-react';
+import { ArrowRight, Database, ShieldCheck } from 'lucide-react';
 import { Terminal } from './terminal';
 
 export default function HomePage() {
@@ -81,15 +81,15 @@ export default function HomePage() {
 
             <div className="mt-10 lg:mt-0">
               <div className="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
-                <CreditCard className="h-6 w-6" />
+                <ShieldCheck className="h-6 w-6" />
               </div>
               <div className="mt-5">
                 <h2 className="text-lg font-medium text-gray-900">
-                  Stripe Integration
+                  Authentication and Access Control
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Seamless payment processing and subscription management with
-                  industry-leading Stripe integration.
+                  Built-in sign-in flows, role-based access, and protected
+                  routes so you can focus on product features.
                 </p>
               </div>
             </div>
