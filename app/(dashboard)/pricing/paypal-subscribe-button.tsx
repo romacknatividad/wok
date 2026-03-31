@@ -36,7 +36,7 @@ export function PayPalSubscribeButton({
           components: 'buttons',
           intent: 'subscription',
           vault: true,
-          currency: 'USD'
+          currency: 'PHP'
         }}
       >
         <PayPalButtons

@@ -148,6 +148,40 @@ export default function HomePage() {
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-amber-50 px-8 py-10">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-sm font-medium uppercase tracking-[0.2em] text-orange-600">
+                  Demo job ads
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold text-stone-900">
+                  Want to see what a polished job listing on wok looks like?
+                </h2>
+                <p className="mt-3 text-lg text-stone-600">
+                  Explore two sample job advertisements and get a feel for the
+                  kind of detailed, high-conviction listings recruiters can
+                  publish on the platform.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="rounded-full bg-orange-500 hover:bg-orange-600">
+                  <Link href="/demo/job/senior-full-stack-developer">
+                    View Developer Demo
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-full">
+                  <Link href="/demo/job/accounting-personnel">
+                    View Accounting Demo
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-[2rem] border border-stone-200 bg-stone-50 px-8 py-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-orange-600">

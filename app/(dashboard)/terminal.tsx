@@ -7,12 +7,12 @@ export function Terminal() {
   const [terminalStep, setTerminalStep] = useState(0);
   const [copied, setCopied] = useState(false);
   const terminalSteps = [
-    'git clone https://github.com/nextjs/saas-starter',
-    'pnpm install',
-    'pnpm db:setup',
-    'pnpm db:migrate',
-    'pnpm db:seed',
-    'pnpm dev 🎉',
+    'Recruiter account created: talent@northstarstudio.com',
+    'Job posted: Senior Full Stack Developer',
+    '17 new applications received in the first 48 hours',
+    'Shortlist updated: 5 candidates moved to interview stage',
+    'Applicant profile completed: accounting.personnel@candidate.com',
+    'Application sent through wok successfully'
   ];
 
   useEffect(() => {
@@ -56,7 +56,9 @@ export function Terminal() {
           {terminalSteps.map((step, index) => (
             <div
               key={index}
-              className={`${index > terminalStep ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+              className={`${
+                index > terminalStep ? 'opacity-0' : 'opacity-100'
+              } transition-opacity duration-300`}
             >
               <span className="text-green-400">$</span> {step}
             </div>

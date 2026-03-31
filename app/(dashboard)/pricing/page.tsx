@@ -3,11 +3,27 @@ import { PayPalSubscribeButton } from './paypal-subscribe-button';
 
 const plans = [
   {
-    name: 'Solo Recruiter',
-    price: '$29',
+    name: 'Recruiter Trial',
+    price: 'Free',
+    interval: 'for 1 month',
+    description:
+      'A 30-day trial for recruiters who want to post and test the workflow before subscribing.',
+    features: [
+      'Up to 5 active job posts',
+      'Applicant inbox and review flow',
+      'One recruiter account',
+      'Upgrade to continue after 1 month'
+    ],
+    audience: 'Recruiters' as const,
+    cta: 'Start free trial'
+  },
+  {
+    name: 'Recruiter Basic',
+    price: 'PHP 299',
     interval: 'month',
     planId: process.env.NEXT_PUBLIC_PAYPAL_STARTER_PLAN_ID,
-    description: 'For independent recruiters and lean internal hiring teams.',
+    description:
+      'For recruiters continuing after trial with a compact monthly plan.',
     features: [
       'Up to 5 active job posts',
       'Applicant inbox and review flow',
@@ -17,13 +33,14 @@ const plans = [
     audience: 'Recruiters' as const
   },
   {
-    name: 'Hiring Team',
-    price: '$99',
+    name: 'Recruiter Pro',
+    price: 'PHP 999',
     interval: 'month',
     planId: process.env.NEXT_PUBLIC_PAYPAL_GROWTH_PLAN_ID,
-    description: 'For teams collaborating on ongoing hiring at higher volume.',
+    description:
+      'For teams hiring at higher volume and managing more open roles.',
     features: [
-      'Unlimited active job posts',
+      'Up to 30 active job posts',
       'Shared recruiter seats',
       'Priority applicant review workflows',
       'Priority support'
@@ -59,15 +76,16 @@ export default function PricingPage() {
             Recruiters subscribe. Applicants apply for free.
           </h1>
           <p className="text-lg text-gray-600">
-            wok is priced for the teams running hiring workflows, while
-            applicants can create accounts and submit applications at no cost.
+            Recruiters start with a free 1-month trial for up to 5 jobs, then
+            move to simple monthly pricing in Philippine pesos. Applicants can
+            create accounts and submit applications at no cost.
           </p>
         </div>
         <div className="rounded-3xl border border-orange-100 bg-orange-50 px-6 py-5 max-w-4xl mx-auto mb-10 text-sm text-orange-900">
           Configure your PayPal client ID and recruiter plan IDs in `.env` to
-          enable live subscriptions on the paid plans below.
+          enable live subscriptions on the paid recruiter plans below.
         </div>
-        <div className="grid lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {plans.map((plan) => (
             <PricingCard
               key={plan.name}
@@ -110,7 +128,8 @@ function PricingCard({
   paypalClientId,
   description,
   features,
-  audience
+  audience,
+  cta
 }: {
   name: string;
   price: string;
@@ -120,14 +139,18 @@ function PricingCard({
   description: string;
   features: string[];
   audience: 'Recruiters' | 'Applicants';
+  cta?: string;
 }) {
-  const isPaid = audience === 'Recruiters';
+  const isPaid = audience === 'Recruiters' && Boolean(planId);
+  const isTrial = audience === 'Recruiters' && !planId;
 
   return (
     <div
       className={`rounded-[2rem] border px-6 py-8 shadow-sm ${
         isPaid
           ? 'border-stone-200 bg-white'
+          : isTrial
+          ? 'border-orange-300 bg-gradient-to-b from-orange-50 to-white'
           : 'border-orange-200 bg-gradient-to-b from-orange-50 to-white'
       }`}
     >
@@ -158,6 +181,12 @@ function PricingCard({
           planId={planId}
           planName={name}
         />
+      ) : isTrial ? (
+        <p className="text-sm text-gray-600">
+          {cta
+            ? `${cta} by creating a recruiter account. You can upgrade to Basic after 30 days.`
+            : 'Start with a recruiter account and upgrade after 30 days.'}
+        </p>
       ) : (
         <p className="text-sm text-gray-600">
           Applicants can sign up and apply without entering payment details.
