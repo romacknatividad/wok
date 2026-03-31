@@ -15,7 +15,7 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
-    { href: '/dashboard', icon: Users, label: 'Team' },
+    { href: '/dashboard', icon: Users, label: 'Overview' },
     { href: '/dashboard/general', icon: Settings, label: 'General' },
     { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
     { href: '/dashboard/security', icon: Shield, label: 'Security' }
@@ -24,12 +24,12 @@ export default function DashboardLayout({
   return (
     <div className="flex flex-col min-h-[calc(100dvh-68px)] max-w-7xl mx-auto w-full">
       {/* Mobile header */}
-      <div className="lg:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4">
+      <div className="flex items-center justify-between border-b border-blue-100 bg-white p-4 lg:hidden">
         <div className="flex items-center">
-          <span className="font-medium">Settings</span>
+          <span className="font-medium text-slate-900">Settings</span>
         </div>
         <Button
-          className="-mr-3"
+          className="-mr-3 text-slate-700 hover:bg-blue-50 hover:text-blue-700"
           variant="ghost"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
@@ -41,7 +41,7 @@ export default function DashboardLayout({
       <div className="flex flex-1 overflow-hidden h-full">
         {/* Sidebar */}
         <aside
-          className={`w-64 bg-white lg:bg-gray-50 border-r border-gray-200 lg:block ${
+          className={`w-64 border-r border-blue-100 bg-white lg:block lg:bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] ${
             isSidebarOpen ? 'block' : 'hidden'
           } lg:relative absolute inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -52,8 +52,10 @@ export default function DashboardLayout({
               <Link key={item.href} href={item.href} passHref>
                 <Button
                   variant={pathname === item.href ? 'secondary' : 'ghost'}
-                  className={`shadow-none my-1 w-full justify-start ${
-                    pathname === item.href ? 'bg-gray-100' : ''
+                  className={`my-1 w-full justify-start shadow-none ${
+                    pathname === item.href
+                      ? 'bg-blue-50 text-blue-700 hover:bg-blue-50 hover:text-blue-700'
+                      : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'
                   }`}
                   onClick={() => setIsSidebarOpen(false)}
                 >

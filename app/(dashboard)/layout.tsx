@@ -26,17 +26,22 @@ function UserMenu() {
       <>
         <Link
           href="/pricing"
-          className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
         >
           Pricing
         </Link>
         <SignInButton mode="modal">
-          <Button variant="outline" className="rounded-full">
+          <Button
+            variant="outline"
+            className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+          >
             Sign In
           </Button>
         </SignInButton>
         <SignUpButton mode="modal">
-          <Button className="rounded-full">Sign Up</Button>
+          <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+            Sign Up
+          </Button>
         </SignUpButton>
       </>
     );
@@ -69,11 +74,15 @@ function UserMenu() {
 
 function Header() {
   return (
-    <header className="border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+    <header className="sticky top-0 z-30 border-b border-blue-100 bg-white/90 backdrop-blur">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center">
-          <CircleIcon className="h-6 w-6 text-orange-500" />
-          <span className="ml-2 text-xl font-semibold text-gray-900">wok</span>
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#2563eb_0%,#0ea5e9_100%)] shadow-[0_12px_30px_-18px_rgba(37,99,235,0.85)]">
+            <CircleIcon className="h-5 w-5 text-white" />
+          </div>
+          <span className="ml-3 text-xl font-semibold tracking-tight text-slate-950">
+            wok
+          </span>
         </Link>
         <div className="flex items-center space-x-4">
           <Suspense fallback={<div className="h-9" />}>

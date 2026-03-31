@@ -66,22 +66,22 @@ export default function PricingPage() {
   const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
   return (
-    <main className="bg-gradient-to-b from-stone-50 via-white to-amber-50/60">
+    <main className="bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_48%,#f8fbff_100%)]">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <p className="text-sm font-medium uppercase tracking-[0.25em] text-orange-600">
+          <p className="text-sm font-medium uppercase tracking-[0.25em] text-blue-700">
             wok pricing
           </p>
-          <h1 className="mt-4 text-4xl font-semibold text-gray-900 mb-4 sm:text-5xl">
+          <h1 className="mt-4 mb-4 text-4xl font-semibold text-slate-950 sm:text-5xl">
             Recruiters subscribe. Applicants apply for free.
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-slate-600">
             Recruiters start with a free 1-month trial for up to 5 jobs, then
             move to simple monthly pricing in Philippine pesos. Applicants can
             create accounts and submit applications at no cost.
           </p>
         </div>
-        <div className="rounded-3xl border border-orange-100 bg-orange-50 px-6 py-5 max-w-4xl mx-auto mb-10 text-sm text-orange-900">
+        <div className="mx-auto mb-10 max-w-4xl rounded-3xl border border-blue-100 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm">
           Configure your PayPal client ID and recruiter plan IDs in `.env` to
           enable live subscriptions on the paid recruiter plans below.
         </div>
@@ -98,18 +98,18 @@ export default function PricingPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="grid lg:grid-cols-2 gap-6">
-          <div className="rounded-3xl bg-stone-950 px-8 py-8 text-stone-100">
-            <h2 className="text-2xl font-semibold">What recruiters get</h2>
-            <p className="mt-3 text-stone-300">
+          <div className="rounded-3xl border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_100%)] px-8 py-8 shadow-sm">
+            <h2 className="text-2xl font-semibold text-slate-950">What recruiters get</h2>
+            <p className="mt-3 text-slate-600">
               Centralized job posting, applicant intake, shared review, and a
               branded workflow your team can use every day.
             </p>
           </div>
-          <div className="rounded-3xl border border-stone-200 bg-white px-8 py-8">
-            <h2 className="text-2xl font-semibold text-stone-900">
+          <div className="rounded-3xl border border-blue-100 bg-white px-8 py-8 shadow-sm">
+            <h2 className="text-2xl font-semibold text-slate-950">
               What applicants get
             </h2>
-            <p className="mt-3 text-stone-600">
+            <p className="mt-3 text-slate-600">
               A cleaner way to discover openings, register once, and send
               applications without unnecessary hoops.
             </p>
@@ -148,30 +148,30 @@ function PricingCard({
     <div
       className={`rounded-[2rem] border px-6 py-8 shadow-sm ${
         isPaid
-          ? 'border-stone-200 bg-white'
+          ? 'border-blue-100 bg-white'
           : isTrial
-          ? 'border-orange-300 bg-gradient-to-b from-orange-50 to-white'
-          : 'border-orange-200 bg-gradient-to-b from-orange-50 to-white'
+          ? 'border-blue-200 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)]'
+          : 'border-sky-100 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)]'
       }`}
     >
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-600">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
           {audience}
         </p>
-        <h2 className="mt-3 text-2xl font-medium text-gray-900">{name}</h2>
-        <p className="text-sm text-gray-600 mt-2">{description}</p>
+        <h2 className="mt-3 text-2xl font-medium text-slate-950">{name}</h2>
+        <p className="mt-2 text-sm text-slate-600">{description}</p>
       </div>
-      <p className="text-4xl font-medium text-gray-900 mb-6">
+      <p className="mb-6 text-4xl font-medium text-slate-950">
         {price}{' '}
-        <span className="text-xl font-normal text-gray-600">
+        <span className="text-xl font-normal text-slate-600">
           {isPaid ? `/ ${interval}` : interval}
         </span>
       </p>
       <ul className="space-y-4 mb-8">
         {features.map((feature, index) => (
           <li key={index} className="flex items-start">
-            <Check className="h-5 w-5 text-orange-500 mr-2 mt-0.5 flex-shrink-0" />
-            <span className="text-gray-700">{feature}</span>
+            <Check className="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
+            <span className="text-slate-700">{feature}</span>
           </li>
         ))}
       </ul>
@@ -182,13 +182,13 @@ function PricingCard({
           planName={name}
         />
       ) : isTrial ? (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-slate-600">
           {cta
             ? `${cta} by creating a recruiter account. You can upgrade to Basic after 30 days.`
             : 'Start with a recruiter account and upgrade after 30 days.'}
         </p>
       ) : (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-slate-600">
           Applicants can sign up and apply without entering payment details.
         </p>
       )}

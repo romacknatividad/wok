@@ -32,17 +32,18 @@ export function Terminal() {
   };
 
   return (
-    <div className="w-full rounded-lg shadow-lg overflow-hidden bg-gray-900 text-white font-mono text-sm relative">
-      <div className="p-4">
+    <div className="relative w-full overflow-hidden rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] font-mono text-sm text-slate-800 shadow-[0_28px_70px_-42px_rgba(15,23,42,0.35)]">
+      <div className="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.16),_transparent_65%)]" />
+      <div className="relative p-5">
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="w-3 h-3 rounded-full bg-blue-200"></div>
+            <div className="w-3 h-3 rounded-full bg-sky-300"></div>
+            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
           </div>
           <button
             onClick={copyToClipboard}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-slate-400 transition-colors hover:text-blue-700"
             aria-label="Copy to clipboard"
           >
             {copied ? (
@@ -60,7 +61,7 @@ export function Terminal() {
                 index > terminalStep ? 'opacity-0' : 'opacity-100'
               } transition-opacity duration-300`}
             >
-              <span className="text-green-400">$</span> {step}
+              <span className="text-blue-600">$</span> {step}
             </div>
           ))}
         </div>

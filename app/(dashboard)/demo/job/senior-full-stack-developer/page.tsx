@@ -39,36 +39,36 @@ const perks = [
 
 export default function SampleJobPage() {
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_42%,#f5f5f4_100%)]">
-      <section className="relative overflow-hidden border-b border-orange-100">
-        <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top_left,_rgba(249,115,22,0.20),_transparent_50%),radial-gradient(circle_at_top_right,_rgba(251,191,36,0.18),_transparent_40%)]" />
+    <main className="min-h-screen bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_42%,#f8fbff_100%)]">
+      <section className="relative overflow-hidden border-b border-blue-100">
+        <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top_left,_rgba(37,99,235,0.18),_transparent_50%),radial-gradient(circle_at_top_right,_rgba(14,165,233,0.16),_transparent_40%)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
           <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-4 py-2 text-sm font-medium text-orange-700 backdrop-blur">
+              <p className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-medium text-blue-700 shadow-sm backdrop-blur">
                 <Sparkles className="h-4 w-4" />
                 Sample job ad on wok
               </p>
-              <h1 className="mt-4 max-w-4xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl lg:text-6xl">
+              <h1 className="mt-4 max-w-4xl text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
                 Senior Full Stack Developer
               </h1>
-              <p className="mt-4 max-w-3xl text-lg leading-8 text-stone-600">
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
                 Build products people actually use every day. Join a team that
                 values ownership, strong engineering judgment, and product work
                 that ships with real impact.
               </p>
 
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-stone-700">
-                <div className="rounded-full border border-stone-200 bg-white px-4 py-2">
+              <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-700">
+                <div className="rounded-full border border-blue-100 bg-white px-4 py-2">
                   Remote, Philippines
                 </div>
-                <div className="rounded-full border border-stone-200 bg-white px-4 py-2">
+                <div className="rounded-full border border-blue-100 bg-white px-4 py-2">
                   Full-time
                 </div>
-                <div className="rounded-full border border-stone-200 bg-white px-4 py-2">
+                <div className="rounded-full border border-blue-100 bg-white px-4 py-2">
                   4+ years experience
                 </div>
-                <div className="rounded-full border border-stone-200 bg-white px-4 py-2">
+                <div className="rounded-full border border-blue-100 bg-white px-4 py-2">
                   PHP 120,000 - PHP 180,000 / month
                 </div>
               </div>
@@ -77,27 +77,32 @@ export default function SampleJobPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full bg-orange-500 hover:bg-orange-600"
+                  className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
                 >
                   <Link href="/sign-up">
                     Apply Through wok
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="rounded-full">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                >
                   <Link href="/pricing">See recruiter plans</Link>
                 </Button>
               </div>
             </div>
 
-            <aside className="rounded-[2rem] border border-stone-200 bg-white/90 p-5 shadow-sm backdrop-blur">
+            <aside className="rounded-[2rem] border border-blue-100 bg-white p-5 shadow-sm backdrop-blur">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white">
                   <BriefcaseBusiness className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-sm text-stone-500">Hiring company</p>
-                  <p className="text-lg font-semibold text-stone-900">
+                  <p className="text-sm text-slate-500">Hiring company</p>
+                  <p className="text-lg font-semibold text-slate-950">
                     Northstar Product Studio
                   </p>
                 </div>
@@ -119,11 +124,11 @@ export default function SampleJobPage() {
                 <InfoRow icon={Users} label="Team" value="Product, Design, Engineering" />
               </div>
 
-              <div className="mt-6 rounded-3xl bg-stone-950 p-4 text-stone-100">
-                <p className="text-sm uppercase tracking-[0.22em] text-orange-300">
+              <div className="mt-6 rounded-3xl border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_100%)] p-4">
+                <p className="text-sm uppercase tracking-[0.22em] text-blue-700">
                   Why this ad works
                 </p>
-                <p className="mt-3 text-sm leading-6 text-stone-300">
+                <p className="mt-3 text-sm leading-6 text-slate-600">
                   It leads with impact, gives candidates enough detail to
                   self-qualify, and still feels aspirational. This is the kind
                   of job post applicants actually stop to read.
@@ -136,35 +141,35 @@ export default function SampleJobPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-orange-600">
+          <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
               About the role
             </p>
-            <h2 className="mt-2 text-3xl font-semibold text-stone-950">
+            <h2 className="mt-2 text-3xl font-semibold text-slate-950">
               This is a role for builders, not passengers.
             </h2>
-            <p className="mt-4 text-base leading-8 text-stone-600">
+            <p className="mt-4 text-base leading-8 text-slate-600">
               We are looking for a Senior Full Stack Developer who can own
               meaningful parts of the product and help us scale with confidence.
               You will work across frontend and backend systems, collaborate
               directly with decision-makers, and turn rough ideas into features
               customers rely on.
             </p>
-            <p className="mt-4 text-base leading-8 text-stone-600">
+            <p className="mt-4 text-base leading-8 text-slate-600">
               If you enjoy shipping polished work, improving foundations, and
               working in a team where engineering has a real voice in product
               direction, this role will feel like home.
             </p>
           </div>
 
-          <div className="rounded-[2rem] border border-orange-200 bg-orange-50/70 p-6">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-orange-700">
+          <div className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] p-6">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
               What success looks like
             </p>
-            <h2 className="mt-2 text-3xl font-semibold text-stone-950">
+            <h2 className="mt-2 text-3xl font-semibold text-slate-950">
               The first 90 days
             </h2>
-            <ul className="mt-5 space-y-3 text-stone-700">
+            <ul className="mt-5 space-y-3 text-slate-700">
               <li className="rounded-2xl bg-white px-4 py-3">
                 You understand the product, release cycle, and core technical architecture.
               </li>
@@ -199,24 +204,24 @@ export default function SampleJobPage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] bg-stone-950 px-6 py-8 text-stone-100">
+        <div className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_100%)] px-6 py-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_0.7fr] lg:items-center">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.22em] text-orange-300">
+              <p className="text-sm font-medium uppercase tracking-[0.22em] text-blue-700">
                 How to apply
               </p>
-              <h2 className="mt-2 text-3xl font-semibold">
+              <h2 className="mt-2 text-3xl font-semibold text-slate-950">
                 Send more than just a resume.
               </h2>
-              <p className="mt-3 max-w-2xl text-stone-300 leading-8">
+              <p className="mt-3 max-w-2xl leading-8 text-slate-600">
                 We want to see your updated resume, a GitHub or portfolio link,
                 and a short note about a project you are proud of. If you have
                 live work, case studies, or shipped products, include them.
               </p>
             </div>
-            <div className="rounded-3xl border border-stone-800 bg-stone-900 p-5">
-              <p className="text-sm text-stone-400">Application checklist</p>
-              <ul className="mt-3 space-y-2.5 text-sm text-stone-200">
+            <div className="rounded-3xl border border-blue-100 bg-white p-5">
+              <p className="text-sm text-slate-500">Application checklist</p>
+              <ul className="mt-3 space-y-2.5 text-sm text-slate-700">
                 <li>Updated resume</li>
                 <li>Portfolio or GitHub profile</li>
                 <li>Short candidate intro</li>
@@ -225,7 +230,7 @@ export default function SampleJobPage() {
               <Button
                 asChild
                 size="lg"
-                className="mt-5 w-full rounded-full bg-orange-500 hover:bg-orange-600"
+                className="mt-5 w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
               >
                 <Link href="/sign-up">Create applicant account</Link>
               </Button>
@@ -248,12 +253,12 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 rounded-xl bg-stone-100 p-2 text-stone-700">
+      <div className="mt-0.5 rounded-xl bg-blue-50 p-2 text-blue-700">
         <Icon className="h-4 w-4" />
       </div>
       <div>
-        <p className="text-sm text-stone-500">{label}</p>
-        <p className="font-medium text-stone-900">{value}</p>
+        <p className="text-sm text-slate-500">{label}</p>
+        <p className="font-medium text-slate-950">{value}</p>
       </div>
     </div>
   );
@@ -269,15 +274,15 @@ function ContentCard({
   items: string[];
 }) {
   return (
-    <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-sm">
-      <p className="text-sm font-medium uppercase tracking-[0.2em] text-orange-600">
+    <div className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
+      <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-2xl font-semibold text-stone-950">{title}</h2>
+      <h2 className="mt-2 text-2xl font-semibold text-slate-950">{title}</h2>
       <ul className="mt-5 space-y-3.5">
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-stone-700 leading-7">
-            <span className="mt-2 h-2 w-2 rounded-full bg-orange-500" />
+          <li key={item} className="flex gap-3 leading-7 text-slate-700">
+            <span className="mt-2 h-2 w-2 rounded-full bg-blue-600" />
             <span>{item}</span>
           </li>
         ))}
