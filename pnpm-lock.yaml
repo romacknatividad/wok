@@ -11,6 +11,9 @@ importers:
       '@clerk/nextjs':
         specifier: ^7.0.7
         version: 7.0.7(next@16.2.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4))(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@paypal/react-paypal-js':
+        specifier: ^9.1.0
+        version: 9.1.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       '@tailwindcss/postcss':
         specifier: 4.1.7
         version: 4.1.7
@@ -807,6 +810,18 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@paypal/paypal-js@9.5.0':
+    resolution: {integrity: sha512-j2p6uPpW0hlQ7KOwkiqscbAapZD9NocN1jcjA1Hm5za7PLteq81qVIgJR0Nr0/b1ytfnoN3L2QyG8XubU++kdQ==}
+
+  '@paypal/react-paypal-js@9.1.0':
+    resolution: {integrity: sha512-IgWZ8zMdPNDYWatlLPtt0TmQQvRNzJ9qhDry8Tojw7UjXWZ59UkBfC8wr4mGaB5oJIwWhYezsVJ05E7jFGsJ2g==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+      react-dom: ^16.8.0 || ^17 || ^18 || ^19
+
+  '@paypal/sdk-constants@1.0.157':
+    resolution: {integrity: sha512-BjxWT9rK6dM1AOffSpvHYY47/8BY775jgEYYiwH6eL4YaqU5Epcw7zOtwQ8L4UaEn4FCAjZ2EWxaS83dCN7SpA==}
 
   '@petamoriken/float16@3.9.2':
     resolution: {integrity: sha512-VgffxawQde93xKxT3qap3OH+meZf7VaSB5Sqd4Rqc+FP5alWbpOyan/7tRbOAvynjpG3GpdtAuGU/NdhQpmrog==}
@@ -1837,6 +1852,9 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  hi-base32@0.5.1:
+    resolution: {integrity: sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA==}
+
   isexe@3.1.1:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
@@ -1990,6 +2008,9 @@ packages:
   postgres@3.4.5:
     resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
     engines: {node: '>=12'}
+
+  promise-polyfill@8.3.0:
+    resolution: {integrity: sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg==}
 
   radix-ui@1.4.2:
     resolution: {integrity: sha512-fT/3YFPJzf2WUpqDoQi005GS8EpCi+53VhcLaHUj5fwkPYiZAjk1mSxFvbMA8Uq71L03n+WysuYC+mlKkXxt/Q==}
@@ -2620,6 +2641,22 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@16.2.1':
     optional: true
+
+  '@paypal/paypal-js@9.5.0':
+    dependencies:
+      promise-polyfill: 8.3.0
+
+  '@paypal/react-paypal-js@9.1.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      '@paypal/paypal-js': 9.5.0
+      '@paypal/sdk-constants': 1.0.157
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
+      server-only: 0.0.1
+
+  '@paypal/sdk-constants@1.0.157':
+    dependencies:
+      hi-base32: 0.5.1
 
   '@petamoriken/float16@3.9.2':
     optional: true
@@ -3655,6 +3692,8 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
+  hi-base32@0.5.1: {}
+
   isexe@3.1.1:
     optional: true
 
@@ -3775,6 +3814,8 @@ snapshots:
       source-map-js: 1.2.1
 
   postgres@3.4.5: {}
+
+  promise-polyfill@8.3.0: {}
 
   radix-ui@1.4.2(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
