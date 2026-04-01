@@ -19,6 +19,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     features: [
       'Publish one job advertisement on wok',
       'Receive applications for that single role',
+      'Set up your own company information and employer profile',
       'Use the same recruiter-facing job structure as the main plans',
       'Upgrade later if you need more active jobs'
     ],
@@ -52,6 +53,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     features: [
       'Create and publish up to 5 live job ads',
       'Receive applications and review candidates in one place',
+      'Set up your own company information and employer profile',
       'Use recruiter tools without entering payment details',
       'Upgrade to Basic or Pro after the trial period'
     ],
@@ -85,6 +87,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     features: [
       'Keep up to 5 jobs active at the same time',
       'Review applicants and organize hiring priorities',
+      'Set up your own company information and employer branding',
       'Maintain a clean recruiter workflow for everyday hiring',
       'Use PayPal subscription billing for monthly access'
     ],
@@ -118,6 +121,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     features: [
       'Manage up to 30 active job listings',
       'Support shared recruiter collaboration',
+      'Set up your own company information and employer profile',
       'Handle larger applicant volume across multiple departments',
       'Use priority workflow support for active hiring operations'
     ],

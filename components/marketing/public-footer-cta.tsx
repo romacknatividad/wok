@@ -52,14 +52,14 @@ export function PublicFooterCta() {
               <div>
                 <p className="text-sm font-medium text-slate-500">See wok in action</p>
                 <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                  <Link href="/demo/company/harborline-consumer-group" className="transition-colors hover:text-blue-700">
+                    Demo company page
+                  </Link>
                   <Link href="/demo/job/senior-full-stack-developer" className="transition-colors hover:text-blue-700">
                     Developer job demo
                   </Link>
-                  <Link href="/demo/job/accounting-personnel" className="transition-colors hover:text-blue-700">
-                    Accounting job demo
-                  </Link>
-                  <Link href="/sign-in" className="transition-colors hover:text-blue-700">
-                    Recruiter sign in
+                  <Link href="/demo/job/company-nurse" className="transition-colors hover:text-blue-700">
+                    Company nurse demo
                   </Link>
                 </div>
               </div>

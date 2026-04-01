@@ -10,16 +10,47 @@ import {
 } from 'lucide-react';
 
 const companyLogos = [
-  'Northstar Retail',
-  'HarborWorks',
-  'SummitCare',
-  'BluePeak Logistics',
-  'BrightLedger',
-  'Pacific People Group'
+  {
+    name: 'Northstar Retail',
+    mark: 'NR',
+    markClassName: 'bg-[linear-gradient(135deg,#2563eb_0%,#1d4ed8_100%)] text-white',
+    dotClassName: 'bg-blue-200'
+  },
+  {
+    name: 'HarborWorks',
+    mark: 'HW',
+    markClassName: 'bg-[linear-gradient(135deg,#0f766e_0%,#14b8a6_100%)] text-white',
+    dotClassName: 'bg-teal-200'
+  },
+  {
+    name: 'SummitCare',
+    mark: 'SC',
+    markClassName: 'bg-[linear-gradient(135deg,#7c3aed_0%,#a855f7_100%)] text-white',
+    dotClassName: 'bg-violet-200'
+  },
+  {
+    name: 'BluePeak Logistics',
+    mark: 'BP',
+    markClassName: 'bg-[linear-gradient(135deg,#0284c7_0%,#38bdf8_100%)] text-white',
+    dotClassName: 'bg-sky-200'
+  },
+  {
+    name: 'BrightLedger',
+    mark: 'BL',
+    markClassName: 'bg-[linear-gradient(135deg,#ea580c_0%,#f59e0b_100%)] text-white',
+    dotClassName: 'bg-amber-200'
+  },
+  {
+    name: 'Pacific People Group',
+    mark: 'PG',
+    markClassName: 'bg-[linear-gradient(135deg,#334155_0%,#64748b_100%)] text-white',
+    dotClassName: 'bg-slate-200'
+  }
 ];
 
 const testimonials = [
   {
+    image: '/testimonial-angela-reyes.svg',
     quote:
       'wok gave our hiring team one place to manage openings and applicants, so we stopped losing momentum between sourcing, screening, and follow-up.',
     name: 'Angela Reyes',
@@ -27,6 +58,7 @@ const testimonials = [
     company: 'Northstar Retail'
   },
   {
+    image: '/testimonial-miguel-santos.svg',
     quote:
       'We filled roles faster because our recruiters could finally work from a shared pipeline instead of scattered messages and spreadsheets.',
     name: 'Miguel Santos',
@@ -34,11 +66,44 @@ const testimonials = [
     company: 'BluePeak Logistics'
   },
   {
+    image: '/testimonial-camille-dela-cruz.svg',
     quote:
       'The candidate experience feels much more professional now. Applicants know where to apply, and our team has better visibility from day one.',
     name: 'Camille Dela Cruz',
     role: 'Operations Director',
     company: 'SummitCare'
+  }
+];
+
+const demoResources = [
+  {
+    href: '/demo/company/harborline-consumer-group',
+    eyebrow: 'Company profile',
+    title: 'Harborline Consumer Group',
+    description:
+      'Browse the employer page, company story, and the openings connected to one team.',
+    featured: true
+  },
+  {
+    href: '/demo/job/senior-full-stack-developer',
+    eyebrow: 'Tech role',
+    title: 'Senior Full-Stack Developer',
+    description:
+      'See a detailed engineering listing with responsibilities, stack expectations, and role context.'
+  },
+  {
+    href: '/demo/job/accounting-personnel',
+    eyebrow: 'Finance role',
+    title: 'Accounting Personnel',
+    description:
+      'Preview a clear back-office job ad with practical requirements and day-to-day scope.'
+  },
+  {
+    href: '/demo/job/company-nurse',
+    eyebrow: 'Healthcare role',
+    title: 'Company Nurse',
+    description:
+      'Open a frontline hiring example designed for operational teams and applicant clarity.'
   }
 ];
 
@@ -170,10 +235,25 @@ export default function HomePage() {
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {companyLogos.map((company) => (
               <div
-                key={company}
-                className="flex min-h-16 items-center justify-center rounded-2xl border border-blue-100 bg-white px-4 py-4 text-center text-sm font-semibold tracking-[0.08em] text-slate-500 shadow-sm"
+                key={company.name}
+                className="flex min-h-20 items-center gap-3 rounded-2xl border border-blue-100 bg-white px-4 py-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                {company}
+                <div
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-bold tracking-[0.14em] shadow-sm ${company.markClassName}`}
+                >
+                  {company.mark}
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate text-left text-sm font-semibold tracking-[0.04em] text-slate-700">
+                    {company.name}
+                  </p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className={`h-2 w-2 rounded-full ${company.dotClassName}`} />
+                    <span className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                      Hiring team
+                    </span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -235,17 +315,28 @@ export default function HomePage() {
                 key={`${testimonial.name}-${testimonial.company}`}
                 className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-7 shadow-sm"
               >
+                <div className="mb-5 flex items-center gap-4">
+                  <div className="overflow-hidden rounded-full border border-blue-100 bg-blue-50 shadow-sm">
+                    <Image
+                      src={testimonial.image}
+                      alt={`${testimonial.name} portrait`}
+                      width={64}
+                      height={64}
+                      className="h-16 w-16 object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-950">
+                      {testimonial.name}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      {testimonial.role}, {testimonial.company}
+                    </p>
+                  </div>
+                </div>
                 <p className="text-base leading-8 text-slate-600">
                   "{testimonial.quote}"
                 </p>
-                <div className="mt-6 border-t border-blue-100 pt-5">
-                  <p className="font-semibold text-slate-950">
-                    {testimonial.name}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {testimonial.role}, {testimonial.company}
-                  </p>
-                </div>
               </article>
             ))}
           </div>
@@ -254,37 +345,89 @@ export default function HomePage() {
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_48%,#f8fbff_100%)] px-8 py-10 shadow-sm">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative overflow-hidden rounded-[2rem] border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_44%,#f8fbff_100%)] px-6 py-8 shadow-sm sm:px-8 sm:py-10">
+            <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[radial-gradient(circle,_rgba(59,130,246,0.18),_transparent_68%)]" />
+            <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-start">
               <div className="max-w-2xl">
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
-                  Demo job ads
+                  Demo company and job ads
                 </p>
-                <h2 className="mt-2 text-3xl font-semibold text-slate-950">
-                  Want to see what a polished job listing on wok looks like?
+                <h2 className="mt-3 text-3xl font-semibold text-slate-950 sm:text-4xl">
+                  Explore the kind of polished hiring experience teams can publish on wok.
                 </h2>
-                <p className="mt-3 text-lg text-slate-600">
-                  Explore two sample job advertisements and get a feel for the
-                  kind of detailed, high-conviction listings recruiters can
-                  publish on the platform.
+                <p className="mt-4 text-lg text-slate-600">
+                  Start with a demo employer profile, then jump into role pages
+                  that show how job ads can stay informative, credible, and
+                  easy to scan for applicants.
                 </p>
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
+                    <p className="text-2xl font-semibold text-slate-950">1</p>
+                    <p className="mt-1 text-sm text-slate-600">Demo company page</p>
+                  </div>
+                  <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
+                    <p className="text-2xl font-semibold text-slate-950">3</p>
+                    <p className="mt-1 text-sm text-slate-600">Sample job listings</p>
+                  </div>
+                  <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
+                    <p className="text-2xl font-semibold text-slate-950">100%</p>
+                    <p className="mt-1 text-sm text-slate-600">Public-facing preview</p>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    <Link href="/demo/company/harborline-consumer-group">
+                      Open Demo Company
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </Button>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                  <Link href="/demo/job/senior-full-stack-developer">
-                    View Developer Demo
+              <div className="grid gap-4 sm:grid-cols-2">
+                {demoResources.map((resource) => (
+                  <Link
+                    key={resource.href}
+                    href={resource.href}
+                    className={`group rounded-[1.75rem] border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                      resource.featured
+                        ? 'border-blue-200 bg-blue-600 text-white sm:col-span-2'
+                        : 'border-blue-100 bg-white/90 text-slate-950'
+                    }`}
+                  >
+                    <p
+                      className={`text-xs font-semibold uppercase tracking-[0.18em] ${
+                        resource.featured ? 'text-blue-100' : 'text-blue-700'
+                      }`}
+                    >
+                      {resource.eyebrow}
+                    </p>
+                    <div className="mt-3 flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-lg font-semibold">{resource.title}</h3>
+                        <p
+                          className={`mt-2 text-sm leading-6 ${
+                            resource.featured ? 'text-blue-50' : 'text-slate-600'
+                          }`}
+                        >
+                          {resource.description}
+                        </p>
+                      </div>
+                      <span
+                        className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition group-hover:translate-x-0.5 ${
+                          resource.featured
+                            ? 'bg-white/15 text-white'
+                            : 'bg-blue-50 text-blue-700'
+                        }`}
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </span>
+                    </div>
                   </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Link href="/demo/job/accounting-personnel">
-                    View Accounting Demo
-                  </Link>
-                </Button>
+                ))}
               </div>
             </div>
           </div>

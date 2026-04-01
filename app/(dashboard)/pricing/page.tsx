@@ -17,6 +17,7 @@ const plans = [
       'Post 1 job only',
       'No monthly subscription',
       'Receive applicants for one opening',
+      'Set up your company information and employer profile',
       'Upgrade later if needed'
     ],
     audience: 'Recruiters' as const,
@@ -33,6 +34,7 @@ const plans = [
       'Up to 5 active job posts',
       'Applicant inbox and review flow',
       'One recruiter account',
+      'Set up your company information and profile page',
       'Upgrade to continue after 1 month'
     ],
     audience: 'Recruiters' as const,
@@ -50,6 +52,7 @@ const plans = [
       'Up to 5 active job posts',
       'Applicant inbox and review flow',
       'One recruiter seat',
+      'Set up your company information and employer branding',
       'Email support'
     ],
     audience: 'Recruiters' as const
@@ -66,6 +69,7 @@ const plans = [
       'Up to 30 active job posts',
       'Shared recruiter seats',
       'Priority applicant review workflows',
+      'Set up your company information and employer profile',
       'Priority support'
     ],
     audience: 'Recruiters' as const
@@ -106,7 +110,8 @@ export default function PricingPage() {
             <h2 className="text-2xl font-semibold text-slate-950">What recruiters get</h2>
             <p className="mt-3 text-slate-600">
               Centralized job posting, applicant intake, shared review, and a
-              branded workflow your team can use every day.
+              branded workflow your team can use every day, including your own
+              company information and employer profile.
             </p>
           </div>
           <div className="rounded-3xl border border-blue-100 bg-white px-8 py-8 shadow-sm">

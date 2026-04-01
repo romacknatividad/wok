@@ -1,5 +1,56 @@
-import { Calculator, Code2 } from 'lucide-react';
+import { Calculator, Code2, HeartPulse } from 'lucide-react';
 import { JobDetailIcons, type JobDetailPageData } from './job-detail-page';
+
+export const demoCompanyProfile = {
+  slug: 'harborline-consumer-group',
+  name: 'Harborline Consumer Group',
+  tagline: 'A growing Philippine organization hiring across product, finance, and people operations.',
+  location: 'Makati and hybrid teams across the Philippines',
+  companySize: '180 to 300 employees',
+  industry: 'Consumer services, internal software, and shared operations',
+  overview: [
+    'Harborline Consumer Group is a modern operations-led company building better internal systems and customer experiences across multiple business units. The team hires across technology, finance, and employee support functions to keep growth sustainable and execution sharp.',
+    'This demo company profile shows how recruiters can present a clear employer story, highlight culture, and list active openings in one polished page on wok.'
+  ],
+  highlights: [
+    'Hybrid-friendly teams with structured collaboration',
+    'Clear hiring process and professional applicant experience',
+    'Roles open across engineering, finance, and employee wellness'
+  ]
+};
+
+export const demoCompanyJobList = [
+  {
+    slug: 'senior-full-stack-developer',
+    title: 'Senior Full Stack Developer',
+    department: 'Engineering',
+    location: 'Remote, Philippines',
+    employment: 'Full-time',
+    salary: 'PHP 120,000 - PHP 180,000 / month',
+    summary:
+      'Build core digital products and internal systems used across Harborline teams and customers.'
+  },
+  {
+    slug: 'accounting-personnel',
+    title: 'Accounting Personnel',
+    department: 'Finance',
+    location: 'On-site or hybrid, Philippines',
+    employment: 'Full-time',
+    salary: 'PHP 28,000 - PHP 40,000 / month',
+    summary:
+      'Support reconciliations, reporting, billing, and everyday finance operations with precision.'
+  },
+  {
+    slug: 'company-nurse',
+    title: 'Company Nurse',
+    department: 'People Operations',
+    location: 'On-site, Makati',
+    employment: 'Full-time',
+    salary: 'PHP 30,000 - PHP 45,000 / month',
+    summary:
+      'Support employee wellness, clinic coordination, and workplace health programs for a growing team.'
+  }
+] as const;
 
 export const jobDetailsBySlug: Record<string, JobDetailPageData> = {
   'senior-full-stack-developer': {
@@ -13,7 +64,7 @@ export const jobDetailsBySlug: Record<string, JobDetailPageData> = {
       { icon: Code2, label: '4+ years experience' },
       { icon: JobDetailIcons.salary, label: 'PHP 120,000 - PHP 180,000 / month' }
     ],
-    company: 'Northstar Product Studio',
+    company: demoCompanyProfile.name,
     sidebar: [
       { icon: JobDetailIcons.location, label: 'Location', value: 'Remote, Philippines' },
       { icon: JobDetailIcons.employment, label: 'Employment', value: 'Full-time' },
@@ -41,10 +92,10 @@ export const jobDetailsBySlug: Record<string, JobDetailPageData> = {
       },
       {
         eyebrow: 'About the company',
-        title: 'Northstar Product Studio builds software with a clear business purpose.',
+        title: 'Harborline Consumer Group builds systems that support real business operations.',
         paragraphs: [
-          'We work on products used by paying customers and growing teams. The company values practical engineering, clear communication, and steady execution over unnecessary complexity.',
-          'This role reports into the engineering team and works closely with product and design. You will have space to influence technical decisions while still staying close to the work that reaches customers.'
+          'Harborline Consumer Group invests in product and internal systems that make operations smoother for both customers and teams. Engineering is expected to work closely with the business, solve real workflow problems, and ship software that improves day-to-day execution.',
+          'This role reports into the engineering team and works closely with product, operations, and design. You will have room to shape technical decisions while staying connected to the practical outcomes your work creates.'
         ]
       },
       {
@@ -137,7 +188,7 @@ export const jobDetailsBySlug: Record<string, JobDetailPageData> = {
       { icon: Calculator, label: '2+ years experience' },
       { icon: JobDetailIcons.salary, label: 'PHP 28,000 - PHP 40,000 / month' }
     ],
-    company: 'Harborline Consumer Group',
+    company: demoCompanyProfile.name,
     sidebar: [
       {
         icon: JobDetailIcons.location,
@@ -254,6 +305,138 @@ export const jobDetailsBySlug: Record<string, JobDetailPageData> = {
           'Short candidate intro',
           'Relevant accounting software or tooling experience',
           'Examples of finance or reporting responsibilities handled'
+        ]
+      }
+    ]
+  },
+  'company-nurse': {
+    badge: 'Sample job ad on wok',
+    title: 'Company Nurse',
+    summary:
+      'Support employee health, workplace wellness, and day-to-day clinic coordination in a company that treats people operations as a real business priority.',
+    meta: [
+      { icon: JobDetailIcons.location, label: 'On-site, Makati' },
+      { icon: JobDetailIcons.employment, label: 'Full-time' },
+      { icon: HeartPulse, label: '1 to 3 years experience' },
+      { icon: JobDetailIcons.salary, label: 'PHP 30,000 - PHP 45,000 / month' }
+    ],
+    company: demoCompanyProfile.name,
+    sidebar: [
+      { icon: JobDetailIcons.location, label: 'Location', value: 'On-site, Makati' },
+      { icon: JobDetailIcons.employment, label: 'Employment', value: 'Full-time' },
+      {
+        icon: JobDetailIcons.salary,
+        label: 'Salary',
+        value: 'PHP 30,000 to PHP 45,000 / month'
+      },
+      {
+        icon: HeartPulse,
+        label: 'Focus',
+        value: 'Employee wellness, first aid, health coordination'
+      },
+      {
+        icon: JobDetailIcons.team,
+        label: 'Team',
+        value: 'People Operations, Admin, Leadership'
+      },
+      {
+        icon: JobDetailIcons.reporting,
+        label: 'Reports to',
+        value: 'HR and Administration Manager'
+      }
+    ],
+    sections: [
+      {
+        eyebrow: 'About the role',
+        title: 'This role helps employees feel supported, safe, and well cared for.',
+        paragraphs: [
+          'We are hiring a Company Nurse to support workplace health programs, provide basic clinical assistance, and help employees navigate health-related concerns with professionalism and empathy. This role is a strong fit for someone who is organized, calm under pressure, and comfortable balancing people care with accurate documentation.',
+          'You will work closely with HR and administration to keep the clinic function dependable, maintain health records, support compliance, and contribute to a healthier day-to-day workplace experience.'
+        ]
+      },
+      {
+        eyebrow: 'About the company',
+        title: 'Harborline Consumer Group treats employee wellness as part of operational excellence.',
+        paragraphs: [
+          'The company is growing across several teams and values a workplace where people feel supported, informed, and safe. The clinic and wellness function plays an important role in helping employees stay productive while meeting workplace health requirements.',
+          'This role works across people operations and administration and is ideal for someone who wants to combine clinical knowledge with practical workplace support.'
+        ]
+      },
+      {
+        eyebrow: 'Responsibilities',
+        title: 'What you will do',
+        items: [
+          'Provide first aid, basic nursing support, and initial health assessment for employee concerns.',
+          'Monitor employee medical records, health clearances, and documentation with proper confidentiality.',
+          'Coordinate annual physical exams, vaccination drives, and workplace wellness activities.',
+          'Support incident documentation and partner with HR and admin on health-related compliance requirements.',
+          'Manage clinic supplies, medicine inventory, and vendor coordination for healthcare needs.',
+          'Offer guidance to employees on routine health concerns, referrals, and follow-up actions when needed.'
+        ]
+      },
+      {
+        eyebrow: 'Requirements',
+        title: 'What we need from you',
+        items: [
+          'Bachelor of Science in Nursing and active PRC nursing license.',
+          'At least 1 to 3 years of nursing experience in a clinic, occupational health, or workplace setting.',
+          'Strong organizational skills and confidence handling records with discretion.',
+          'Good communication skills and a calm, professional presence when assisting employees.',
+          'Working knowledge of workplace health protocols, basic compliance, and emergency response.',
+          'Comfortable collaborating with HR, administration, and external healthcare providers.'
+        ]
+      },
+      {
+        eyebrow: 'Preferred qualifications',
+        title: 'What will help you stand out',
+        items: [
+          'Experience as a company nurse or occupational health nurse.',
+          'Training in basic life support, workplace safety, or employee wellness programs.',
+          'Confidence coordinating with clinics, laboratories, and health maintenance vendors.',
+          'A practical mindset for improving simple health and admin workflows.'
+        ]
+      },
+      {
+        eyebrow: 'Benefits',
+        title: 'What you get',
+        items: [
+          'Stable full-time role in a professional workplace environment.',
+          'Supportive collaboration with HR, admin, and operations leadership.',
+          'Paid time off, statutory benefits, and structured onboarding.',
+          'Opportunity to shape employee wellness programs as the company grows.'
+        ]
+      },
+      {
+        eyebrow: 'Application process',
+        title: 'What to expect after you apply',
+        items: [
+          'Submit your updated resume and PRC license details through wok.',
+          'Qualified candidates will be invited to an HR screening and role discussion.',
+          'Final candidates may be asked about clinic workflows, documentation habits, and employee care scenarios.'
+        ]
+      }
+    ],
+    asides: [
+      {
+        eyebrow: 'First 90 days',
+        title: 'What success looks like',
+        items: [
+          'You understand the company clinic rhythm, employee support needs, and documentation standards.',
+          'Health records, supply monitoring, and routine support tasks are handled consistently and on time.',
+          'Employees and managers trust you to respond professionally and follow through on health-related concerns.',
+          'You help strengthen a calmer, more organized workplace wellness process.'
+        ]
+      },
+      {
+        eyebrow: 'How to apply',
+        title: 'Show your clinical readiness and people-first mindset',
+        body:
+          'Send your updated resume, license details, and a short note about your experience in employee health, clinic support, or workplace nursing.',
+        items: [
+          'Updated resume',
+          'PRC license details',
+          'Short candidate intro',
+          'Relevant clinic or occupational health experience'
         ]
       }
     ]

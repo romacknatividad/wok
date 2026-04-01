@@ -8,10 +8,7 @@ import { recruiterJobs } from '@/components/recruiter/mock-data';
 import {
   ArrowRight,
   BriefcaseBusiness,
-  CirclePlus,
-  FileUser,
-  Filter,
-  Search
+  CirclePlus
 } from 'lucide-react';
 
 const statusSummary = [
@@ -20,6 +17,21 @@ const statusSummary = [
   { label: 'Draft', value: 1 },
   { label: 'Total applicants', value: 59 }
 ];
+
+function getStatusClassName(status: string) {
+  switch (status) {
+    case 'Hiring':
+      return 'bg-blue-50 text-blue-700';
+    case 'Screening':
+      return 'bg-sky-50 text-sky-700';
+    case 'Interviewing':
+      return 'bg-indigo-50 text-indigo-700';
+    case 'Draft':
+      return 'bg-slate-100 text-slate-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+}
 
 export default function RecruiterJobsPage() {
   return (
@@ -84,93 +96,78 @@ export default function RecruiterJobsPage() {
         <DashboardPanel className="shadow-sm">
           <DashboardSection
             title="Job Listings"
-            description="A recruiter-focused list of active roles, hiring stage, and applicant volume."
+            description="A simplified admin view of each role, status, posting date, and applicant count."
             action={
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm text-slate-500">
-                  <Search className="h-4 w-4 text-blue-600" />
-                  Search jobs
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-2 text-sm text-slate-500">
-                  <Filter className="h-4 w-4 text-blue-600" />
-                  All statuses
-                </div>
-              </div>
+              <p className="text-sm text-slate-500">
+                {recruiterJobs.length} roles in this workspace
+              </p>
             }
           >
-            <div className="grid gap-4">
-              {recruiterJobs.map((job) => (
-                <div
-                  key={job.slug}
-                  className="rounded-2xl border border-blue-100 bg-white p-5"
-                >
-                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-slate-950">
-                        {job.title}
-                      </h3>
+            <div className="overflow-hidden rounded-2xl border border-blue-100 bg-white">
+              <div className="hidden grid-cols-[minmax(0,2.3fr)_140px_140px_120px_160px] gap-4 border-b border-blue-100 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:grid">
+                <p>Role</p>
+                <p>Status</p>
+                <p>Posted</p>
+                <p>Applicants</p>
+                <p className="text-right">Actions</p>
+              </div>
+              <div className="divide-y divide-blue-100">
+                {recruiterJobs.map((job) => (
+                  <div
+                    key={job.slug}
+                    className="grid gap-4 px-5 py-4 md:grid-cols-[minmax(0,2.3fr)_140px_140px_120px_160px] md:items-center"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-950">{job.title}</p>
                       <p className="mt-1 text-sm text-slate-500">
-                        {job.department} • {job.location} • {job.type}
+                        {job.department} | {job.location} | {job.type}
                       </p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="rounded-full bg-blue-50 px-3 py-1 text-blue-700">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
+                        Status
+                      </p>
+                      <span
+                        className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${getStatusClassName(job.status)}`}
+                      >
                         {job.status}
                       </span>
-                      <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
-                        {job.posted}
-                      </span>
                     </div>
-                  </div>
-
-                  <div className="mt-4 grid gap-3 md:grid-cols-3">
-                    <div className="rounded-xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
-                      <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
+                        Posted
+                      </p>
+                      <p className="text-sm text-slate-600">{job.posted}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
                         Applicants
                       </p>
-                      <p className="mt-2 flex items-center gap-2 text-lg font-semibold text-slate-950">
-                        <FileUser className="h-4 w-4 text-blue-600" />
+                      <p className="text-sm font-medium text-slate-950">
                         {job.applicants}
                       </p>
                     </div>
-                    <div className="rounded-xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
-                      <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                        Department
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-slate-950">
-                        {job.department}
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
-                      <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
-                        Location
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-slate-950">
-                        {job.location}
-                      </p>
+                    <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      >
+                        <Link href={`/dashboard/jobs/${job.slug}`}>Open</Link>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                      >
+                        <Link href={`/dashboard/jobs/${job.slug}/edit`}>
+                          Edit
+                        </Link>
+                      </Button>
                     </div>
                   </div>
-
-                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                    >
-                      <Link href={`/dashboard/jobs/${job.slug}`}>Open Job</Link>
-                    </Button>
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                    >
-                      <Link href={`/dashboard/jobs/${job.slug}/edit`}>
-                        Edit Job
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </DashboardSection>
         </DashboardPanel>
