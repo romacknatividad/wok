@@ -18,6 +18,12 @@ const statusSummary = [
   { label: 'Total applicants', value: 59 }
 ];
 
+const publicJobSlugs = new Set([
+  'senior-full-stack-developer',
+  'accounting-personnel',
+  'company-nurse'
+]);
+
 function getStatusClassName(status: string) {
   switch (status) {
     case 'Hiring':
@@ -155,6 +161,24 @@ export default function RecruiterJobsPage() {
                       >
                         <Link href={`/dashboard/jobs/${job.slug}`}>Open</Link>
                       </Button>
+                      {publicJobSlugs.has(job.slug) ? (
+                        <Button
+                          asChild
+                          variant="outline"
+                          className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                        >
+                          <Link href={`/demo/job/${job.slug}`}>Public View</Link>
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          disabled
+                          className="rounded-full border-blue-100 bg-white text-slate-400"
+                        >
+                          Public View
+                        </Button>
+                      )}
                       <Button
                         asChild
                         variant="outline"

@@ -82,76 +82,134 @@ export const recruiterApplicants = [
     id: 1,
     name: 'Paolo Mendoza',
     email: 'paolo.mendoza@email.com',
+    phone: '+63 917 555 0121',
     jobTitle: 'Senior Full Stack Developer',
     jobSlug: 'senior-full-stack-developer',
     appliedAt: 'Today, 9:12 AM',
     status: 'New',
+    phase: 'Application Review',
+    interviewLevel: 'Not started',
     experience: '6 years',
     location: 'Quezon City',
+    askingSalary: 'PHP 165,000 / month',
+    noticePeriod: '30 days',
+    education: 'BS Computer Science, De La Salle University',
+    skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL'],
+    notes:
+      'Strong product engineering background. Resume shows ownership of customer-facing releases.',
     summary: 'React, Node.js, TypeScript, and SaaS product engineering background.'
   },
   {
     id: 2,
     name: 'Angela Reyes',
     email: 'angela.reyes@email.com',
+    phone: '+63 918 555 0148',
     jobTitle: 'Accounting Personnel',
     jobSlug: 'accounting-personnel',
     appliedAt: 'Today, 8:03 AM',
     status: 'Review',
+    phase: 'Recruiter Screen',
+    interviewLevel: 'Initial screen',
     experience: '4 years',
     location: 'Pasig City',
+    askingSalary: 'PHP 38,000 / month',
+    noticePeriod: '15 days',
+    education: 'BS Accountancy, University of Santo Tomas',
+    skills: ['General Ledger', 'Reconciliation', 'Excel', 'Audit Support'],
+    notes:
+      'Relevant accounting operations background. Worth moving to recruiter screen this week.',
     summary: 'Month-end close, reconciliations, audit support, and reporting.'
   },
   {
     id: 3,
     name: 'Tricia Santos',
     email: 'tricia.santos@email.com',
+    phone: '+63 919 555 0194',
     jobTitle: 'Customer Support Specialist',
     jobSlug: 'customer-support-specialist',
     appliedAt: 'Yesterday, 4:45 PM',
     status: 'Shortlist',
+    phase: 'Hiring Manager Review',
+    interviewLevel: 'Final interview',
     experience: '5 years',
     location: 'Cebu City',
+    askingSalary: 'PHP 42,000 / month',
+    noticePeriod: 'Immediate',
+    education: 'BA Communication, University of San Carlos',
+    skills: ['Customer Support', 'QA', 'Zendesk', 'Escalations'],
+    notes:
+      'Excellent support metrics in previous role. Keep for final shortlist review.',
     summary: 'Handled high-volume inboxes, escalations, and support QA workflows.'
   },
   {
     id: 4,
     name: 'Mark Velasco',
     email: 'mark.velasco@email.com',
+    phone: '+63 917 555 0188',
     jobTitle: 'Accounting Personnel',
     jobSlug: 'accounting-personnel',
     appliedAt: 'Yesterday, 1:20 PM',
     status: 'Interview',
+    phase: 'Panel Interview',
+    interviewLevel: 'Final interview',
     experience: '7 years',
     location: 'Makati City',
+    askingSalary: 'PHP 40,000 / month',
+    noticePeriod: '30 days',
+    education: 'BS Management Accounting, FEU',
+    skills: ['Payables', 'Receivables', 'Reporting', 'Spreadsheet Modeling'],
+    notes:
+      'Needs final alignment on salary and start date. Finance lead feedback is positive.',
     summary: 'General ledger, payables, receivables, and finance operations support.'
   },
   {
     id: 5,
     name: 'Jana Cruz',
     email: 'jana.cruz@email.com',
+    phone: '+63 916 555 0117',
     jobTitle: 'Customer Support Specialist',
     jobSlug: 'customer-support-specialist',
     appliedAt: 'Mar 31, 11:08 AM',
     status: 'Screening',
+    phase: 'Assessment',
+    interviewLevel: 'Assessment stage',
     experience: '3 years',
     location: 'Davao City',
+    askingSalary: 'PHP 35,000 / month',
+    noticePeriod: '21 days',
+    education: 'BS Psychology, Ateneo de Davao University',
+    skills: ['Voice Support', 'Email Support', 'Ticket Handling', 'CSAT'],
+    notes:
+      'Awaiting assessment results before moving to live screening conversation.',
     summary: 'Strong communication skills with chat, email, and voice support experience.'
   },
   {
     id: 6,
     name: 'Alyssa Ramos',
     email: 'alyssa.ramos@email.com',
+    phone: '+63 915 555 0170',
     jobTitle: 'Senior Full Stack Developer',
     jobSlug: 'senior-full-stack-developer',
     appliedAt: 'Mar 30, 2:34 PM',
     status: 'Interview',
+    phase: 'Technical Interview',
+    interviewLevel: 'Technical panel',
     experience: '8 years',
     location: 'Remote, Philippines',
+    askingSalary: 'PHP 180,000 / month',
+    noticePeriod: '45 days',
+    education: 'BS Information Technology, University of the Philippines',
+    skills: ['System Design', 'React', 'Node.js', 'Team Leadership'],
+    notes:
+      'Very strong leadership profile. Need to verify notice period and compensation flexibility.',
     summary: 'Led delivery across frontend and backend systems for product teams.'
   }
 ];
 
 export function getRecruiterJobBySlug(slug: string) {
   return recruiterJobs.find((job) => job.slug === slug);
+}
+
+export function getRecruiterApplicantsByJobSlug(slug: string) {
+  return recruiterApplicants.filter((applicant) => applicant.jobSlug === slug);
 }

@@ -8,6 +8,7 @@ import { DashboardSection } from '@/components/recruiter/dashboard-section';
 import { DashboardStatCard } from '@/components/recruiter/dashboard-stat-card';
 import { recruiterJobs } from '@/components/recruiter/mock-data';
 import {
+  AlertCircle,
   ArrowRight,
   BriefcaseBusiness,
   CalendarClock,
@@ -133,6 +134,12 @@ const recruiterTeamMembers = [
   { id: 3, user: { name: 'Alyssa Lim', email: 'alyssa@wok.ph' }, role: 'member' }
 ];
 
+const onboardingStatus = {
+  completedSteps: 1,
+  totalSteps: 4,
+  recruiterAccountComplete: false
+};
+
 export default function DashboardPage() {
   const teamMembers = recruiterTeamMembers;
   const displayName = recruiterUser.name;
@@ -141,73 +148,138 @@ export default function DashboardPage() {
     <section className="flex-1 p-4 lg:p-8">
       <div className="grid gap-6">
         <DashboardPanel className="overflow-hidden bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_56%,#f8fbff_100%)] p-6 shadow-sm lg:p-8">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-1.5 text-sm font-medium text-blue-700 shadow-sm">
-                <Sparkles className="h-4 w-4" />
-                Recruiter dashboard
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-1.5 text-sm font-medium text-blue-700 shadow-sm">
+              <Sparkles className="h-4 w-4" />
+              Recruiter dashboard
+            </div>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 lg:text-4xl">
+              Welcome back, {displayName}
+            </h1>
+            <p className="mt-3 max-w-2xl leading-7 text-slate-600">
+              Manage open roles, keep your hiring pipeline moving, and stay on
+              top of interviews, applicants, and recruiter activity from one
+              workspace.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Button asChild className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                <Link href="/dashboard/onboarding">
+                  <Sparkles className="h-4 w-4" />
+                  Start Onboarding
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                <Link href="/dashboard/jobs/new">
+                  <CirclePlus className="h-4 w-4" />
+                  Post a New Job
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              >
+                <Link href="/dashboard/applicants">
+                  View Applicants
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              >
+                <Link href="/pricing">
+                  Manage Plan
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </DashboardPanel>
+
+        <DashboardPanel className="shadow-sm">
+          <DashboardSection
+            title="This Workspace"
+            description="A quick snapshot of the recruiter team's current hiring activity."
+          >
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {topMetrics.map((metric) => (
+                <DashboardStatCard
+                  key={metric.title}
+                  title={metric.title}
+                  value={metric.value}
+                  description={metric.description}
+                  icon={metric.icon}
+                />
+              ))}
+            </div>
+          </DashboardSection>
+        </DashboardPanel>
+
+        <DashboardPanel className="border-amber-200 bg-[linear-gradient(135deg,#fff7ed_0%,#ffffff_65%,#fffbeb_100%)] shadow-sm">
+          <DashboardSection
+            title="Onboarding Workflow Status"
+            description="Recruiters must complete account setup before the workspace is fully ready."
+            action={
+              <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800">
+                {onboardingStatus.completedSteps} / {onboardingStatus.totalSteps} complete
+              </span>
+            }
+          >
+            <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div className="rounded-2xl border border-amber-200 bg-white/90 p-5">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-2xl bg-amber-100 p-2 text-amber-700">
+                    <AlertCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-950">
+                      Recruiter account setup is still incomplete
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                      Finish the onboarding workflow to complete recruiter
+                      account details, company information, your first job
+                      listing, and publishing setup.
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 lg:text-4xl">
-                Welcome back, {displayName}
-              </h1>
-              <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-                Manage open roles, keep your hiring pipeline moving, and stay
-                on top of interviews, applicants, and recruiter activity from
-                one workspace.
-              </p>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button asChild className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                  <Link href="/dashboard/onboarding">
-                    <Sparkles className="h-4 w-4" />
-                    Start Onboarding
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
-                  <Link href="/dashboard/jobs/new">
-                    <CirclePlus className="h-4 w-4" />
-                    Post a New Job
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Link href="/dashboard/applicants">
-                    View Applicants
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                >
-                  <Link href="/pricing">
-                    Manage Plan
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-blue-100 bg-white p-4">
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                    Recruiter account
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-amber-700">
+                    {onboardingStatus.recruiterAccountComplete ? 'Complete' : 'Required'}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Name, email, and recruiter role still need confirmation.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-blue-100 bg-white p-4">
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                    Next action
+                  </p>
+                  <p className="mt-2 text-lg font-semibold text-slate-950">
+                    Continue onboarding
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    Pick up where setup left off and finish the required steps.
+                  </p>
+                </div>
               </div>
             </div>
-
-            <DashboardPanel className="rounded-[1.75rem] p-5 shadow-sm">
-              <p className="text-sm font-medium text-slate-500">
-                This workspace
-              </p>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {topMetrics.map((metric) => (
-                  <DashboardStatCard
-                    key={metric.title}
-                    title={metric.title}
-                    value={metric.value}
-                    description={metric.description}
-                    icon={metric.icon}
-                  />
-                ))}
-              </div>
-            </DashboardPanel>
-          </div>
+            <Button
+              asChild
+              className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700 sm:w-auto"
+            >
+              <Link href="/dashboard/onboarding">
+                Complete recruiter account setup
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </DashboardSection>
         </DashboardPanel>
 
         <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">

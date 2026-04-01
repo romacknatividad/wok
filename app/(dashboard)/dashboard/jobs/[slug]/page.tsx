@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
-import { JobDetailPage } from '@/components/jobs/job-detail-page';
-import { jobDetailsBySlug } from '@/components/jobs/job-detail-data';
+import { RecruiterJobCandidatesWorkspace } from '@/components/recruiter/job-candidates-workspace';
+import {
+  getRecruiterApplicantsByJobSlug,
+  getRecruiterJobBySlug
+} from '@/components/recruiter/mock-data';
 
 export default async function RecruiterJobRecordPage({
   params
@@ -8,20 +11,13 @@ export default async function RecruiterJobRecordPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const data = jobDetailsBySlug[slug];
+  const job = getRecruiterJobBySlug(slug);
 
-  if (!data) {
+  if (!job) {
     notFound();
   }
 
-  return (
-    <JobDetailPage
-      data={{ ...data, badge: 'Recruiter job record' }}
-      primaryHref="/dashboard/jobs"
-      primaryLabel="Back to Jobs"
-      secondaryHref="/dashboard"
-      secondaryLabel="Open recruiter dashboard"
-      showPublicFooter={false}
-    />
-  );
+  const applicants = getRecruiterApplicantsByJobSlug(slug);
+
+  return <RecruiterJobCandidatesWorkspace job={job} applicants={applicants} />;
 }

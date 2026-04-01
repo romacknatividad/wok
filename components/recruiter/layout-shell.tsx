@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { AlertCircle, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { recruiterNavItems } from './navigation';
 
@@ -51,6 +51,25 @@ export function RecruiterLayoutShell({
             <p className="mt-1 text-sm text-slate-500">
               Hiring, team coordination, and account settings.
             </p>
+            <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="mt-0.5 h-4 w-4 text-amber-600" />
+                <div>
+                  <p className="text-sm font-semibold text-amber-900">
+                    Onboarding incomplete
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-amber-800">
+                    Recruiter account setup still needs to be completed.
+                  </p>
+                  <Link
+                    href="/dashboard/onboarding"
+                    className="mt-2 inline-block text-xs font-semibold text-amber-900 underline underline-offset-2"
+                  >
+                    Continue onboarding
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
 
           <nav className="h-full overflow-y-auto p-4">
