@@ -5,7 +5,9 @@ import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 import {
   ArrowRight,
   BriefcaseBusiness,
+  CalendarDays,
   FileSearch,
+  HandCoins,
   ShieldCheck
 } from 'lucide-react';
 
@@ -107,6 +109,51 @@ const demoResources = [
   }
 ];
 
+const productHighlights = [
+  {
+    title: 'Applicant insights',
+    description:
+      'Help recruiters decide better with fit summaries, compensation checks, requirement coverage, and next-step guidance.',
+    icon: FileSearch,
+    tone: 'bg-sky-500'
+  },
+  {
+    title: 'Hiring calendar',
+    description:
+      'Track interviews, technical exams, and offer dates in one calendar with previous and future date navigation.',
+    icon: CalendarDays,
+    tone: 'bg-blue-600'
+  },
+  {
+    title: 'Billing and subscriptions',
+    description:
+      'Manage plans, upgrades, downgrades, one-time job ads, and subscription usage history from one place.',
+    icon: HandCoins,
+    tone: 'bg-blue-900'
+  }
+];
+
+const featurePillars = [
+  {
+    eyebrow: 'Recruiter operations',
+    title: 'One workspace for jobs, applicants, scheduling, and publishing',
+    description:
+      'Recruiters can create jobs, keep drafts separate from published ads, manage applicant stages, review CVs, and coordinate interviews without jumping between disconnected tools.'
+  },
+  {
+    eyebrow: 'Decision support',
+    title: 'More context behind every applicant decision',
+    description:
+      'Wok now helps teams compare asking salary to budget, review match signals, surface strengths and risks, and keep a clear audit trail of hiring activity.'
+  },
+  {
+    eyebrow: 'Admin and growth',
+    title: 'Account setup, billing, and organization controls built in',
+    description:
+      'Recruiter onboarding, organization setup, subscription changes, and billing records all live inside the same platform, so teams can scale hiring with less overhead.'
+  }
+];
+
 export default function HomePage() {
   return (
     <main>
@@ -119,14 +166,14 @@ export default function HomePage() {
                 wok for modern hiring teams
               </p>
               <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
-                Help your organization hire faster, stay organized, and attract stronger applicants.
+                Run your hiring workflow in one place, from public job ads to recruiter decisions.
               </h1>
               <p className="mt-5 text-base text-slate-600 sm:text-xl lg:text-lg xl:text-xl">
-                wok gives your team one professional hiring workspace to post
-                jobs, manage applicants, and keep recruitment moving without
-                scattered messages, delayed follow-ups, or messy handoffs.
-                Candidates get a smoother application experience, which helps
-                your organization make a stronger first impression.
+                Wok gives your team a professional hiring workspace to publish
+                polished job ads, manage applicants, coordinate schedules,
+                review recruiter insights, and stay on top of billing and team
+                operations without scattered spreadsheets, delayed follow-ups,
+                or messy handoffs.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <Button
@@ -145,18 +192,18 @@ export default function HomePage() {
                   variant="outline"
                   className="rounded-full border-blue-100 bg-white text-lg text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                 >
-                  <Link href="/pricing">View Pricing</Link>
+                  <Link href="/features">Explore Features</Link>
                 </Button>
               </div>
               <div className="mt-8 grid grid-cols-1 gap-4 text-sm text-slate-600 sm:grid-cols-3">
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Faster hiring decisions
+                  Recruiter decision support
                 </div>
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Organized team workflow
+                  Navigable hiring calendar
                 </div>
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Better applicant experience
+                  Subscription and billing controls
                 </div>
               </div>
             </div>
@@ -179,50 +226,27 @@ export default function HomePage() {
       <section className="w-full bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-            <div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-[0_18px_35px_-22px_rgba(37,99,235,0.9)]">
-                <BriefcaseBusiness className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-slate-950">
-                  Recruiter Workspace
-                </h2>
-                <p className="mt-2 text-base text-slate-600">
-                  Create an account, publish roles, organize openings, and keep
-                  every active job in one clear hiring workspace.
-                </p>
-              </div>
-            </div>
+            {productHighlights.map((highlight, index) => {
+              const Icon = highlight.icon;
 
-            <div className="mt-10 lg:mt-0">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-500 text-white shadow-[0_18px_35px_-22px_rgba(14,165,233,0.9)]">
-                <FileSearch className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-slate-950">
-                  Application Pipeline
-                </h2>
-                <p className="mt-2 text-base text-slate-600">
-                  Review applicants faster with a shared pipeline for incoming
-                  applications, candidate screening, and shortlist decisions.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-10 lg:mt-0">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-900 text-white shadow-[0_18px_35px_-22px_rgba(30,64,175,0.9)]">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <div className="mt-5">
-                <h2 className="text-lg font-medium text-slate-950">
-                  Applicant-Friendly Flow
-                </h2>
-                <p className="mt-2 text-base text-slate-600">
-                  Give candidates a straightforward way to discover jobs, create
-                  an account, and send applications confidently.
-                </p>
-              </div>
-            </div>
+              return (
+                <div key={highlight.title} className={index > 0 ? 'mt-10 lg:mt-0' : ''}>
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-[0_18px_35px_-22px_rgba(37,99,235,0.9)] ${highlight.tone}`}
+                  >
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <div className="mt-5">
+                    <h2 className="text-lg font-medium text-slate-950">
+                      {highlight.title}
+                    </h2>
+                    <p className="mt-2 text-base text-slate-600">
+                      {highlight.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -265,29 +289,32 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
             <div>
               <h2 className="text-3xl font-bold text-slate-950 sm:text-4xl">
-                Built for both sides of hiring
+                Built for the full hiring workflow
               </h2>
               <p className="mt-3 max-w-3xl text-lg text-slate-600">
-                Recruiters pay for the workflow. Applicants use wok to discover
-                openings and apply. That keeps the business model simple without
-                making the candidate experience feel heavy.
+                Wok now covers more than job posting and applicant intake. It
+                supports recruiter operations, decision-making, scheduling, and
+                account administration while keeping the candidate experience
+                straightforward.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 grid gap-4">
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-slate-950">For recruiters</h3>
-                <p className="mt-2 text-slate-600">
-                  Post roles, review applicants, and manage hiring activity
-                  across your team.
-                </p>
-              </div>
-              <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-slate-950">For applicants</h3>
-                <p className="mt-2 text-slate-600">
-                  Create an account once, send applications quickly, and stay
-                  focused on the right opportunities.
-                </p>
-              </div>
+              {featurePillars.map((pillar) => (
+                <div
+                  key={pillar.title}
+                  className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                    {pillar.eyebrow}
+                  </p>
+                  <h3 className="mt-2 text-lg font-semibold text-slate-950">
+                    {pillar.title}
+                  </h3>
+                  <p className="mt-2 text-slate-600">
+                    {pillar.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -353,12 +380,13 @@ export default function HomePage() {
                   Demo company and job ads
                 </p>
                 <h2 className="mt-3 text-3xl font-semibold text-slate-950 sm:text-4xl">
-                  Explore the kind of polished hiring experience teams can publish on wok.
+                  Explore the kind of polished hiring experience teams can publish and manage on wok.
                 </h2>
                 <p className="mt-4 text-lg text-slate-600">
                   Start with a demo employer profile, then jump into role pages
                   that show how job ads can stay informative, credible, and
-                  easy to scan for applicants.
+                  easy to scan for applicants while feeding into a richer
+                  recruiter workflow behind the scenes.
                 </p>
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
@@ -367,14 +395,14 @@ export default function HomePage() {
                   </div>
                   <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
                     <p className="text-2xl font-semibold text-slate-950">3</p>
-                    <p className="mt-1 text-sm text-slate-600">Sample job listings</p>
+                    <p className="mt-1 text-sm text-slate-600">Sample public job ads</p>
                   </div>
                   <div className="rounded-2xl border border-blue-100 bg-white/80 px-4 py-4 shadow-sm backdrop-blur">
-                    <p className="text-2xl font-semibold text-slate-950">100%</p>
-                    <p className="mt-1 text-sm text-slate-600">Public-facing preview</p>
+                    <p className="text-2xl font-semibold text-slate-950">4</p>
+                    <p className="mt-1 text-sm text-slate-600">Major workflow pillars</p>
                   </div>
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <Button
                     asChild
                     size="lg"
@@ -384,6 +412,14 @@ export default function HomePage() {
                       Open Demo Company
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                  >
+                    <Link href="/features">View Full Feature Set</Link>
                   </Button>
                 </div>
               </div>
