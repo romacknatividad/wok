@@ -33,7 +33,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'It does not renew monthly',
       'Upgrade to Basic or Pro if you need recurring job capacity'
     ],
-    ctaLabel: 'Continue to payment',
+    ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-post-once')
   },
   'recruiter-trial': {
@@ -67,8 +67,8 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Access is limited to one recruiter account',
       'Upgrade is required to continue posting after the trial'
     ],
-    ctaLabel: 'Start free trial',
-    ctaHref: '/sign-up'
+    ctaLabel: 'Register Now',
+    ctaHref: '/sign-up?plan=recruiter-trial'
   },
   'recruiter-basic': {
     eyebrow: 'Recruiter plan',
@@ -101,7 +101,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Designed for smaller monthly hiring volume',
       'Upgrade to Pro when you need more active jobs'
     ],
-    ctaLabel: 'Continue to payment',
+    ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-basic')
   },
   'recruiter-pro': {
@@ -135,7 +135,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Ideal for continuous monthly hiring activity',
       'Best fit for companies scaling their recruiting operation'
     ],
-    ctaLabel: 'Continue to payment',
+    ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-pro')
   }
 };

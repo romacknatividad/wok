@@ -52,7 +52,7 @@ const companyLogos = [
 
 const testimonials = [
   {
-    image: '/testimonial-angela-reyes.svg',
+    image: 'https://images.pexels.com/photos/7872641/pexels-photo-7872641.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&dpr=2',
     quote:
       'wok gave our hiring team one place to manage openings and applicants, so we stopped losing momentum between sourcing, screening, and follow-up.',
     name: 'Angela Reyes',
@@ -60,7 +60,7 @@ const testimonials = [
     company: 'Northstar Retail'
   },
   {
-    image: '/testimonial-miguel-santos.svg',
+    image: 'https://images.pexels.com/photos/15403161/pexels-photo-15403161.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&dpr=2',
     quote:
       'We filled roles faster because our recruiters could finally work from a shared pipeline instead of scattered messages and spreadsheets.',
     name: 'Miguel Santos',
@@ -68,7 +68,7 @@ const testimonials = [
     company: 'BluePeak Logistics'
   },
   {
-    image: '/testimonial-camille-dela-cruz.svg',
+    image: 'https://images.pexels.com/photos/15324080/pexels-photo-15324080.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&dpr=2',
     quote:
       'The candidate experience feels much more professional now. Applicants know where to apply, and our team has better visibility from day one.',
     name: 'Camille Dela Cruz',

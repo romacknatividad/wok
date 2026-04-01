@@ -5,6 +5,7 @@ import {
   ArrowRight,
   BriefcaseBusiness,
   CalendarDays,
+  CircleCheckBig,
   FileSearch,
   Handshake,
   Layers3,
@@ -20,10 +21,18 @@ const featureGroups = [
       'Create job listings, manage hiring activity, and keep recruiter workflows organized in one workspace.',
     icon: BriefcaseBusiness,
     items: [
-      'Create and edit job listings with public-preview support',
-      'Manage organization setup, onboarding, and recruiter account status',
-      'Control publish timing separately from draft updates',
-      'Track billing, subscription changes, and one-time job ads'
+      {
+        title: 'Job publishing control',
+        detail: 'Create and edit job listings with public-preview support and separate draft versus publish states.'
+      },
+      {
+        title: 'Workspace setup',
+        detail: 'Manage organization setup, onboarding progress, and recruiter account readiness in one flow.'
+      },
+      {
+        title: 'Operational admin',
+        detail: 'Track billing, subscription changes, and one-time job advertisements without leaving the workspace.'
+      }
     ]
   },
   {
@@ -32,10 +41,18 @@ const featureGroups = [
       'Review candidates with a clearer hiring pipeline instead of scattered spreadsheets and inbox threads.',
     icon: FileSearch,
     items: [
-      'View applicants across jobs or inside each role workspace',
-      'Change status, phase, interview level, and internal notes',
-      'Preview uploaded CVs directly in the recruiter workflow',
-      'Review audit trails and hiring activity per applicant'
+      {
+        title: 'Multi-view applicant review',
+        detail: 'View applicants across all jobs or drill into each role workspace for job-specific processing.'
+      },
+      {
+        title: 'Progress tracking',
+        detail: 'Change status, phase, interview level, and recruiter notes while keeping audit history visible.'
+      },
+      {
+        title: 'In-workflow document review',
+        detail: 'Preview uploaded CVs directly inside the recruiter workflow instead of opening separate tools.'
+      }
     ]
   },
   {
@@ -44,10 +61,18 @@ const featureGroups = [
       'Give recruiters more context so they can move faster with stronger, more consistent decisions.',
     icon: Sparkles,
     items: [
-      'Salary budget comparison against applicant asking salary',
-      'Applicant insight summaries, risks, strengths, and next best actions',
-      'Requirement coverage and match-score breakdowns',
-      'Experience-versus-salary visual comparisons'
+      {
+        title: 'Compensation clarity',
+        detail: 'Compare applicant asking salary against the role budget with clear fit signals and tradeoff context.'
+      },
+      {
+        title: 'Actionable applicant insights',
+        detail: 'Surface strengths, risks, match summaries, and next best actions for recruiter decision-making.'
+      },
+      {
+        title: 'Fit breakdowns',
+        detail: 'Review requirement coverage, score breakdowns, and experience-versus-salary visual comparisons.'
+      }
     ]
   },
   {
@@ -56,10 +81,18 @@ const featureGroups = [
       'Keep hiring milestones visible so the team can stay aligned on what needs to happen next.',
     icon: CalendarDays,
     items: [
-      'Calendar view for interviews, technical exams, and job offers',
-      'Pipeline snapshots for shortlisted and interviewing candidates',
-      'Clear next steps inside each applicant record',
-      'Shared visibility for recruiter and hiring-manager coordination'
+      {
+        title: 'Navigable hiring calendar',
+        detail: 'Track interviews, technical exams, and job offers across previous and future dates in one calendar.'
+      },
+      {
+        title: 'Pipeline visibility',
+        detail: 'Keep shortlisted, interviewing, and offer-stage movement visible across the team.'
+      },
+      {
+        title: 'Shared next steps',
+        detail: 'Give recruiters and hiring managers one place to see what should happen next for each applicant.'
+      }
     ]
   }
 ];
@@ -201,13 +234,28 @@ export default function FeaturesPage() {
                   <p className="mt-3 text-base leading-7 text-slate-600">
                     {group.description}
                   </p>
-                  <div className="mt-5 grid gap-3">
-                    {group.items.map((item) => (
+                  <div className="mt-6 grid gap-4">
+                    {group.items.map((item, index) => (
                       <div
-                        key={item}
-                        className="rounded-2xl border border-blue-100 bg-white px-4 py-3 text-sm leading-6 text-slate-700"
+                        key={item.title}
+                        className="grid grid-cols-[auto_1fr] gap-4 rounded-[1.5rem] border border-blue-100 bg-white px-4 py-4 shadow-sm"
                       >
-                        {item}
+                        <div className="flex flex-col items-center">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+                            <CircleCheckBig className="h-4 w-4" />
+                          </div>
+                          {index !== group.items.length - 1 ? (
+                            <div className="mt-2 h-full w-px bg-gradient-to-b from-blue-100 to-transparent" />
+                          ) : null}
+                        </div>
+                        <div className="pb-1">
+                          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-blue-700">
+                            {item.title}
+                          </p>
+                          <p className="mt-2 text-sm leading-7 text-slate-600">
+                            {item.detail}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>

@@ -3,7 +3,6 @@
 import {
   SignInButton,
   SignOutButton,
-  SignUpButton,
   UserButton,
   useAuth
 } from '@clerk/nextjs';
@@ -45,11 +44,6 @@ function UserMenu() {
             Sign In
           </Button>
         </SignInButton>
-        <SignUpButton mode="modal">
-          <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-            Sign Up
-          </Button>
-        </SignUpButton>
       </>
     );
   }

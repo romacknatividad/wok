@@ -26,6 +26,7 @@ const plans = [
   {
     name: 'Recruiter Trial',
     href: '/pricing/recruiter-trial',
+    checkoutHref: '/sign-up?plan=recruiter-trial',
     price: 'Free',
     interval: 'for 1 month',
     description:
@@ -208,7 +209,7 @@ function PricingCard({
               asChild
               className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
             >
-              <Link href={checkoutHref}>Continue to payment</Link>
+              <Link href={checkoutHref}>Register Now</Link>
             </Button>
           ) : null}
           {href ? (
@@ -228,6 +229,14 @@ function PricingCard({
               ? `${cta} by creating a recruiter account. You can upgrade to Basic after 30 days.`
               : 'Start with a recruiter account and upgrade after 30 days.'}
           </p>
+          {checkoutHref ? (
+            <Button
+              asChild
+              className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
+            >
+              <Link href={checkoutHref}>Register Now</Link>
+            </Button>
+          ) : null}
           {href ? (
             <Button
               asChild
