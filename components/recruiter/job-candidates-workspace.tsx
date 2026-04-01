@@ -15,14 +15,19 @@ import {
   BriefcaseBusiness,
   CalendarClock,
   CircleCheckBig,
+  CircleDashed,
+  CircleX,
   Eye,
   FileUser,
+  HandCoins,
   History,
+  Lightbulb,
   MapPin,
   MessagesSquare,
   NotebookPen,
   PhilippinePeso,
   Phone,
+  ShieldAlert,
   TimerReset,
   TrendingUp,
   X
@@ -135,6 +140,309 @@ function getBudgetFit(askingSalary: string, budgetRange: string) {
   return {
     label: 'Within budget',
     className: 'bg-emerald-50 text-emerald-700'
+  };
+}
+
+function getWorkModeFitLabel(jobLocation: string, applicantLocation: string) {
+  const normalizedJobLocation = jobLocation.toLowerCase();
+  const normalizedApplicantLocation = applicantLocation.toLowerCase();
+
+  if (normalizedJobLocation.includes('remote')) {
+    return 'Strong';
+  }
+
+  if (
+    normalizedJobLocation.includes('hybrid') ||
+    normalizedJobLocation.includes('on-site')
+  ) {
+    if (
+      normalizedApplicantLocation.includes('makati') ||
+      normalizedApplicantLocation.includes('pasig') ||
+      normalizedApplicantLocation.includes('quezon') ||
+      normalizedApplicantLocation.includes('remote, philippines')
+    ) {
+      return 'Moderate';
+    }
+
+    return 'Low';
+  }
+
+  return 'Moderate';
+}
+
+function normalizeRequirementTokens(text: string) {
+  return text
+    .toLowerCase()
+    .split(/[,./]| and | with | plus |\n/)
+    .map((part) => part.trim())
+    .filter((part) => part.length > 2);
+}
+
+function getExperienceTarget(title: string) {
+  const normalizedTitle = title.toLowerCase();
+
+  if (normalizedTitle.includes('senior')) {
+    return { min: 5, ideal: 7, label: 'Senior-level target' };
+  }
+
+  if (normalizedTitle.includes('associate') || normalizedTitle.includes('junior')) {
+    return { min: 1, ideal: 2, label: 'Associate-level target' };
+  }
+
+  return { min: 3, ideal: 4, label: 'Mid-level target' };
+}
+
+function getAppliedAgeSummary(appliedAt: string) {
+  const normalized = appliedAt.toLowerCase();
+
+  if (normalized.includes('today')) {
+    return 'Fresh application';
+  }
+
+  if (normalized.includes('yesterday')) {
+    return '1 day in pipeline';
+  }
+
+  if (normalized.includes('mar 31')) {
+    return '2 days in pipeline';
+  }
+
+  if (normalized.includes('mar 30')) {
+    return '3 days in pipeline';
+  }
+
+  return 'Recently applied';
+}
+
+function getStageUrgency(phase: string, status: string) {
+  if (status === 'Offer') {
+    return 'High priority: offer-stage follow-up needed.';
+  }
+
+  if (phase === 'Technical Interview' || phase === 'Panel Interview') {
+    return 'High priority: panel feedback should be collected quickly.';
+  }
+
+  if (phase === 'Assessment') {
+    return 'Medium priority: wait for exam results before moving forward.';
+  }
+
+  return 'Standard priority: recruiter review can continue.';
+}
+
+function clampScore(value: number) {
+  return Math.max(0, Math.min(100, Math.round(value)));
+}
+
+function getApplicantInsights(applicant: RecruiterApplicant, job: RecruiterJob) {
+  const asking = parseCurrencyAmount(applicant.askingSalary);
+  const budget = parseSalaryRange(job.salary);
+  const years = parseExperienceYears(applicant.experience);
+  const experienceTarget = getExperienceTarget(job.title);
+  const requirementTokens = normalizeRequirementTokens(job.requirements);
+  const skillTokens = applicant.skills.map((skill) => skill.toLowerCase());
+  const matchedRequirements = requirementTokens.filter((requirement) =>
+    skillTokens.some(
+      (skill) =>
+        skill.includes(requirement) ||
+        requirement.includes(skill) ||
+        (requirement.includes('communication') && skill.includes('support')) ||
+        (requirement.includes('backend') && skill.includes('node')) ||
+        (requirement.includes('spreadsheet') && skill.includes('excel'))
+    )
+  );
+  const requirementCoverage = requirementTokens.length
+    ? matchedRequirements.length / requirementTokens.length
+    : 0.5;
+
+  const budgetDelta = asking - budget.max;
+  const budgetMinDelta = asking - budget.min;
+  const budgetScore =
+    asking <= budget.max && asking >= budget.min
+      ? 100
+      : asking < budget.min
+        ? 84
+        : clampScore(100 - (budgetDelta / Math.max(budget.max, 1)) * 160);
+
+  const experienceScore =
+    years >= experienceTarget.ideal
+      ? 100
+      : years >= experienceTarget.min
+        ? clampScore(82 + (years - experienceTarget.min) * 8)
+        : clampScore(55 + years * 8);
+
+  const requirementScore = clampScore(requirementCoverage * 100);
+
+  const noticeDays = parseCurrencyAmount(applicant.noticePeriod);
+  const noticeScore =
+    applicant.noticePeriod.toLowerCase().includes('immediate')
+      ? 100
+      : noticeDays <= 15
+        ? 92
+        : noticeDays <= 30
+          ? 78
+          : 58;
+
+  const workModeFitLabel = getWorkModeFitLabel(job.location, applicant.location);
+  const workModeScore =
+    workModeFitLabel === 'Strong' ? 100 : workModeFitLabel === 'Moderate' ? 74 : 45;
+
+  const overallScore = clampScore(
+    requirementScore * 0.3 +
+      experienceScore * 0.25 +
+      budgetScore * 0.2 +
+      noticeScore * 0.15 +
+      workModeScore * 0.1
+  );
+
+  const compensationDeltaAmount =
+    asking > budget.max ? asking - budget.max : asking < budget.min ? budget.min - asking : 0;
+  const compensationDeltaPercent =
+    compensationDeltaAmount > 0
+      ? Math.round((compensationDeltaAmount / Math.max(asking > budget.max ? budget.max : budget.min, 1)) * 100)
+      : 0;
+
+  const strengths = [
+    requirementScore >= 70
+      ? `Skills map well to the role with ${matchedRequirements.length} requirement signals matched.`
+      : null,
+    experienceScore >= 85
+      ? `${applicant.experience} lines up strongly with the ${experienceTarget.label.toLowerCase()}.`
+      : null,
+    noticeScore >= 90
+      ? `Notice period is recruiter-friendly at ${applicant.noticePeriod.toLowerCase()}.`
+      : null,
+    budgetScore >= 90
+      ? `Compensation request is aligned with the current budget.`
+      : null
+  ].filter(Boolean) as string[];
+
+  const risks = [
+    asking > budget.max
+      ? `Asking salary is PHP ${compensationDeltaAmount.toLocaleString()} above budget (${compensationDeltaPercent}%).`
+      : null,
+    asking < budget.min
+      ? `Requested pay is below the planned budget floor, which may indicate leveling mismatch.`
+      : null,
+    noticeScore < 70
+      ? `Notice period of ${applicant.noticePeriod.toLowerCase()} may slow hiring momentum.`
+      : null,
+    requirementScore < 50
+      ? `Requirement coverage is still light for this role based on current profile data.`
+      : null,
+    workModeScore < 60
+      ? `Location appears less ideal for the role's current work setup.`
+      : null
+  ].filter(Boolean) as string[];
+
+  const recommendation =
+    overallScore >= 85
+      ? {
+          label: 'Strong proceed',
+          tone: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+          reason: 'High role fit with manageable decision risks.'
+        }
+      : overallScore >= 70
+        ? {
+            label: 'Proceed with caution',
+            tone: 'border-amber-200 bg-amber-50 text-amber-800',
+            reason: 'Promising profile, but one or two tradeoffs need alignment.'
+          }
+        : overallScore >= 55
+          ? {
+              label: 'Hold',
+              tone: 'border-slate-200 bg-slate-100 text-slate-700',
+              reason: 'Some fit indicators are present, but the profile needs more validation.'
+            }
+          : {
+              label: 'Not aligned',
+              tone: 'border-rose-200 bg-rose-50 text-rose-800',
+              reason: 'Current signals suggest meaningful mismatch against role needs.'
+            };
+
+  const interviewReadiness =
+    overallScore >= 85
+      ? 'Ready for hiring manager or final interview.'
+      : overallScore >= 70
+        ? 'Ready for next-stage interview after salary or notice alignment.'
+        : overallScore >= 55
+          ? 'Best suited for additional screening before advancing.'
+          : 'Not currently ready for progression.';
+
+  const nextBestAction =
+    asking > budget.max
+      ? 'Align on compensation before moving deeper into the process.'
+      : applicant.phase === 'Assessment'
+        ? 'Wait for the technical exam result, then decide on interview progression.'
+        : applicant.phase === 'Technical Interview' || applicant.phase === 'Panel Interview'
+          ? 'Collect panel feedback and decide whether to prepare an offer.'
+          : applicant.status === 'New' || applicant.status === 'Review'
+            ? 'Schedule the recruiter screen and validate core fit quickly.'
+            : 'Move to the next interview checkpoint and capture structured feedback.';
+
+  return {
+    overallScore,
+    recommendation,
+    interviewReadiness,
+    nextBestAction,
+    workModeFitLabel,
+    compensationDeltaAmount,
+    compensationDeltaPercent,
+    requirementCoverage: {
+      matched: matchedRequirements,
+      missing: requirementTokens.filter(
+        (requirement) => !matchedRequirements.includes(requirement)
+      ),
+      percent: requirementScore
+    },
+    breakdown: [
+      {
+        label: 'Skills match',
+        value: requirementScore,
+        detail: `${matchedRequirements.length} signals matched`
+      },
+      {
+        label: 'Salary fit',
+        value: budgetScore,
+        detail:
+          asking > budget.max
+            ? `${compensationDeltaPercent}% above budget`
+            : asking < budget.min
+              ? 'Below budget floor'
+              : 'Within budget'
+      },
+      {
+        label: 'Experience fit',
+        value: experienceScore,
+        detail: `${applicant.experience} vs ${experienceTarget.label.toLowerCase()}`
+      },
+      {
+        label: 'Notice period',
+        value: noticeScore,
+        detail: applicant.noticePeriod
+      },
+      {
+        label: 'Work mode fit',
+        value: workModeScore,
+        detail: workModeFitLabel
+      }
+    ],
+    strengths: strengths.slice(0, 3),
+    risks: risks.slice(0, 3),
+    timelineInsight: `${getAppliedAgeSummary(applicant.appliedAt)}. ${getStageUrgency(
+      applicant.phase,
+      applicant.status
+    )}`,
+    experienceContext:
+      years >= experienceTarget.min
+        ? `${applicant.experience} meets the expected range for this role.`
+        : `${applicant.experience} may be light for the expected role seniority.`,
+    compensationInsight:
+      asking > budget.max
+        ? `Candidate is asking PHP ${compensationDeltaAmount.toLocaleString()} above the current budget ceiling.`
+        : asking < budget.min
+          ? `Candidate is below the planned budget floor by PHP ${compensationDeltaAmount.toLocaleString()}.`
+          : 'Candidate compensation is currently within the approved budget band.'
   };
 }
 
@@ -446,6 +754,7 @@ function ApplicantSidebar({
   onClose: () => void;
 }) {
   const budgetFit = getBudgetFit(applicant.askingSalary, job.salary);
+  const insights = getApplicantInsights(applicant, job);
 
   return (
     <div className="p-5 lg:p-7">
@@ -470,6 +779,36 @@ function ApplicantSidebar({
       </div>
 
       <div className="mt-6 grid gap-6">
+        <div className={`rounded-[1.75rem] border p-5 ${insights.recommendation.tone}`}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold">Decision summary</p>
+              <p className="mt-2 text-2xl font-semibold">{insights.recommendation.label}</p>
+              <p className="mt-2 text-sm leading-7">{insights.recommendation.reason}</p>
+            </div>
+            <div className="rounded-2xl bg-white/80 px-4 py-3 text-right">
+              <p className="text-xs uppercase tracking-[0.16em] text-slate-500">
+                Match score
+              </p>
+              <p className="mt-2 text-3xl font-semibold text-slate-950">
+                {insights.overallScore}
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <InsightChip
+              icon={Lightbulb}
+              label="Interview readiness"
+              value={insights.interviewReadiness}
+            />
+            <InsightChip
+              icon={ArrowRight}
+              label="Next best action"
+              value={insights.nextBestAction}
+            />
+          </div>
+        </div>
+
         <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -523,6 +862,40 @@ function ApplicantSidebar({
         </div>
 
         <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+          <div className="flex items-center gap-2 text-slate-950">
+            <Lightbulb className="h-4 w-4 text-blue-600" />
+            <p className="text-sm font-semibold">Match score breakdown</p>
+          </div>
+          <div className="mt-5 grid gap-4">
+            {insights.breakdown.map((item) => (
+              <div key={item.label} className="grid gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-medium text-slate-950">{item.label}</p>
+                    <p className="text-xs text-slate-500">{item.detail}</p>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-950">{item.value}/100</p>
+                </div>
+                <div className="h-2 rounded-full bg-slate-100">
+                  <div
+                    className={`h-2 rounded-full ${
+                      item.value >= 85
+                        ? 'bg-emerald-500'
+                        : item.value >= 70
+                          ? 'bg-blue-500'
+                          : item.value >= 55
+                            ? 'bg-amber-500'
+                            : 'bg-rose-500'
+                    }`}
+                    style={{ width: `${item.value}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
           <p className="text-sm font-semibold text-slate-950">Budget comparison</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <InfoTile
@@ -540,6 +913,121 @@ function ApplicantSidebar({
             Budget baseline runs from PHP {budgetRange.min.toLocaleString()} to PHP{' '}
             {budgetRange.max.toLocaleString()} per month for this role.
           </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <InfoTile
+              icon={HandCoins}
+              label="Compensation insight"
+              value={insights.compensationInsight}
+            />
+            <InfoTile
+              icon={TrendingUp}
+              label="Experience context"
+              value={insights.experienceContext}
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-[1.75rem] border border-emerald-100 bg-emerald-50/60 p-5">
+            <div className="flex items-center gap-2 text-emerald-800">
+              <CircleCheckBig className="h-4 w-4" />
+              <p className="text-sm font-semibold">Key strengths</p>
+            </div>
+            <div className="mt-4 grid gap-3">
+              {insights.strengths.length > 0 ? (
+                insights.strengths.map((strength) => (
+                  <div
+                    key={strength}
+                    className="rounded-2xl border border-emerald-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-700"
+                  >
+                    {strength}
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-emerald-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-700">
+                  Core strengths will become clearer after more screening feedback is added.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-rose-100 bg-rose-50/60 p-5">
+            <div className="flex items-center gap-2 text-rose-800">
+              <ShieldAlert className="h-4 w-4" />
+              <p className="text-sm font-semibold">Decision risks</p>
+            </div>
+            <div className="mt-4 grid gap-3">
+              {insights.risks.length > 0 ? (
+                insights.risks.map((risk) => (
+                  <div
+                    key={risk}
+                    className="rounded-2xl border border-rose-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-700"
+                  >
+                    {risk}
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-rose-200 bg-white/80 px-4 py-3 text-sm leading-6 text-slate-700">
+                  No major risks are standing out from the current applicant data.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+          <p className="text-sm font-semibold text-slate-950">Requirement match</p>
+          <div className="mt-4 flex items-center justify-between gap-4">
+            <p className="text-sm text-slate-600">
+              Requirement coverage based on current job requirements and applicant skills.
+            </p>
+            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+              {insights.requirementCoverage.percent}% coverage
+            </span>
+          </div>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                Matched
+              </p>
+              <div className="mt-3 grid gap-2">
+                {insights.requirementCoverage.matched.length > 0 ? (
+                  insights.requirementCoverage.matched.map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-sm text-slate-700">
+                      <CircleCheckBig className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <span className="capitalize">{item}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-slate-500">No strong requirement matches detected yet.</p>
+                )}
+              </div>
+            </div>
+            <div className="rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">
+                Still to validate
+              </p>
+              <div className="mt-3 grid gap-2">
+                {insights.requirementCoverage.missing.slice(0, 5).length > 0 ? (
+                  insights.requirementCoverage.missing.slice(0, 5).map((item) => (
+                    <div key={item} className="flex items-start gap-2 text-sm text-slate-700">
+                      <CircleDashed className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                      <span className="capitalize">{item}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-slate-500">Current signals already cover the visible requirements.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+          <p className="text-sm font-semibold text-slate-950">Timeline insight</p>
+          <div className="mt-4 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+            <p className="text-sm leading-7 text-slate-600">{insights.timelineInsight}</p>
+          </div>
         </div>
 
         <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
@@ -641,6 +1129,26 @@ function ApplicantSidebar({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function InsightChip({
+  icon: Icon,
+  label,
+  value
+}: {
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/80 bg-white/80 p-4">
+      <div className="flex items-center gap-2 text-slate-500">
+        <Icon className="h-4 w-4 text-blue-600" />
+        <p className="text-xs uppercase tracking-[0.16em]">{label}</p>
+      </div>
+      <p className="mt-2 text-sm font-medium leading-6 text-slate-950">{value}</p>
     </div>
   );
 }
