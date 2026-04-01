@@ -167,7 +167,13 @@ export default function RecruiterJobsPage() {
                           variant="outline"
                           className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                         >
-                          <Link href={`/demo/job/${job.slug}`}>Public View</Link>
+                          <Link
+                            href={`/demo/job/${job.slug}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Public View
+                          </Link>
                         </Button>
                       ) : (
                         <Button

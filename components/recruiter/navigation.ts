@@ -1,10 +1,11 @@
 import type { LucideIcon } from 'lucide-react';
 import {
   Activity,
+  Building2,
+  CreditCard,
   FileUser,
   BriefcaseBusiness,
   Sparkles,
-  Settings,
   Shield,
   Users
 } from 'lucide-react';
@@ -20,7 +21,8 @@ export const recruiterNavItems: RecruiterNavItem[] = [
   { href: '/dashboard/onboarding', icon: Sparkles, label: 'Onboarding' },
   { href: '/dashboard/jobs', icon: BriefcaseBusiness, label: 'Jobs' },
   { href: '/dashboard/applicants', icon: FileUser, label: 'Applicants' },
-  { href: '/dashboard/general', icon: Settings, label: 'General' },
+  { href: '/dashboard/general', icon: Building2, label: 'Organization' },
+  { href: '/dashboard/billing', icon: CreditCard, label: 'Billing' },
   { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
   { href: '/dashboard/security', icon: Shield, label: 'Security' }
 ];

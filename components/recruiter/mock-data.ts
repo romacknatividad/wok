@@ -97,6 +97,18 @@ export const recruiterApplicants = [
     skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL'],
     notes:
       'Strong product engineering background. Resume shows ownership of customer-facing releases.',
+    auditTrail: [
+      {
+        time: 'Today, 9:12 AM',
+        title: 'Application received',
+        detail: 'Candidate submitted an application through the public job page.'
+      },
+      {
+        time: 'Today, 9:28 AM',
+        title: 'Resume reviewed',
+        detail: 'Recruiter completed an initial resume scan and marked the candidate as promising.'
+      }
+    ],
     summary: 'React, Node.js, TypeScript, and SaaS product engineering background.'
   },
   {
@@ -118,6 +130,23 @@ export const recruiterApplicants = [
     skills: ['General Ledger', 'Reconciliation', 'Excel', 'Audit Support'],
     notes:
       'Relevant accounting operations background. Worth moving to recruiter screen this week.',
+    auditTrail: [
+      {
+        time: 'Today, 8:03 AM',
+        title: 'Application received',
+        detail: 'Candidate applied for the Accounting Personnel role.'
+      },
+      {
+        time: 'Today, 10:10 AM',
+        title: 'Status changed to Review',
+        detail: 'Recruiter flagged the profile for a closer finance-focused review.'
+      },
+      {
+        time: 'Today, 11:25 AM',
+        title: 'Phase updated to Recruiter Screen',
+        detail: 'Candidate moved to the recruiter screening phase.'
+      }
+    ],
     summary: 'Month-end close, reconciliations, audit support, and reporting.'
   },
   {
@@ -139,6 +168,23 @@ export const recruiterApplicants = [
     skills: ['Customer Support', 'QA', 'Zendesk', 'Escalations'],
     notes:
       'Excellent support metrics in previous role. Keep for final shortlist review.',
+    auditTrail: [
+      {
+        time: 'Yesterday, 4:45 PM',
+        title: 'Application received',
+        detail: 'Candidate entered the support specialist pipeline.'
+      },
+      {
+        time: 'Today, 9:00 AM',
+        title: 'Shortlisted',
+        detail: 'Profile moved to the shortlist based on prior support metrics and QA experience.'
+      },
+      {
+        time: 'Today, 2:30 PM',
+        title: 'Final interview prepared',
+        detail: 'Hiring manager requested the candidate for a final interview round.'
+      }
+    ],
     summary: 'Handled high-volume inboxes, escalations, and support QA workflows.'
   },
   {
@@ -160,6 +206,23 @@ export const recruiterApplicants = [
     skills: ['Payables', 'Receivables', 'Reporting', 'Spreadsheet Modeling'],
     notes:
       'Needs final alignment on salary and start date. Finance lead feedback is positive.',
+    auditTrail: [
+      {
+        time: 'Yesterday, 1:20 PM',
+        title: 'Application received',
+        detail: 'Candidate applied to the accounting role.'
+      },
+      {
+        time: 'Today, 9:40 AM',
+        title: 'Panel interview scheduled',
+        detail: 'Finance lead and recruiter aligned on a final panel interview.'
+      },
+      {
+        time: 'Today, 4:15 PM',
+        title: 'Compensation discussion flagged',
+        detail: 'Recruiter noted salary and notice period for final alignment.'
+      }
+    ],
     summary: 'General ledger, payables, receivables, and finance operations support.'
   },
   {
@@ -181,6 +244,18 @@ export const recruiterApplicants = [
     skills: ['Voice Support', 'Email Support', 'Ticket Handling', 'CSAT'],
     notes:
       'Awaiting assessment results before moving to live screening conversation.',
+    auditTrail: [
+      {
+        time: 'Mar 31, 11:08 AM',
+        title: 'Application received',
+        detail: 'Candidate applied through the customer support job page.'
+      },
+      {
+        time: 'Apr 1, 8:15 AM',
+        title: 'Assessment requested',
+        detail: 'Candidate was sent an assessment as part of the screening workflow.'
+      }
+    ],
     summary: 'Strong communication skills with chat, email, and voice support experience.'
   },
   {
@@ -202,6 +277,23 @@ export const recruiterApplicants = [
     skills: ['System Design', 'React', 'Node.js', 'Team Leadership'],
     notes:
       'Very strong leadership profile. Need to verify notice period and compensation flexibility.',
+    auditTrail: [
+      {
+        time: 'Mar 30, 2:34 PM',
+        title: 'Application received',
+        detail: 'Candidate applied to the engineering opening.'
+      },
+      {
+        time: 'Mar 31, 10:00 AM',
+        title: 'Technical interview scheduled',
+        detail: 'Candidate moved forward to a technical panel interview.'
+      },
+      {
+        time: 'Apr 1, 1:45 PM',
+        title: 'Recruiter note added',
+        detail: 'Notice period and asking salary were flagged for decision review.'
+      }
+    ],
     summary: 'Led delivery across frontend and backend systems for product teams.'
   }
 ];

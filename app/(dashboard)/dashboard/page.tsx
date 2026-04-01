@@ -189,6 +189,16 @@ export default function DashboardPage() {
                 variant="outline"
                 className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
               >
+                <Link href="/dashboard/billing">
+                  Billing
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              >
                 <Link href="/pricing">
                   Manage Plan
                   <ArrowRight className="h-4 w-4" />
