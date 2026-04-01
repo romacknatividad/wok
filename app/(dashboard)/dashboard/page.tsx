@@ -1,14 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import useSWR from 'swr';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
 import { DashboardStatCard } from '@/components/recruiter/dashboard-stat-card';
 import { recruiterJobs } from '@/components/recruiter/mock-data';
-import type { TeamDataWithMembers, User } from '@/lib/db/schema';
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -21,8 +19,6 @@ import {
   Sparkles,
   Users
 } from 'lucide-react';
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const topMetrics = [
   {
@@ -127,12 +123,19 @@ const priorities = [
   'Invite one teammate to help review finance candidates.'
 ];
 
-export default function DashboardPage() {
-  const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
-  const { data: user } = useSWR<User>('/api/user', fetcher);
+const recruiterUser = {
+  name: 'Camille'
+};
 
-  const teamMembers = teamData?.teamMembers ?? [];
-  const displayName = user?.name || user?.email?.split('@')[0] || 'Recruiter';
+const recruiterTeamMembers = [
+  { id: 1, user: { name: 'Camille Reyes', email: 'camille@wok.ph' }, role: 'owner' },
+  { id: 2, user: { name: 'Martin Cruz', email: 'martin@wok.ph' }, role: 'admin' },
+  { id: 3, user: { name: 'Alyssa Lim', email: 'alyssa@wok.ph' }, role: 'member' }
+];
+
+export default function DashboardPage() {
+  const teamMembers = recruiterTeamMembers;
+  const displayName = recruiterUser.name;
 
   return (
     <section className="flex-1 p-4 lg:p-8">
@@ -445,3 +448,4 @@ function PriorityItem({ title }: { title: string }) {
     </div>
   );
 }
+

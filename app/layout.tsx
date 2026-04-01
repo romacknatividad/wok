@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
-import { getUser, getTeamForUser } from '@/lib/db/queries';
 import { SWRConfig } from 'swr';
 
 export const metadata: Metadata = {
@@ -29,14 +28,7 @@ export default function RootLayout({
         className={`bg-white text-slate-950 ${manrope.className}`}
       >
         <body className="min-h-[100dvh] bg-white text-slate-950">
-          <SWRConfig
-            value={{
-              fallback: {
-                '/api/user': getUser(),
-                '/api/team': getTeamForUser()
-              }
-            }}
-          >
+          <SWRConfig value={{}}>
             {children}
           </SWRConfig>
         </body>

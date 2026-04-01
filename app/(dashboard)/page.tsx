@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
@@ -6,7 +7,6 @@ import {
   FileSearch,
   ShieldCheck
 } from 'lucide-react';
-import { Terminal } from './terminal';
 
 export default function HomePage() {
   return (
@@ -60,7 +60,16 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
-              <Terminal />
+              <div className="w-full overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-3 shadow-[0_28px_70px_-42px_rgba(15,23,42,0.35)]">
+                <Image
+                  src="/recruiter-office-hero.svg"
+                  alt="Recruiter meeting applicants in a bright office with a positive, welcoming atmosphere"
+                  width={1200}
+                  height={900}
+                  className="h-auto w-full rounded-[1.5rem]"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
