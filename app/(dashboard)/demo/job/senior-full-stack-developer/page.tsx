@@ -30,6 +30,13 @@ const requirements = [
   'A product mindset: you care about outcomes, not just shipping code.'
 ];
 
+const preferredQualifications = [
+  'Experience with Next.js, Node.js, PostgreSQL, or modern SaaS products.',
+  'Familiarity with CI/CD pipelines, cloud deployments, and observability tools.',
+  'Experience collaborating with designers and product managers in a fast-moving team.',
+  'Comfortable reviewing code and helping shape engineering standards.'
+];
+
 const perks = [
   'Competitive monthly salary with real product ownership.',
   'Remote-first team and flexible day-to-day working style.',
@@ -42,6 +49,12 @@ const successPoints = [
   'You have shipped production improvements that customers can feel.',
   'You contribute to technical planning, code quality, and engineering discussions.',
   'The team trusts you with ownership, judgment, and follow-through.'
+];
+
+const applicationSteps = [
+  'Submit your updated resume and links to any portfolio, GitHub profile, or shipped work.',
+  'Qualified applicants will be invited to a short screening call.',
+  'Final candidates will complete a technical discussion focused on real product work.'
 ];
 
 export default function SampleJobPage() {
@@ -119,6 +132,23 @@ export default function SampleJobPage() {
             </EditorialSection>
 
             <EditorialSection
+              eyebrow="About the company"
+              title="Northstar Product Studio builds software with a clear business purpose."
+            >
+              <p className="text-base leading-8 text-slate-600">
+                We work on products used by paying customers and growing teams.
+                The company values practical engineering, clear communication,
+                and steady execution over unnecessary complexity.
+              </p>
+              <p className="mt-5 text-base leading-8 text-slate-600">
+                This role reports into the engineering team and works closely
+                with product and design. You will have space to influence
+                technical decisions while still staying close to the work that
+                reaches customers.
+              </p>
+            </EditorialSection>
+
+            <EditorialSection
               eyebrow="Responsibilities"
               title="What you will do"
             >
@@ -133,10 +163,24 @@ export default function SampleJobPage() {
             </EditorialSection>
 
             <EditorialSection
+              eyebrow="Preferred qualifications"
+              title="What will help you stand out"
+            >
+              <BulletList items={preferredQualifications} />
+            </EditorialSection>
+
+            <EditorialSection
               eyebrow="Benefits"
               title="What you get"
             >
               <BulletList items={perks} />
+            </EditorialSection>
+
+            <EditorialSection
+              eyebrow="Application process"
+              title="What to expect after you apply"
+            >
+              <BulletList items={applicationSteps} />
             </EditorialSection>
           </div>
 
@@ -175,6 +219,11 @@ export default function SampleJobPage() {
                   icon={Users}
                   label="Team"
                   value="Product, Design, Engineering"
+                />
+                <InfoRow
+                  icon={BriefcaseBusiness}
+                  label="Reports to"
+                  value="Engineering Lead"
                 />
               </div>
             </div>

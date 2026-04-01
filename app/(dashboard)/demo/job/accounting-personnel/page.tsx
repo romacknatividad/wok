@@ -30,6 +30,13 @@ const requirements = [
   'Clear communication skills and a reliable, organized way of working.'
 ];
 
+const preferredQualifications = [
+  'Experience using accounting software such as QuickBooks, Xero, or similar tools.',
+  'Background supporting month-end close, billing, or accounts payable and receivable.',
+  'Experience working in a growing SME, startup, or multi-department business environment.',
+  'Confidence organizing records for audit, compliance, or management reporting.'
+];
+
 const perks = [
   'Stable role with room to grow into broader finance responsibilities.',
   'Supportive team environment and structured onboarding.',
@@ -42,6 +49,12 @@ const successPoints = [
   'Daily records, reconciliations, and finance support tasks are handled consistently and on time.',
   'Leadership trusts your numbers, documentation, and ability to spot discrepancies early.',
   'You contribute to a more organized and reliable accounting workflow.'
+];
+
+const applicationSteps = [
+  'Submit your updated resume and a short summary of your accounting experience.',
+  'Qualified applicants will be invited to an initial screening interview.',
+  'Final candidates may be asked to discuss prior finance workflows or reporting responsibilities.'
 ];
 
 export default function AccountingPersonnelDemoPage() {
@@ -121,6 +134,24 @@ export default function AccountingPersonnelDemoPage() {
             </EditorialSection>
 
             <EditorialSection
+              eyebrow="About the company"
+              title="Harborline Consumer Group values dependable finance operations."
+            >
+              <p className="text-base leading-8 text-slate-600">
+                The company supports everyday business operations across
+                multiple teams and needs accounting support that is accurate,
+                timely, and well-organized. Finance is treated as an essential
+                part of decision-making, not just back-office administration.
+              </p>
+              <p className="mt-5 text-base leading-8 text-slate-600">
+                This role works closely with operations and leadership and is a
+                good fit for someone who wants steady responsibility, clear
+                expectations, and room to grow into broader finance work over
+                time.
+              </p>
+            </EditorialSection>
+
+            <EditorialSection
               eyebrow="Responsibilities"
               title="What you will do"
             >
@@ -135,10 +166,24 @@ export default function AccountingPersonnelDemoPage() {
             </EditorialSection>
 
             <EditorialSection
+              eyebrow="Preferred qualifications"
+              title="What will help you stand out"
+            >
+              <BulletList items={preferredQualifications} />
+            </EditorialSection>
+
+            <EditorialSection
               eyebrow="Benefits"
               title="What you get"
             >
               <BulletList items={perks} />
+            </EditorialSection>
+
+            <EditorialSection
+              eyebrow="Application process"
+              title="What to expect after you apply"
+            >
+              <BulletList items={applicationSteps} />
             </EditorialSection>
           </div>
 
@@ -177,6 +222,11 @@ export default function AccountingPersonnelDemoPage() {
                   icon={Users}
                   label="Team"
                   value="Finance, Operations, Leadership"
+                />
+                <InfoRow
+                  icon={BriefcaseBusiness}
+                  label="Reports to"
+                  value="Finance Manager"
                 />
               </div>
             </div>
