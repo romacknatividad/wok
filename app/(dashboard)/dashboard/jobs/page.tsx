@@ -41,9 +41,14 @@ export default function RecruiterJobsPage() {
                 you connect real posting and applicant data.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                  <CirclePlus className="h-4 w-4" />
-                  Create Job Post
+                <Button
+                  asChild
+                  className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  <Link href="/dashboard/jobs/new">
+                    <CirclePlus className="h-4 w-4" />
+                    Create Job Post
+                  </Link>
                 </Button>
                 <Button
                   asChild
@@ -155,10 +160,13 @@ export default function RecruiterJobsPage() {
                       <Link href={`/dashboard/jobs/${job.slug}`}>Open Job</Link>
                     </Button>
                     <Button
+                      asChild
                       variant="outline"
                       className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                     >
-                      Edit Job
+                      <Link href={`/dashboard/jobs/${job.slug}/edit`}>
+                        Edit Job
+                      </Link>
                     </Button>
                   </div>
                 </div>

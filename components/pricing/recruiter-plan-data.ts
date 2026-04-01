@@ -1,3 +1,4 @@
+import { buildCheckoutHref } from './checkout-plans';
 import type { RecruiterPlanPageData } from './recruiter-plan-page';
 
 export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
@@ -31,8 +32,8 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'It does not renew monthly',
       'Upgrade to Basic or Pro if you need recurring job capacity'
     ],
-    ctaLabel: 'Choose Post Once',
-    ctaHref: '/pricing'
+    ctaLabel: 'Continue to payment',
+    ctaHref: buildCheckoutHref('recruiter-post-once')
   },
   'recruiter-trial': {
     eyebrow: 'Recruiter plan',
@@ -97,8 +98,8 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Designed for smaller monthly hiring volume',
       'Upgrade to Pro when you need more active jobs'
     ],
-    ctaLabel: 'Choose Basic',
-    ctaHref: '/pricing'
+    ctaLabel: 'Continue to payment',
+    ctaHref: buildCheckoutHref('recruiter-basic')
   },
   'recruiter-pro': {
     eyebrow: 'Recruiter plan',
@@ -130,7 +131,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Ideal for continuous monthly hiring activity',
       'Best fit for companies scaling their recruiting operation'
     ],
-    ctaLabel: 'Choose Pro',
-    ctaHref: '/pricing'
+    ctaLabel: 'Continue to payment',
+    ctaHref: buildCheckoutHref('recruiter-pro')
   }
 };

@@ -1,17 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 
 export default function ActivityPageSkeleton() {
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
-        Activity Log
-      </h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-        </CardHeader>
-        <CardContent className="min-h-[88px]" />
-      </Card>
+      <div className="grid gap-6">
+        <DashboardPanel className="min-h-[180px] animate-pulse bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_56%,#f8fbff_100%)]">
+          <div />
+        </DashboardPanel>
+        <DashboardPanel className="min-h-[320px] animate-pulse">
+          <div />
+        </DashboardPanel>
+      </div>
     </section>
   );
 }

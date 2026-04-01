@@ -1,12 +1,13 @@
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PayPalSubscribeButton } from './paypal-subscribe-button';
+import { buildCheckoutHref } from '@/components/pricing/checkout-plans';
 
 const plans = [
   {
     name: 'Recruiter Post Once',
     href: '/pricing/recruiter-post-once',
+    checkoutHref: buildCheckoutHref('recruiter-post-once'),
     price: 'PHP 99',
     interval: 'one-time',
     description:
@@ -39,9 +40,9 @@ const plans = [
   {
     name: 'Recruiter Basic',
     href: '/pricing/recruiter-basic',
+    checkoutHref: buildCheckoutHref('recruiter-basic'),
     price: 'PHP 299',
     interval: 'month',
-    planId: process.env.NEXT_PUBLIC_PAYPAL_STARTER_PLAN_ID,
     description:
       'For recruiters continuing after trial with a compact monthly plan.',
     features: [
@@ -55,9 +56,9 @@ const plans = [
   {
     name: 'Recruiter Pro',
     href: '/pricing/recruiter-pro',
+    checkoutHref: buildCheckoutHref('recruiter-pro'),
     price: 'PHP 999',
     interval: 'month',
-    planId: process.env.NEXT_PUBLIC_PAYPAL_GROWTH_PLAN_ID,
     description:
       'For teams hiring at higher volume and managing more open roles.',
     features: [
@@ -71,8 +72,6 @@ const plans = [
 ];
 
 export default function PricingPage() {
-  const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-
   return (
     <main className="bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_48%,#f8fbff_100%)]">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
@@ -89,16 +88,13 @@ export default function PricingPage() {
           </p>
         </div>
         <div className="mx-auto mb-10 max-w-4xl rounded-3xl border border-blue-100 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm">
-          Configure your PayPal client ID and recruiter plan IDs in `.env` to
-          enable live subscriptions on the monthly recruiter plans below.
+          Paid recruiter plans now continue to a dedicated checkout page after
+          account registration, where PayPal checkout is prepared for the
+          selected package.
         </div>
         <div className="grid gap-6 max-w-7xl mx-auto md:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => (
-            <PricingCard
-              key={plan.name}
-              paypalClientId={paypalClientId}
-              {...plan}
-            />
+            <PricingCard key={plan.name} {...plan} />
           ))}
         </div>
       </section>
@@ -132,9 +128,8 @@ function PricingCard({
   name,
   price,
   href,
+  checkoutHref,
   interval,
-  planId,
-  paypalClientId,
   description,
   features,
   audience,
@@ -143,22 +138,21 @@ function PricingCard({
   name: string;
   price: string;
   href?: string;
+  checkoutHref?: string;
   interval: string;
-  planId?: string;
-  paypalClientId?: string;
   description: string;
   features: string[];
   audience: 'Recruiters' | 'Applicants';
   cta?: string;
 }) {
-  const isPaid = audience === 'Recruiters' && Boolean(planId);
-  const isTrial = audience === 'Recruiters' && !planId && price === 'Free';
-  const isOneTime = audience === 'Recruiters' && !planId && !isTrial;
+  const needsPayment = audience === 'Recruiters' && Boolean(checkoutHref);
+  const isTrial = audience === 'Recruiters' && !needsPayment && price === 'Free';
+  const isOneTime = audience === 'Recruiters' && needsPayment && interval === 'one-time';
 
   return (
     <div
       className={`rounded-[2rem] border px-6 py-8 shadow-sm ${
-        isPaid
+        needsPayment
           ? 'border-blue-100 bg-white'
           : isTrial
           ? 'border-blue-200 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)]'
@@ -183,7 +177,7 @@ function PricingCard({
       <p className="mb-6 text-4xl font-medium text-slate-950">
         {price}{' '}
         <span className="text-xl font-normal text-slate-600">
-          {isPaid ? `/ ${interval}` : interval}
+          {needsPayment && !isOneTime ? `/ ${interval}` : interval}
         </span>
       </p>
       <ul className="space-y-4 mb-8">
@@ -194,19 +188,21 @@ function PricingCard({
           </li>
         ))}
       </ul>
-      {isPaid ? (
-        <PayPalSubscribeButton
-          clientId={paypalClientId}
-          planId={planId}
-          planName={name}
-        />
-      ) : isOneTime ? (
+      {needsPayment ? (
         <div className="space-y-4">
           <p className="text-sm text-slate-600">
-            {cta
-              ? `${cta}. This package is intended for one opening without a monthly subscription.`
-              : 'Use this package when you only need to post one job.'}
+            {isOneTime
+              ? `${cta}. You will be redirected to a checkout page after creating your recruiter account.`
+              : 'Choose this plan and continue to checkout after account registration.'}
           </p>
+          {checkoutHref ? (
+            <Button
+              asChild
+              className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
+            >
+              <Link href={checkoutHref}>Continue to payment</Link>
+            </Button>
+          ) : null}
           {href ? (
             <Button
               asChild
