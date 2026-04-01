@@ -109,6 +109,11 @@ const demoResources = [
   }
 ];
 
+const heroImage = {
+  src: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  alt: 'Hiring team reviewing applicants together in a bright office meeting room'
+};
+
 const productHighlights = [
   {
     title: 'Applicant insights',
@@ -210,11 +215,11 @@ export default function HomePage() {
             <div className="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
               <div className="w-full overflow-hidden rounded-[2rem] border border-blue-100 bg-white p-3 shadow-[0_28px_70px_-42px_rgba(15,23,42,0.35)]">
                 <Image
-                  src="/recruiter-office-hero.svg"
-                  alt="Recruiter meeting applicants in a bright office with a positive, welcoming atmosphere"
+                  src={heroImage.src}
+                  alt={heroImage.alt}
                   width={1200}
                   height={900}
-                  className="h-auto w-full rounded-[1.5rem]"
+                  className="h-auto w-full rounded-[1.5rem] object-cover"
                   priority
                 />
               </div>
