@@ -38,6 +38,9 @@ export function PublicFooterCta() {
               <div>
                 <p className="text-sm font-medium text-slate-500">Explore</p>
                 <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                  <Link href="/features" className="transition-colors hover:text-blue-700">
+                    Features
+                  </Link>
                   <Link href="/pricing" className="transition-colors hover:text-blue-700">
                     Pricing
                   </Link>

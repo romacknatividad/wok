@@ -26,6 +26,12 @@ function UserMenu() {
     return (
       <>
         <Link
+          href="/features"
+          className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
+        >
+          Features
+        </Link>
+        <Link
           href="/pricing"
           className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
         >
