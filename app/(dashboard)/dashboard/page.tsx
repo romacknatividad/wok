@@ -8,7 +8,7 @@ import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
 import { DashboardStatCard } from '@/components/recruiter/dashboard-stat-card';
 import { recruiterJobs } from '@/components/recruiter/mock-data';
-import { TeamDataWithMembers, User } from '@/lib/db/schema';
+import type { TeamDataWithMembers, User } from '@/lib/db/schema';
 import {
   ArrowRight,
   BriefcaseBusiness,
