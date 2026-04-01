@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 import { Button } from '@/components/ui/button';
 import { Check, ArrowRight, ShieldCheck, Users, BriefcaseBusiness } from 'lucide-react';
 
@@ -104,6 +105,8 @@ export function RecruiterPlanPage({
           />
         </div>
       </section>
+
+      <PublicFooterCta />
     </main>
   );
 }

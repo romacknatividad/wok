@@ -1,12 +1,46 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 import {
   ArrowRight,
   BriefcaseBusiness,
   FileSearch,
   ShieldCheck
 } from 'lucide-react';
+
+const companyLogos = [
+  'Northstar Retail',
+  'HarborWorks',
+  'SummitCare',
+  'BluePeak Logistics',
+  'BrightLedger',
+  'Pacific People Group'
+];
+
+const testimonials = [
+  {
+    quote:
+      'wok gave our hiring team one place to manage openings and applicants, so we stopped losing momentum between sourcing, screening, and follow-up.',
+    name: 'Angela Reyes',
+    role: 'HR Manager',
+    company: 'Northstar Retail'
+  },
+  {
+    quote:
+      'We filled roles faster because our recruiters could finally work from a shared pipeline instead of scattered messages and spreadsheets.',
+    name: 'Miguel Santos',
+    role: 'Talent Acquisition Lead',
+    company: 'BluePeak Logistics'
+  },
+  {
+    quote:
+      'The candidate experience feels much more professional now. Applicants know where to apply, and our team has better visibility from day one.',
+    name: 'Camille Dela Cruz',
+    role: 'Operations Director',
+    company: 'SummitCare'
+  }
+];
 
 export default function HomePage() {
   return (
@@ -17,15 +51,17 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-10 items-center">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
               <p className="inline-flex rounded-full border border-blue-100 bg-white px-4 py-1 text-sm font-medium text-blue-700 shadow-sm">
-                wok for recruiters and applicants
+                wok for modern hiring teams
               </p>
               <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-950 sm:text-5xl md:text-6xl">
-                Hire faster with a recruiting workflow built for real teams.
+                Help your organization hire faster, stay organized, and attract stronger applicants.
               </h1>
               <p className="mt-5 text-base text-slate-600 sm:text-xl lg:text-lg xl:text-xl">
-                wok helps recruiters register, post jobs, review applicants, and
-                move hiring forward. Applicants get a cleaner place to discover
-                roles and send applications without the usual friction.
+                wok gives your team one professional hiring workspace to post
+                jobs, manage applicants, and keep recruitment moving without
+                scattered messages, delayed follow-ups, or messy handoffs.
+                Candidates get a smoother application experience, which helps
+                your organization make a stronger first impression.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <Button
@@ -49,13 +85,13 @@ export default function HomePage() {
               </div>
               <div className="mt-8 grid grid-cols-1 gap-4 text-sm text-slate-600 sm:grid-cols-3">
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Recruiter accounts
+                  Faster hiring decisions
                 </div>
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Job posting workflow
+                  Organized team workflow
                 </div>
                 <div className="rounded-2xl border border-blue-100 bg-white px-4 py-3 shadow-sm">
-                  Applicant-ready experience
+                  Better applicant experience
                 </div>
               </div>
             </div>
@@ -126,6 +162,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="border-y border-blue-100 bg-slate-50/70 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-medium uppercase tracking-[0.22em] text-slate-500">
+            Teams using wok
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {companyLogos.map((company) => (
+              <div
+                key={company}
+                className="flex min-h-16 items-center justify-center rounded-2xl border border-blue-100 bg-white px-4 py-4 text-center text-sm font-semibold tracking-[0.08em] text-slate-500 shadow-sm"
+              >
+                {company}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[linear-gradient(180deg,#eff6ff_0%,#dbeafe_100%)] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
@@ -155,6 +209,45 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-medium uppercase tracking-[0.22em] text-blue-700">
+              Testimonials
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-slate-950 sm:text-4xl">
+              Recruiting teams use wok to bring more structure and confidence to hiring.
+            </h2>
+            <p className="mt-4 text-lg text-slate-600">
+              When hiring is organized, recruiters respond faster, managers stay
+              aligned, and applicants get a more professional experience from
+              the first touchpoint.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <article
+                key={`${testimonial.name}-${testimonial.company}`}
+                className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-7 shadow-sm"
+              >
+                <p className="text-base leading-8 text-slate-600">
+                  "{testimonial.quote}"
+                </p>
+                <div className="mt-6 border-t border-blue-100 pt-5">
+                  <p className="font-semibold text-slate-950">
+                    {testimonial.name}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {testimonial.role}, {testimonial.company}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -198,75 +291,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-8 py-10 shadow-sm">
-            <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-              <div>
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
-                  wok
-                </p>
-                <h2 className="mt-2 text-3xl font-semibold text-slate-950">
-                  Built for recruiters who want a simpler way to post jobs and manage applicants.
-                </h2>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-                  Create a recruiter account, choose the plan that fits your
-                  hiring needs, and run your recruitment workflow in one clean
-                  workspace.
-                </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <Button asChild size="lg" className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                    <Link href="/sign-up">Create Recruiter Account</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                  >
-                    <Link href="/pricing">View Pricing</Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">Recruiters</p>
-                  <div className="mt-3 grid gap-2 text-sm text-slate-600">
-                    <Link href="/pricing" className="transition-colors hover:text-blue-700">
-                      Pricing
-                    </Link>
-                    <Link href="/dashboard/jobs" className="transition-colors hover:text-blue-700">
-                      Jobs module
-                    </Link>
-                    <Link href="/dashboard/activity" className="transition-colors hover:text-blue-700">
-                      Activity
-                    </Link>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-500">Examples</p>
-                  <div className="mt-3 grid gap-2 text-sm text-slate-600">
-                    <Link href="/demo/job/senior-full-stack-developer" className="transition-colors hover:text-blue-700">
-                      Developer job demo
-                    </Link>
-                    <Link href="/demo/job/accounting-personnel" className="transition-colors hover:text-blue-700">
-                      Accounting job demo
-                    </Link>
-                    <Link href="/sign-in" className="transition-colors hover:text-blue-700">
-                      Recruiter sign in
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-10 border-t border-blue-100 pt-6 text-sm text-slate-500">
-              wok helps recruiters post jobs, accept applicants, and move hiring forward with less friction.
-            </div>
-          </div>
-        </div>
-      </section>
+      <PublicFooterCta />
     </main>
   );
 }

@@ -21,6 +21,7 @@ export default async function RecruiterJobRecordPage({
       primaryLabel="Back to Jobs"
       secondaryHref="/dashboard"
       secondaryLabel="Open recruiter dashboard"
+      showPublicFooter={false}
     />
   );
 }

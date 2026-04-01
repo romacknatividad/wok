@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import Link from 'next/link';
+import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 import { Button } from '@/components/ui/button';
 import {
   ArrowRight,
@@ -49,13 +50,15 @@ export function JobDetailPage({
   primaryHref = '/sign-up',
   primaryLabel = 'Apply Through wok',
   secondaryHref = '/pricing',
-  secondaryLabel = 'See recruiter plans'
+  secondaryLabel = 'See recruiter plans',
+  showPublicFooter = true
 }: {
   data: JobDetailPageData;
   primaryHref?: string;
   primaryLabel?: string;
   secondaryHref?: string;
   secondaryLabel?: string;
+  showPublicFooter?: boolean;
 }) {
   return (
     <main className="min-h-screen bg-white">
@@ -163,6 +166,8 @@ export function JobDetailPage({
           </aside>
         </div>
       </section>
+
+      {showPublicFooter ? <PublicFooterCta /> : null}
     </main>
   );
 }

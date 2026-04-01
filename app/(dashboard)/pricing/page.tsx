@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react';
 import Link from 'next/link';
+import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 import { Button } from '@/components/ui/button';
 import { buildCheckoutHref } from '@/components/pricing/checkout-plans';
 
@@ -120,6 +121,8 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      <PublicFooterCta />
     </main>
   );
 }
