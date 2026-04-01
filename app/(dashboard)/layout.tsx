@@ -2,6 +2,7 @@
 
 import {
   SignInButton,
+  SignOutButton,
   SignUpButton,
   UserButton,
   useAuth
@@ -9,7 +10,7 @@ import {
 import Link from 'next/link';
 import { useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Home } from 'lucide-react';
+import { CircleIcon, Home, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,6 +68,14 @@ function UserMenu() {
             <span>Dashboard</span>
           </Link>
         </DropdownMenuItem>
+        <SignOutButton>
+          <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-600">
+            <div className="flex w-full items-center">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log Out</span>
+            </div>
+          </DropdownMenuItem>
+        </SignOutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );
