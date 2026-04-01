@@ -77,6 +77,81 @@ export const recruiterJobs = [
   }
 ];
 
+export const recruiterApplicants = [
+  {
+    id: 1,
+    name: 'Paolo Mendoza',
+    email: 'paolo.mendoza@email.com',
+    jobTitle: 'Senior Full Stack Developer',
+    jobSlug: 'senior-full-stack-developer',
+    appliedAt: 'Today, 9:12 AM',
+    status: 'New',
+    experience: '6 years',
+    location: 'Quezon City',
+    summary: 'React, Node.js, TypeScript, and SaaS product engineering background.'
+  },
+  {
+    id: 2,
+    name: 'Angela Reyes',
+    email: 'angela.reyes@email.com',
+    jobTitle: 'Accounting Personnel',
+    jobSlug: 'accounting-personnel',
+    appliedAt: 'Today, 8:03 AM',
+    status: 'Review',
+    experience: '4 years',
+    location: 'Pasig City',
+    summary: 'Month-end close, reconciliations, audit support, and reporting.'
+  },
+  {
+    id: 3,
+    name: 'Tricia Santos',
+    email: 'tricia.santos@email.com',
+    jobTitle: 'Customer Support Specialist',
+    jobSlug: 'customer-support-specialist',
+    appliedAt: 'Yesterday, 4:45 PM',
+    status: 'Shortlist',
+    experience: '5 years',
+    location: 'Cebu City',
+    summary: 'Handled high-volume inboxes, escalations, and support QA workflows.'
+  },
+  {
+    id: 4,
+    name: 'Mark Velasco',
+    email: 'mark.velasco@email.com',
+    jobTitle: 'Accounting Personnel',
+    jobSlug: 'accounting-personnel',
+    appliedAt: 'Yesterday, 1:20 PM',
+    status: 'Interview',
+    experience: '7 years',
+    location: 'Makati City',
+    summary: 'General ledger, payables, receivables, and finance operations support.'
+  },
+  {
+    id: 5,
+    name: 'Jana Cruz',
+    email: 'jana.cruz@email.com',
+    jobTitle: 'Customer Support Specialist',
+    jobSlug: 'customer-support-specialist',
+    appliedAt: 'Mar 31, 11:08 AM',
+    status: 'Screening',
+    experience: '3 years',
+    location: 'Davao City',
+    summary: 'Strong communication skills with chat, email, and voice support experience.'
+  },
+  {
+    id: 6,
+    name: 'Alyssa Ramos',
+    email: 'alyssa.ramos@email.com',
+    jobTitle: 'Senior Full Stack Developer',
+    jobSlug: 'senior-full-stack-developer',
+    appliedAt: 'Mar 30, 2:34 PM',
+    status: 'Interview',
+    experience: '8 years',
+    location: 'Remote, Philippines',
+    summary: 'Led delivery across frontend and backend systems for product teams.'
+  }
+];
+
 export function getRecruiterJobBySlug(slug: string) {
   return recruiterJobs.find((job) => job.slug === slug);
 }

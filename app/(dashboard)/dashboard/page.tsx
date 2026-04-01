@@ -156,9 +156,27 @@ export default function DashboardPage() {
                 one workspace.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Button className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                  <CirclePlus className="h-4 w-4" />
-                  Post a New Job
+                <Button asChild className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                  <Link href="/dashboard/onboarding">
+                    <Sparkles className="h-4 w-4" />
+                    Start Onboarding
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                  <Link href="/dashboard/jobs/new">
+                    <CirclePlus className="h-4 w-4" />
+                    Post a New Job
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                >
+                  <Link href="/dashboard/applicants">
+                    View Applicants
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </Button>
                 <Button
                   asChild
