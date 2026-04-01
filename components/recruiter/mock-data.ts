@@ -97,6 +97,28 @@ export const recruiterApplicants = [
     skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL'],
     notes:
       'Strong product engineering background. Resume shows ownership of customer-facing releases.',
+    cvFileName: 'paolo-mendoza-cv.pdf',
+    cvFileType: 'PDF',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Senior full-stack engineer with 6 years of experience building SaaS products.',
+          'Led frontend and API delivery across growth-stage teams.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Lead Software Engineer, Atlas Stack Labs (2023-2026)',
+          'Full-Stack Developer, Nova Product Studio (2020-2023)'
+        ]
+      },
+      {
+        heading: 'Skills',
+        lines: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'AWS']
+      }
+    ],
     auditTrail: [
       {
         time: 'Today, 9:12 AM',
@@ -130,6 +152,28 @@ export const recruiterApplicants = [
     skills: ['General Ledger', 'Reconciliation', 'Excel', 'Audit Support'],
     notes:
       'Relevant accounting operations background. Worth moving to recruiter screen this week.',
+    cvFileName: 'angela-reyes-resume.docx',
+    cvFileType: 'DOCX',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Accounting professional with 4 years of finance operations and reporting experience.',
+          'Background in reconciliations, month-end close, and audit support.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Accounting Analyst, Sterling Finance Group (2022-2026)',
+          'Junior Accountant, Clearbooks Shared Services (2020-2022)'
+        ]
+      },
+      {
+        heading: 'Tools',
+        lines: ['Excel', 'QuickBooks', 'SAP', 'Financial Reporting']
+      }
+    ],
     auditTrail: [
       {
         time: 'Today, 8:03 AM',
@@ -168,6 +212,28 @@ export const recruiterApplicants = [
     skills: ['Customer Support', 'QA', 'Zendesk', 'Escalations'],
     notes:
       'Excellent support metrics in previous role. Keep for final shortlist review.',
+    cvFileName: 'tricia-santos-profile.pdf',
+    cvFileType: 'PDF',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Customer support specialist with 5 years in high-volume omnichannel operations.',
+          'Strong QA discipline and escalation handling.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Senior Support Specialist, Helio CX Services (2022-2026)',
+          'Support Associate, Brightline Helpdesk (2020-2022)'
+        ]
+      },
+      {
+        heading: 'Platforms',
+        lines: ['Zendesk', 'Intercom', 'Google Workspace', 'QA scorecards']
+      }
+    ],
     auditTrail: [
       {
         time: 'Yesterday, 4:45 PM',
@@ -206,6 +272,28 @@ export const recruiterApplicants = [
     skills: ['Payables', 'Receivables', 'Reporting', 'Spreadsheet Modeling'],
     notes:
       'Needs final alignment on salary and start date. Finance lead feedback is positive.',
+    cvFileName: 'mark-velasco-cv.pdf',
+    cvFileType: 'PDF',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Finance operations specialist with 7 years across accounting and reporting.',
+          'Comfortable with payables, receivables, and spreadsheet modeling.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Senior Accounting Officer, Crestline Holdings (2021-2026)',
+          'Accounting Specialist, Meridian Ledger Services (2018-2021)'
+        ]
+      },
+      {
+        heading: 'Core Strengths',
+        lines: ['Financial Reporting', 'Payables', 'Receivables', 'MS Excel']
+      }
+    ],
     auditTrail: [
       {
         time: 'Yesterday, 1:20 PM',
@@ -244,6 +332,28 @@ export const recruiterApplicants = [
     skills: ['Voice Support', 'Email Support', 'Ticket Handling', 'CSAT'],
     notes:
       'Awaiting assessment results before moving to live screening conversation.',
+    cvFileName: 'jana-cruz-resume.doc',
+    cvFileType: 'DOC',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Support candidate with 3 years of chat, email, and voice support experience.',
+          'Strong customer communication and ticket handling discipline.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Customer Support Representative, Elevate Care Ops (2023-2026)',
+          'Support Associate, Northline Services (2022-2023)'
+        ]
+      },
+      {
+        heading: 'Customer Metrics',
+        lines: ['CSAT', 'Ticket Resolution', 'Voice Support', 'Email Support']
+      }
+    ],
     auditTrail: [
       {
         time: 'Mar 31, 11:08 AM',
@@ -277,6 +387,28 @@ export const recruiterApplicants = [
     skills: ['System Design', 'React', 'Node.js', 'Team Leadership'],
     notes:
       'Very strong leadership profile. Need to verify notice period and compensation flexibility.',
+    cvFileName: 'alyssa-ramos-cv.pdf',
+    cvFileType: 'PDF',
+    cvPreviewSections: [
+      {
+        heading: 'Professional Summary',
+        lines: [
+          'Engineering leader with 8 years building and scaling product teams.',
+          'Hands-on system design, full-stack delivery, and people leadership.'
+        ]
+      },
+      {
+        heading: 'Experience',
+        lines: [
+          'Engineering Lead, Orbit Product Systems (2022-2026)',
+          'Senior Full-Stack Developer, Apex Software Collective (2018-2022)'
+        ]
+      },
+      {
+        heading: 'Technical Focus',
+        lines: ['System Design', 'React', 'Node.js', 'Architecture', 'Leadership']
+      }
+    ],
     auditTrail: [
       {
         time: 'Mar 30, 2:34 PM',
