@@ -1,5 +1,6 @@
 export const recruiterJobs = [
   {
+    slug: 'senior-full-stack-developer',
     title: 'Senior Full Stack Developer',
     department: 'Engineering',
     location: 'Remote, Philippines',
@@ -9,6 +10,7 @@ export const recruiterJobs = [
     posted: '2 days ago'
   },
   {
+    slug: 'accounting-personnel',
     title: 'Accounting Personnel',
     department: 'Finance',
     location: 'On-site / Hybrid',
@@ -18,6 +20,7 @@ export const recruiterJobs = [
     posted: '4 days ago'
   },
   {
+    slug: 'customer-support-specialist',
     title: 'Customer Support Specialist',
     department: 'Operations',
     location: 'Remote',
@@ -27,6 +30,7 @@ export const recruiterJobs = [
     posted: '1 week ago'
   },
   {
+    slug: 'recruitment-associate',
     title: 'Recruitment Associate',
     department: 'People Operations',
     location: 'Makati City',

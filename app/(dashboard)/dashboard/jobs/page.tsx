@@ -50,7 +50,7 @@ export default function RecruiterJobsPage() {
                   variant="outline"
                   className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                 >
-                  <Link href="/demo/job/senior-full-stack-developer">
+                  <Link href="/dashboard/jobs/senior-full-stack-developer">
                     View Demo Job
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -96,7 +96,7 @@ export default function RecruiterJobsPage() {
             <div className="grid gap-4">
               {recruiterJobs.map((job) => (
                 <div
-                  key={job.title}
+                  key={job.slug}
                   className="rounded-2xl border border-blue-100 bg-white p-5"
                 >
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -148,10 +148,11 @@ export default function RecruiterJobsPage() {
 
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Button
+                      asChild
                       variant="outline"
                       className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                     >
-                      View Applicants
+                      <Link href={`/dashboard/jobs/${job.slug}`}>Open Job</Link>
                     </Button>
                     <Button
                       variant="outline"
