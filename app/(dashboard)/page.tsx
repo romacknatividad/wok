@@ -200,27 +200,69 @@ export default function HomePage() {
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-6 rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-8 py-10 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
-                wok
-              </p>
-              <h2 className="mt-2 text-3xl font-semibold text-slate-950">
-                Launch your recruiting SaaS with clearer hiring workflows.
-              </h2>
+          <div className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-8 py-10 shadow-sm">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
+                  wok
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold text-slate-950">
+                  Built for recruiters who want a simpler way to post jobs and manage applicants.
+                </h2>
+                <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+                  Create a recruiter account, choose the plan that fits your
+                  hiring needs, and run your recruitment workflow in one clean
+                  workspace.
+                </p>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <Button asChild size="lg" className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
+                    <Link href="/sign-up">Create Recruiter Account</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                  >
+                    <Link href="/pricing">View Pricing</Link>
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
+                <div>
+                  <p className="text-sm font-medium text-slate-500">Recruiters</p>
+                  <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                    <Link href="/pricing" className="transition-colors hover:text-blue-700">
+                      Pricing
+                    </Link>
+                    <Link href="/dashboard/jobs" className="transition-colors hover:text-blue-700">
+                      Jobs module
+                    </Link>
+                    <Link href="/dashboard/activity" className="transition-colors hover:text-blue-700">
+                      Activity
+                    </Link>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-500">Examples</p>
+                  <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                    <Link href="/demo/job/senior-full-stack-developer" className="transition-colors hover:text-blue-700">
+                      Developer job demo
+                    </Link>
+                    <Link href="/demo/job/accounting-personnel" className="transition-colors hover:text-blue-700">
+                      Accounting job demo
+                    </Link>
+                    <Link href="/sign-in" className="transition-colors hover:text-blue-700">
+                      Recruiter sign in
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button asChild size="lg" className="rounded-full bg-blue-600 text-white hover:bg-blue-700">
-                <Link href="/sign-up">Get Started</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-              >
-                <Link href="/pricing">See Plans</Link>
-              </Button>
+
+            <div className="mt-10 border-t border-blue-100 pt-6 text-sm text-slate-500">
+              wok helps recruiters post jobs, accept applicants, and move hiring forward with less friction.
             </div>
           </div>
         </div>
