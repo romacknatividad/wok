@@ -11,6 +11,7 @@ import {
   AlertCircle,
   ArrowRight,
   BriefcaseBusiness,
+  CalendarDays,
   CalendarClock,
   CirclePlus,
   FileUser,
@@ -181,6 +182,16 @@ export default function DashboardPage() {
               >
                 <Link href="/dashboard/applicants">
                   View Applicants
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              >
+                <Link href="/dashboard/calendar">
+                  Calendar
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -398,6 +409,18 @@ export default function DashboardPage() {
             <DashboardSection
               title="Upcoming Interviews"
               description="Keep interview schedules visible for the team."
+              action={
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                >
+                  <Link href="/dashboard/calendar">
+                    <CalendarDays className="h-4 w-4" />
+                    Open Calendar
+                  </Link>
+                </Button>
+              }
             >
               <div className="grid gap-4">
                 {interviews.map((interview) => (

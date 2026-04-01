@@ -15,11 +15,11 @@ import {
 } from 'lucide-react';
 
 const subscription = {
-  plan: 'Recruiter Trial',
+  plan: 'Recruiter Pro',
   status: 'Active',
-  billingCycle: 'Free for 1 month',
+  billingCycle: 'Monthly recurring',
   renewalDate: 'Apr 30, 2026',
-  activeJobs: '3 of 5 used'
+  activeJobs: '8 of 12 used'
 };
 
 const billingInfo = {
@@ -35,24 +35,240 @@ const billingActions = [
     description:
       'Move to a recurring monthly recruiter plan with more hiring capacity.',
     href: buildCheckoutHref('recruiter-pro'),
-    cta: 'Upgrade to Pro',
-    tone: 'border-blue-200 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)]'
+    cta: 'Upgrade to Pro'
   },
   {
     title: 'Downgrade subscription',
     description:
       'Switch to a lower monthly plan if you need fewer active roles and a lighter billing commitment.',
     href: buildCheckoutHref('recruiter-basic'),
-    cta: 'Switch to Basic',
-    tone: 'border-blue-100 bg-white'
+    cta: 'Switch to Basic'
   },
   {
     title: 'One-time job advertisement',
     description:
       'Purchase a single post without moving the whole workspace to a monthly subscription.',
     href: buildCheckoutHref('recruiter-post-once'),
-    cta: 'Buy one-time post',
-    tone: 'border-blue-100 bg-white'
+    cta: 'Buy one-time post'
+  }
+];
+
+const subscriptionHistory = [
+  {
+    date: 'May 02, 2024',
+    event: 'Subscribed',
+    plan: 'Recruiter Trial',
+    billingType: 'Trial',
+    amount: 'PHP 0',
+    status: 'Completed',
+    notes: 'Workspace started with a 30-day trial.'
+  },
+  {
+    date: 'Jun 01, 2024',
+    event: 'Upgraded',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Converted from trial after first three hires.'
+  },
+  {
+    date: 'Jul 01, 2024',
+    event: 'Renewed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Automatic renewal processed successfully.'
+  },
+  {
+    date: 'Aug 12, 2024',
+    event: 'One-time job',
+    plan: 'Recruiter Post Once',
+    billingType: 'One-time advertisement',
+    amount: 'PHP 99',
+    status: 'Completed',
+    notes: 'Temporary role posted outside monthly seat limits.'
+  },
+  {
+    date: 'Sep 01, 2024',
+    event: 'Renewed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Subscription stayed on Basic.'
+  },
+  {
+    date: 'Oct 01, 2024',
+    event: 'Upgraded',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Increased job slots for seasonal hiring.'
+  },
+  {
+    date: 'Nov 01, 2024',
+    event: 'Renewed',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'No plan changes this cycle.'
+  },
+  {
+    date: 'Dec 18, 2024',
+    event: 'One-time job',
+    plan: 'Recruiter Post Once',
+    billingType: 'One-time advertisement',
+    amount: 'PHP 99',
+    status: 'Completed',
+    notes: 'Holiday urgent vacancy campaign.'
+  },
+  {
+    date: 'Jan 01, 2025',
+    event: 'Downgraded',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Hiring slowed after the year-end push.'
+  },
+  {
+    date: 'Feb 01, 2025',
+    event: 'Renewed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Auto-renewal succeeded.'
+  },
+  {
+    date: 'Mar 01, 2025',
+    event: 'Cancelled subscription',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 0',
+    status: 'Scheduled end',
+    notes: 'Recurring renewal was stopped before the next cycle.'
+  },
+  {
+    date: 'Apr 14, 2025',
+    event: 'One-time job',
+    plan: 'Recruiter Post Once',
+    billingType: 'One-time advertisement',
+    amount: 'PHP 99',
+    status: 'Completed',
+    notes: 'Used while subscription remained inactive.'
+  },
+  {
+    date: 'May 03, 2025',
+    event: 'Re-subscribed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Returned to recurring billing for new hiring wave.'
+  },
+  {
+    date: 'Jun 01, 2025',
+    event: 'Renewed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Monthly renewal posted.'
+  },
+  {
+    date: 'Jul 01, 2025',
+    event: 'Upgraded',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Expanded recruiter team and active postings.'
+  },
+  {
+    date: 'Aug 01, 2025',
+    event: 'Renewed',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Renewed on current Pro plan.'
+  },
+  {
+    date: 'Sep 09, 2025',
+    event: 'One-time job',
+    plan: 'Recruiter Post Once',
+    billingType: 'One-time advertisement',
+    amount: 'PHP 99',
+    status: 'Completed',
+    notes: 'Short-term contract role published.'
+  },
+  {
+    date: 'Oct 01, 2025',
+    event: 'Renewed',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Renewal completed.'
+  },
+  {
+    date: 'Nov 01, 2025',
+    event: 'Downgraded',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Reduced posting volume for Q4.'
+  },
+  {
+    date: 'Dec 01, 2025',
+    event: 'Renewed',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 499',
+    status: 'Completed',
+    notes: 'Renewed after downgrade.'
+  },
+  {
+    date: 'Jan 01, 2026',
+    event: 'Cancelled subscription',
+    plan: 'Recruiter Basic',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 0',
+    status: 'Scheduled end',
+    notes: 'Cancellation queued for the end of the cycle.'
+  },
+  {
+    date: 'Jan 22, 2026',
+    event: 'One-time job',
+    plan: 'Recruiter Post Once',
+    billingType: 'One-time advertisement',
+    amount: 'PHP 99',
+    status: 'Completed',
+    notes: 'Used during paused recurring billing.'
+  },
+  {
+    date: 'Feb 05, 2026',
+    event: 'Re-subscribed',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Returned on Pro for a larger recruitment campaign.'
+  },
+  {
+    date: 'Mar 01, 2026',
+    event: 'Renewed',
+    plan: 'Recruiter Pro',
+    billingType: 'Monthly subscription',
+    amount: 'PHP 999',
+    status: 'Completed',
+    notes: 'Latest paid invoice settled successfully.'
   }
 ];
 
@@ -133,7 +349,7 @@ export default function BillingPage() {
                     Included right now
                   </p>
                   <div className="mt-4 grid gap-3 text-sm text-slate-600">
-                    <p>Up to 5 active job posts during trial</p>
+                    <p>Up to 12 active job posts on the current plan</p>
                     <p>Applicant review and recruiter workflow tools</p>
                     <p>One recruiter workspace with organization setup</p>
                   </div>
@@ -169,26 +385,81 @@ export default function BillingPage() {
             title="Plan Changes"
             description="Upgrade, downgrade, or use a one-time advertisement package based on current hiring needs."
           >
-            <div className="grid gap-4 lg:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-3">
               {billingActions.map((action) => (
                 <div
                   key={action.title}
-                  className={`rounded-2xl border p-5 shadow-sm ${action.tone}`}
+                  className="rounded-2xl border border-blue-100 bg-white p-4"
                 >
-                  <p className="text-lg font-semibold text-slate-950">
+                  <p className="text-base font-semibold text-slate-950">
                     {action.title}
                   </p>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
                     {action.description}
                   </p>
                   <Button
                     asChild
-                    className="mt-5 w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                    className="mt-4 w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
                   >
                     <Link href={action.href}>{action.cta}</Link>
                   </Button>
                 </div>
               ))}
+            </div>
+          </DashboardSection>
+        </DashboardPanel>
+
+        <DashboardPanel className="shadow-sm">
+          <DashboardSection
+            title="Subscription History"
+            description="A two-year billing ledger of renewals, upgrades, downgrades, cancellations, re-subscriptions, and one-time job advertisements."
+          >
+            <div className="overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white">
+              <div className="overflow-x-auto">
+                <table className="min-w-full border-collapse text-left">
+                  <thead className="bg-slate-50">
+                    <tr className="text-xs uppercase tracking-[0.16em] text-slate-500">
+                      <th className="px-4 py-3 font-semibold">Date</th>
+                      <th className="px-4 py-3 font-semibold">Event</th>
+                      <th className="px-4 py-3 font-semibold">Plan</th>
+                      <th className="px-4 py-3 font-semibold">Billing Type</th>
+                      <th className="px-4 py-3 font-semibold">Amount</th>
+                      <th className="px-4 py-3 font-semibold">Status</th>
+                      <th className="px-4 py-3 font-semibold">Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {subscriptionHistory.map((entry) => (
+                      <tr
+                        key={`${entry.date}-${entry.event}-${entry.plan}`}
+                        className="border-t border-blue-50 align-top"
+                      >
+                        <td className="px-4 py-4 text-sm font-medium text-slate-950">
+                          {entry.date}
+                        </td>
+                        <td className="px-4 py-4">
+                          <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                            {entry.event}
+                          </span>
+                        </td>
+                        <td className="px-4 py-4 text-sm text-slate-700">{entry.plan}</td>
+                        <td className="px-4 py-4 text-sm text-slate-600">
+                          {entry.billingType}
+                        </td>
+                        <td className="px-4 py-4 text-sm font-medium text-slate-950">
+                          {entry.amount}
+                        </td>
+                        <td className="px-4 py-4 text-sm text-slate-700">
+                          {entry.status}
+                        </td>
+                        <td className="px-4 py-4 text-sm leading-6 text-slate-600">
+                          {entry.notes}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </DashboardSection>
         </DashboardPanel>

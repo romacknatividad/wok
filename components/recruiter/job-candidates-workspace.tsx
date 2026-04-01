@@ -259,13 +259,11 @@ export function RecruiterJobCandidatesWorkspace({
               description="Click any applicant row to open the recruiter review sidebar."
             >
               <div className="overflow-hidden rounded-[1.75rem] border border-blue-100 bg-white">
-                <div className="hidden grid-cols-[minmax(0,1.2fr)_130px_140px_170px_130px_120px_72px] gap-4 border-b border-blue-100 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:grid">
+                <div className="hidden grid-cols-[minmax(0,1.35fr)_130px_140px_190px_72px] gap-4 border-b border-blue-100 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:grid">
                   <p>Applicant</p>
                   <p>Status</p>
                   <p>Budget fit</p>
                   <p>Phase</p>
-                  <p>Interview</p>
-                  <p>Applied</p>
                   <p className="text-center">CV</p>
                 </div>
                 <div className="divide-y divide-blue-100">
@@ -280,7 +278,7 @@ export function RecruiterJobCandidatesWorkspace({
                           key={applicant.id}
                           type="button"
                           onClick={() => setSelectedApplicantId(applicant.id)}
-                          className={`grid w-full gap-4 px-5 py-4 text-left transition md:grid-cols-[minmax(0,1.2fr)_130px_140px_170px_130px_120px_72px] md:items-center ${
+                          className={`grid w-full gap-4 px-5 py-4 text-left transition md:grid-cols-[minmax(0,1.35fr)_130px_140px_190px_72px] md:items-center ${
                             isActive ? 'bg-blue-50/70' : 'bg-white hover:bg-blue-50/40'
                           }`}
                         >
@@ -322,20 +320,6 @@ export function RecruiterJobCandidatesWorkspace({
                               Phase
                             </p>
                             <p className="text-sm text-slate-700">{draft.phase}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
-                              Interview
-                            </p>
-                            <p className="text-sm text-slate-700">
-                              {draft.interviewLevel}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
-                              Applied
-                            </p>
-                            <p className="text-sm text-slate-600">{applicant.appliedAt}</p>
                           </div>
                           <div className="flex md:justify-center">
                             <Button

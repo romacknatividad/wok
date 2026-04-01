@@ -5,29 +5,27 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
+import { RichTextEditor } from '@/components/recruiter/rich-text-editor';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  ArrowUpRight,
-  Eye,
-  Save,
-  Send,
-  Sparkles,
-  X
-} from 'lucide-react';
+import { ArrowUpRight, Eye, Save, Send, Sparkles, X } from 'lucide-react';
 
 export type RecruiterJobFormValues = {
   title: string;
-  department: string;
-  location: string;
   type: string;
-  status: string;
+  workMode: string[];
   salary: string;
   summary: string;
   description: string;
   responsibilities: string;
   requirements: string;
 };
+
+const workModeOptions = [
+  'Office-based',
+  'Hybrid (Office and Remote)',
+  'Fully Remote'
+];
 
 export function RecruiterJobForm({
   title,
@@ -42,29 +40,34 @@ export function RecruiterJobForm({
   cancelHref?: string;
   initialValues: RecruiterJobFormValues;
 }) {
-  const [form, setForm] = useState(initialValues);
+  const [form, setForm] = useState(() => normalizeFormValues(initialValues));
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [savedMessage, setSavedMessage] = useState('');
   const [publishedMessage, setPublishedMessage] = useState('');
+  const initialSalaryRange = useMemo(() => parseSalaryRange(initialValues.salary), [initialValues.salary]);
+  const [salaryRange, setSalaryRange] = useState({
+    min: initialSalaryRange.min ? String(initialSalaryRange.min) : '',
+    max: initialSalaryRange.max ? String(initialSalaryRange.max) : ''
+  });
 
   const previewSections = useMemo(
     () => [
       {
         title: 'Job description',
         content:
-          form.description || 'Add the core role description for applicants here.'
+          form.description || '<p>Add the core role description for applicants here.</p>'
       },
       {
         title: 'Responsibilities',
         content:
           form.responsibilities ||
-          'List the day-to-day work and ownership areas for the role.'
+          '<p>List the day-to-day work and ownership areas for the role.</p>'
       },
       {
         title: 'Requirements',
         content:
           form.requirements ||
-          'Describe the qualifications, experience, and expectations for the role.'
+          '<p>Describe the qualifications, experience, and expectations for the role.</p>'
       }
     ],
     [form]
@@ -75,6 +78,28 @@ export function RecruiterJobForm({
     value: RecruiterJobFormValues[K]
   ) {
     setForm((current) => ({ ...current, [field]: value }));
+    if (savedMessage) {
+      setSavedMessage('');
+    }
+    if (publishedMessage) {
+      setPublishedMessage('');
+    }
+  }
+
+  function updateSalaryRange(field: 'min' | 'max', value: string) {
+    setSalaryRange((current) => {
+      const next = { ...current, [field]: value };
+      const min = next.min.trim();
+      const max = next.max.trim();
+      const salary =
+        min || max
+          ? `PHP ${min || '0'} - ${max || min || '0'} / month`
+          : '';
+
+      setForm((currentForm) => ({ ...currentForm, salary }));
+      return next;
+    });
+
     if (savedMessage) {
       setSavedMessage('');
     }
@@ -95,6 +120,15 @@ export function RecruiterJobForm({
       'Job published. Public-facing job advertisement is now using the latest draft.'
     );
     setSavedMessage('');
+  }
+
+  function toggleWorkMode(option: string) {
+    const currentValues = form.workMode;
+    const nextValues = currentValues.includes(option)
+      ? currentValues.filter((item) => item !== option)
+      : [...currentValues, option];
+
+    updateField('workMode', nextValues);
   }
 
   return (
@@ -150,72 +184,108 @@ export function RecruiterJobForm({
                       onChange={(event) => updateField('title', event.target.value)}
                     />
                   </FormField>
-                  <FormField label="Department" id="department">
-                    <Input
-                      id="department"
-                      value={form.department}
-                      onChange={(event) =>
-                        updateField('department', event.target.value)
-                      }
-                    />
-                  </FormField>
-                  <FormField label="Location" id="location">
-                    <Input
-                      id="location"
-                      value={form.location}
-                      onChange={(event) => updateField('location', event.target.value)}
-                    />
-                  </FormField>
                   <FormField label="Employment type" id="type">
-                    <Input
+                    <select
                       id="type"
                       value={form.type}
                       onChange={(event) => updateField('type', event.target.value)}
-                    />
-                  </FormField>
-                  <FormField label="Draft status" id="status">
-                    <Input
-                      id="status"
-                      value={form.status}
-                      onChange={(event) => updateField('status', event.target.value)}
-                    />
-                  </FormField>
-                  <FormField label="Budget salary" id="salary">
-                    <Input
-                      id="salary"
-                      value={form.salary}
-                      onChange={(event) => updateField('salary', event.target.value)}
-                    />
+                      className="w-full rounded-md border border-blue-100 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 focus:border-blue-300"
+                    >
+                      <option value="Full-time">Full-time</option>
+                      <option value="Part-time">Part-time</option>
+                      <option value="Contract">Contract</option>
+                      <option value="Temporary">Temporary</option>
+                      <option value="Internship">Internship</option>
+                    </select>
                   </FormField>
                 </div>
 
+                <FormField label="Mode of work" id="work-mode">
+                  <div className="grid gap-3">
+                    {workModeOptions.map((option) => {
+                      const checked = form.workMode.includes(option);
+
+                      return (
+                        <label
+                          key={option}
+                          className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
+                            checked
+                              ? 'border-blue-200 bg-blue-50 text-blue-800'
+                              : 'border-blue-100 bg-white text-slate-700'
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleWorkMode(option)}
+                            className="h-4 w-4 rounded border-blue-200"
+                          />
+                          <span>{option}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </FormField>
+
+                <FormField label="Budget salary range" id="salary-min">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-2">
+                      <Label htmlFor="salary-min">Minimum amount</Label>
+                      <Input
+                        id="salary-min"
+                        inputMode="numeric"
+                        placeholder="25000"
+                        value={salaryRange.min}
+                        onChange={(event) =>
+                          updateSalaryRange('min', event.target.value.replace(/[^\d]/g, ''))
+                        }
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="salary-max">Maximum amount</Label>
+                      <Input
+                        id="salary-max"
+                        inputMode="numeric"
+                        placeholder="45000"
+                        value={salaryRange.max}
+                        onChange={(event) =>
+                          updateSalaryRange('max', event.target.value.replace(/[^\d]/g, ''))
+                        }
+                      />
+                    </div>
+                  </div>
+                  <p className="text-sm text-slate-500">
+                    Preview: {form.salary || 'Set the budget range for this job'}
+                  </p>
+                </FormField>
+
                 <div className="grid gap-6">
-                  <TextAreaField
+                  <RichTextEditor
                     label="Short summary"
                     id="summary"
                     value={form.summary}
-                    rows={3}
+                    minHeightClassName="min-h-32"
                     onChange={(value) => updateField('summary', value)}
                   />
-                  <TextAreaField
+                  <RichTextEditor
                     label="Job description"
                     id="description"
                     value={form.description}
-                    rows={6}
+                    minHeightClassName="min-h-44"
                     onChange={(value) => updateField('description', value)}
                   />
-                  <TextAreaField
+                  <RichTextEditor
                     label="Responsibilities"
                     id="responsibilities"
                     value={form.responsibilities}
-                    rows={5}
+                    minHeightClassName="min-h-40"
                     onChange={(value) => updateField('responsibilities', value)}
                   />
-                  <TextAreaField
+                  <RichTextEditor
                     label="Requirements"
                     id="requirements"
                     value={form.requirements}
-                    rows={5}
+                    minHeightClassName="min-h-40"
                     onChange={(value) => updateField('requirements', value)}
                   />
                 </div>
@@ -317,18 +387,25 @@ export function RecruiterJobForm({
                     Public-facing header
                   </p>
                   <p className="mt-3 text-sm text-slate-600">
-                    {form.department || 'Department pending'} |{' '}
-                    {form.location || 'Location pending'} |{' '}
                     {form.type || 'Employment type pending'}
+                  </p>
+                  <p className="mt-2 text-sm text-slate-500">
+                    {form.workMode.length > 0
+                      ? form.workMode.join(' | ')
+                      : 'Mode of work pending'}
                   </p>
                 </div>
                 <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                  {form.status || 'Draft'}
+                  Recruiter draft
                 </span>
               </div>
-              <p className="mt-5 text-lg leading-8 text-slate-700">
-                {form.summary || 'Add a short summary so applicants can quickly understand the role.'}
-              </p>
+              <PreviewRichText
+                className="mt-5 text-lg leading-8 text-slate-700"
+                content={
+                  form.summary ||
+                  '<p>Add a short summary so applicants can quickly understand the role.</p>'
+                }
+              />
               <div className="mt-5 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)] px-4 py-3">
                 <p className="text-xs uppercase tracking-[0.18em] text-blue-700">
                   Budget salary
@@ -347,9 +424,10 @@ export function RecruiterJobForm({
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
                   {section.title}
                 </p>
-                <p className="mt-4 text-sm leading-8 text-slate-600">
-                  {section.content}
-                </p>
+                <PreviewRichText
+                  className="mt-4 text-sm leading-8 text-slate-600"
+                  content={section.content}
+                />
               </div>
             ))}
 
@@ -390,29 +468,64 @@ function FormField({
   );
 }
 
-function TextAreaField({
-  label,
-  id,
-  value,
-  rows,
-  onChange
+function PreviewRichText({
+  content,
+  className
 }: {
-  label: string;
-  id: string;
-  value: string;
-  rows: number;
-  onChange: (value: string) => void;
+  content: string;
+  className?: string;
 }) {
   return (
-    <div className="grid gap-2">
-      <Label htmlFor={id}>{label}</Label>
-      <textarea
-        id={id}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        rows={rows}
-        className="border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 aria-invalid:border-destructive min-h-0 w-full rounded-md border bg-transparent px-3 py-2 text-sm text-slate-900 shadow-xs outline-none focus-visible:ring-[3px]"
-      />
-    </div>
+    <div
+      className={`prose prose-slate max-w-none ${className ?? ''}`}
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
   );
+}
+
+function normalizeFormValues(values: RecruiterJobFormValues) {
+  return {
+    ...values,
+    summary: normalizeRichTextValue(values.summary),
+    description: normalizeRichTextValue(values.description),
+    responsibilities: normalizeRichTextValue(values.responsibilities),
+    requirements: normalizeRichTextValue(values.requirements)
+  };
+}
+
+function normalizeRichTextValue(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return '';
+  }
+
+  if (/<[a-z][\s\S]*>/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return trimmed
+    .split(/\n{2,}/)
+    .map((paragraph) => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br />')}</p>`)
+    .join('');
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function parseSalaryRange(salary: string) {
+  const matches = [...salary.matchAll(/(\d[\d,]*)/g)].map((match) =>
+    match[1].replace(/,/g, '')
+  );
+
+  return {
+    min: matches[0] ?? '',
+    max: matches[1] ?? matches[0] ?? ''
+  };
 }

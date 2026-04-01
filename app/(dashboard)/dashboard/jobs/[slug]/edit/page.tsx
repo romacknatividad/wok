@@ -22,10 +22,8 @@ export default async function EditRecruiterJobPage({
       cancelHref={`/dashboard/jobs/${job.slug}`}
       initialValues={{
         title: job.title,
-        department: job.department,
-        location: job.location,
         type: job.type,
-        status: job.status,
+        workMode: ['Office-based'],
         salary: job.salary,
         summary: job.summary,
         description: job.description,

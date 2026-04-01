@@ -8,10 +8,8 @@ export default function NewRecruiterJobPage() {
       submitLabel="Create Job"
       initialValues={{
         title: '',
-        department: '',
-        location: '',
         type: 'Full-time',
-        status: 'Draft',
+        workMode: [],
         salary: '',
         summary: '',
         description: '',
