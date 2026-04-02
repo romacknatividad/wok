@@ -248,6 +248,9 @@ function PricingCard({
               ? `${cta}. You will be redirected to a checkout page after creating your recruiter account.`
               : 'Choose this plan and continue to checkout after account registration.'}
           </p>
+          <div className="rounded-2xl border border-amber-200 bg-amber-50/70 px-4 py-3 text-sm text-amber-800">
+            Sandbox only: use card `4032038996592097`, any future expiry, and any 3-digit CVV for PayPal test checkout.
+          </div>
           {checkoutHref ? (
             <Button
               asChild

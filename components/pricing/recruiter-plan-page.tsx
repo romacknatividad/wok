@@ -18,6 +18,10 @@ export type RecruiterPlanPageData = {
   ctaHref: string;
   availability?: 'live' | 'upcoming';
   availabilityNote?: string;
+  sandboxTestingNote?: {
+    title: string;
+    lines: string[];
+  };
 };
 
 export function RecruiterPlanPage({
@@ -124,6 +128,24 @@ export function RecruiterPlanPage({
             items={data.notes}
           />
         </div>
+
+        {data.sandboxTestingNote ? (
+          <div className="mt-6 rounded-[2rem] border border-amber-200 bg-[linear-gradient(180deg,#fffdf5_0%,#ffffff_100%)] p-6 shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700">
+              Sandbox testing only
+            </p>
+            <h2 className="mt-3 text-xl font-semibold text-slate-950">
+              {data.sandboxTestingNote.title}
+            </h2>
+            <ul className="mt-4 space-y-3">
+              {data.sandboxTestingNote.lines.map((line) => (
+                <li key={line} className="text-sm leading-7 text-slate-600">
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
 
       <PublicFooterCta />

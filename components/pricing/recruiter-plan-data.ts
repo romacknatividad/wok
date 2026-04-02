@@ -33,6 +33,14 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'It does not renew monthly',
       'Upgrade to Basic if you need recurring job capacity'
     ],
+    sandboxTestingNote: {
+      title: 'PayPal sandbox card for test checkout',
+      lines: [
+        'Use card number 4032038996592097 during PayPal sandbox testing.',
+        'Set any future expiration date and any 3-digit CVV.',
+        'Only use this in sandbox mode, never on a live checkout.'
+      ]
+    },
     ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-post-once')
   },
@@ -101,6 +109,14 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Designed for smaller monthly hiring volume',
       'Recruiter Pro is scheduled as a future higher-capacity release'
     ],
+    sandboxTestingNote: {
+      title: 'PayPal sandbox card for test checkout',
+      lines: [
+        'Use card number 4032038996592097 during PayPal sandbox testing.',
+        'Set any future expiration date and any 3-digit CVV.',
+        'Only use this in sandbox mode, never on a live checkout.'
+      ]
+    },
     ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-basic')
   },
