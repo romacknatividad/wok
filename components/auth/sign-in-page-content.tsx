@@ -1,7 +1,7 @@
 import { SignIn } from '@clerk/nextjs';
 import { PublicFooterCta } from '@/components/marketing/public-footer-cta';
 
-export default async function SignInPage({
+export async function SignInPageContent({
   searchParams
 }: {
   searchParams: Promise<{ redirect?: string }>;

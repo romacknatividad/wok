@@ -43,7 +43,7 @@ const signupPlanOptions = {
   }
 };
 
-export default async function SignUpPage({
+export async function SignUpPageContent({
   searchParams
 }: {
   searchParams: Promise<{ redirect?: string; plan?: string }>;
