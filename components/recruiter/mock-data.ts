@@ -8,6 +8,7 @@ export const recruiterJobs = [
     status: 'Hiring',
     type: 'Full-time',
     posted: '2 days ago',
+    postedDate: '2026-04-01',
     salary: 'PHP 120,000 - PHP 180,000 / month',
     summary:
       'Lead full stack product delivery across frontend and backend systems.',
@@ -27,6 +28,7 @@ export const recruiterJobs = [
     status: 'Screening',
     type: 'Full-time',
     posted: '4 days ago',
+    postedDate: '2026-03-29',
     salary: 'PHP 28,000 - PHP 40,000 / month',
     summary:
       'Support finance operations, reconciliations, and reporting accuracy.',
@@ -46,6 +48,7 @@ export const recruiterJobs = [
     status: 'Interviewing',
     type: 'Full-time',
     posted: '1 week ago',
+    postedDate: '2026-03-24',
     salary: 'PHP 30,000 - PHP 45,000 / month',
     summary:
       'Handle customer questions, resolve issues, and keep response quality high.',
@@ -65,6 +68,7 @@ export const recruiterJobs = [
     status: 'Draft',
     type: 'Full-time',
     posted: 'Not published',
+    postedDate: null,
     salary: 'PHP 25,000 - PHP 35,000 / month',
     summary:
       'Assist with sourcing, interview coordination, and candidate communication.',
@@ -429,6 +433,486 @@ export const recruiterApplicants = [
     summary: 'Led delivery across frontend and backend systems for product teams.'
   }
 ];
+
+const additionalRecruiterJobs = [
+  {
+    slug: 'product-designer',
+    title: 'Product Designer',
+    department: 'Design',
+    location: 'Hybrid, Taguig City',
+    applicants: 0,
+    status: 'Hiring',
+    type: 'Full-time',
+    posted: 'Feb 16, 2026',
+    postedDate: '2026-02-16',
+    salary: 'PHP 70,000 - PHP 95,000 / month',
+    summary:
+      'Design product experiences from workflow mapping to polished interfaces.',
+    description:
+      'We are looking for a Product Designer to translate user and business needs into thoughtful product experiences.',
+    responsibilities:
+      'Own wireframes, interface design, research synthesis, and collaboration with engineering and product.',
+    requirements:
+      'Strong product design fundamentals, Figma proficiency, and clear communication with cross-functional teams.'
+  },
+  {
+    slug: 'sales-operations-specialist',
+    title: 'Sales Operations Specialist',
+    department: 'Revenue',
+    location: 'Hybrid, Pasig City',
+    applicants: 0,
+    status: 'Hiring',
+    type: 'Full-time',
+    posted: 'Oct 08, 2025',
+    postedDate: '2025-10-08',
+    salary: 'PHP 45,000 - PHP 65,000 / month',
+    summary:
+      'Support pipeline reporting, CRM quality, and sales process execution.',
+    description:
+      'We are hiring a Sales Operations Specialist to keep sales reporting, CRM hygiene, and internal process coordination sharp.',
+    responsibilities:
+      'Maintain CRM quality, prepare pipeline reports, and support sales process improvements.',
+    requirements:
+      'CRM familiarity, spreadsheet confidence, and process-oriented operational thinking.'
+  },
+  {
+    slug: 'marketing-coordinator',
+    title: 'Marketing Coordinator',
+    department: 'Marketing',
+    location: 'Hybrid, Quezon City',
+    applicants: 0,
+    status: 'Screening',
+    type: 'Full-time',
+    posted: 'Aug 19, 2025',
+    postedDate: '2025-08-19',
+    salary: 'PHP 32,000 - PHP 48,000 / month',
+    summary:
+      'Coordinate campaigns, content calendars, and execution across marketing initiatives.',
+    description:
+      'We are hiring a Marketing Coordinator to support campaign execution, content planning, and coordination across the team.',
+    responsibilities:
+      'Manage marketing calendars, coordinate campaign assets, and track execution support across initiatives.',
+    requirements:
+      'Strong coordination skills, content workflow familiarity, and organized project follow-through.'
+  },
+  {
+    slug: 'warehouse-supervisor',
+    title: 'Warehouse Supervisor',
+    department: 'Logistics',
+    location: 'On-site, Laguna',
+    applicants: 0,
+    status: 'Interviewing',
+    type: 'Full-time',
+    posted: 'Jun 04, 2025',
+    postedDate: '2025-06-04',
+    salary: 'PHP 35,000 - PHP 50,000 / month',
+    summary:
+      'Lead warehouse operations, inventory discipline, and shift coordination.',
+    description:
+      'We are hiring a Warehouse Supervisor to keep warehouse operations safe, organized, and efficient across day-to-day fulfillment activity.',
+    responsibilities:
+      'Oversee inventory flow, shift coordination, warehouse discipline, and daily operations reporting.',
+    requirements:
+      'Warehouse operations experience, people supervision, and process reliability.'
+  },
+  {
+    slug: 'business-analyst',
+    title: 'Business Analyst',
+    department: 'Strategy',
+    location: 'Remote, Philippines',
+    applicants: 0,
+    status: 'Filled',
+    type: 'Full-time',
+    posted: 'Apr 15, 2025',
+    postedDate: '2025-04-15',
+    salary: 'PHP 60,000 - PHP 85,000 / month',
+    summary:
+      'Support data-backed analysis, reporting, and business process improvements.',
+    description:
+      'We are looking for a Business Analyst who can turn operational data into useful recommendations and cross-functional improvements.',
+    responsibilities:
+      'Analyze reports, map business processes, and present structured operational recommendations.',
+    requirements:
+      'Analytical thinking, spreadsheet or BI familiarity, and strong stakeholder communication.'
+  },
+  {
+    slug: 'hr-generalist',
+    title: 'HR Generalist',
+    department: 'People Operations',
+    location: 'Hybrid, Makati City',
+    applicants: 0,
+    status: 'Closed',
+    type: 'Full-time',
+    posted: 'Jan 22, 2025',
+    postedDate: '2025-01-22',
+    salary: 'PHP 38,000 - PHP 52,000 / month',
+    summary:
+      'Handle employee support, HR administration, and people process coordination.',
+    description:
+      'We are hiring an HR Generalist to support day-to-day people operations, employee concerns, and HR coordination.',
+    responsibilities:
+      'Support employee documentation, onboarding coordination, HR administration, and policy follow-through.',
+    requirements:
+      'Human resources experience, organized documentation habits, and employee-facing communication.'
+  },
+  {
+    slug: 'procurement-officer',
+    title: 'Procurement Officer',
+    department: 'Operations',
+    location: 'On-site, Cebu City',
+    applicants: 0,
+    status: 'Closed',
+    type: 'Full-time',
+    posted: 'Sep 11, 2024',
+    postedDate: '2024-09-11',
+    salary: 'PHP 32,000 - PHP 46,000 / month',
+    summary:
+      'Manage vendor coordination, purchasing records, and procurement workflows.',
+    description:
+      'We are looking for a Procurement Officer to coordinate vendors, purchasing records, and internal supply requests.',
+    responsibilities:
+      'Process purchase requests, manage vendor communication, and maintain procurement documentation.',
+    requirements:
+      'Procurement coordination, vendor management, and strong administrative follow-through.'
+  },
+  {
+    slug: 'operations-manager',
+    title: 'Operations Manager',
+    department: 'Operations',
+    location: 'On-site, Davao City',
+    applicants: 0,
+    status: 'Filled',
+    type: 'Full-time',
+    posted: 'May 13, 2024',
+    postedDate: '2024-05-13',
+    salary: 'PHP 85,000 - PHP 120,000 / month',
+    summary:
+      'Lead service operations, team coordination, and process improvement initiatives.',
+    description:
+      'We are hiring an Operations Manager to lead execution, team coordination, and process improvements across a high-activity environment.',
+    responsibilities:
+      'Manage operations teams, improve delivery workflows, and align stakeholders around performance targets.',
+    requirements:
+      'Operations leadership, people management, and process improvement experience.'
+  }
+];
+
+recruiterJobs.push(...additionalRecruiterJobs);
+
+const generatedApplicantTargets: Record<string, number> = {
+  'senior-full-stack-developer': 12,
+  'accounting-personnel': 10,
+  'customer-support-specialist': 9,
+  'recruitment-associate': 4,
+  'product-designer': 5,
+  'sales-operations-specialist': 5,
+  'marketing-coordinator': 5,
+  'warehouse-supervisor': 4,
+  'business-analyst': 3,
+  'hr-generalist': 3,
+  'procurement-officer': 2,
+  'operations-manager': 2
+};
+
+const statusPool = ['New', 'Review', 'Screening', 'Shortlist', 'Interview', 'Offer'];
+const phasePool = [
+  'Application Review',
+  'Recruiter Screen',
+  'Assessment',
+  'Hiring Manager Review',
+  'Technical Interview',
+  'Panel Interview',
+  'Offer Discussion'
+];
+const interviewLevelPool = [
+  'Not started',
+  'Initial screen',
+  'Assessment stage',
+  'Hiring manager',
+  'Technical panel',
+  'Final interview'
+];
+const noticePool = ['Immediate', '15 days', '21 days', '30 days', '45 days'];
+const locationPool = [
+  'Makati City',
+  'Pasig City',
+  'Quezon City',
+  'Taguig City',
+  'Cebu City',
+  'Davao City',
+  'Remote, Philippines',
+  'Laguna'
+];
+const firstNames = [
+  'Daniel', 'Sofia', 'Miguel', 'Bea', 'Carlo', 'Patricia', 'Luis', 'Nina', 'Rafael',
+  'Mika', 'Andre', 'Jessa', 'Victor', 'Rina', 'Paula', 'Enzo', 'Kyla', 'Marco', 'Sam',
+  'Erika', 'Ian', 'Janelle', 'Ken', 'Mariel', 'Noel', 'Rica', 'Owen', 'Shane', 'Patrick',
+  'Tina', 'Harvey', 'Lara', 'Vince', 'Mae', 'Jason', 'Clare', 'Bryan', 'Aileen', 'Adrian',
+  'Faith', 'Ivan', 'Leah', 'Jerome', 'Bianca', 'Ramon', 'Ava', 'Nico', 'Ivy', 'Cedric', 'Ella'
+];
+const lastNames = [
+  'Garcia', 'Torres', 'Navarro', 'Lopez', 'Villanueva', 'Cruz', 'Santiago', 'Aquino',
+  'Soriano', 'Dizon', 'Panganiban', 'Agustin', 'Reyes', 'Mendoza', 'Gutierrez', 'Bautista'
+];
+const educationPool = [
+  'BS Business Administration, Ateneo de Manila University',
+  'BS Information Technology, Mapua University',
+  'BS Accountancy, University of Santo Tomas',
+  'BA Communication, De La Salle University',
+  'BS Psychology, University of the Philippines',
+  'BS Industrial Engineering, Mapua University'
+];
+
+const applicantTemplates: Record<
+  string,
+  {
+    skills: string[];
+    summary: string;
+    baseExperience: number;
+    salaryRange: [number, number];
+    sectionTitle: string;
+    experienceLines: string[];
+  }
+> = {
+  'senior-full-stack-developer': {
+    skills: ['React', 'Node.js', 'TypeScript', 'PostgreSQL'],
+    summary: 'Product engineering, APIs, frontend delivery, and system reliability.',
+    baseExperience: 5,
+    salaryRange: [130000, 185000],
+    sectionTitle: 'Technical Focus',
+    experienceLines: [
+      'Led application delivery across frontend and backend platforms.',
+      'Worked with engineering and product teams to ship customer-facing features.'
+    ]
+  },
+  'accounting-personnel': {
+    skills: ['General Ledger', 'Reconciliation', 'Excel', 'Financial Reporting'],
+    summary: 'Reconciliations, month-end close, and finance operations support.',
+    baseExperience: 3,
+    salaryRange: [29000, 41000],
+    sectionTitle: 'Finance Focus',
+    experienceLines: [
+      'Supported reconciliations and financial record accuracy.',
+      'Handled spreadsheets, month-end support, and documentation control.'
+    ]
+  },
+  'customer-support-specialist': {
+    skills: ['Customer Support', 'Ticket Handling', 'Email Support', 'CSAT'],
+    summary: 'Customer handling, ticket resolution, and support quality discipline.',
+    baseExperience: 2,
+    salaryRange: [32000, 45000],
+    sectionTitle: 'Support Focus',
+    experienceLines: [
+      'Handled customer conversations across voice, email, and chat.',
+      'Maintained response quality, escalation handling, and CSAT awareness.'
+    ]
+  },
+  'recruitment-associate': {
+    skills: ['Sourcing', 'Interview Coordination', 'Recruitment Admin', 'Candidate Care'],
+    summary: 'Sourcing support, scheduling, and recruitment coordination.',
+    baseExperience: 1,
+    salaryRange: [25000, 35000],
+    sectionTitle: 'Recruitment Focus',
+    experienceLines: [
+      'Supported candidate scheduling and recruiter follow-through.',
+      'Helped with sourcing, communication, and hiring administration.'
+    ]
+  },
+  'product-designer': {
+    skills: ['Figma', 'Product Design', 'Wireframing', 'User Research'],
+    summary: 'Interface design, workflow mapping, and product collaboration.',
+    baseExperience: 3,
+    salaryRange: [72000, 95000],
+    sectionTitle: 'Design Focus',
+    experienceLines: [
+      'Designed user flows, interface systems, and product interactions.',
+      'Worked closely with product and engineering teams on delivery.'
+    ]
+  },
+  'sales-operations-specialist': {
+    skills: ['CRM', 'Sales Reporting', 'Excel', 'Process Improvement'],
+    summary: 'CRM hygiene, sales operations, and pipeline reporting.',
+    baseExperience: 3,
+    salaryRange: [47000, 65000],
+    sectionTitle: 'Operations Focus',
+    experienceLines: [
+      'Maintained CRM quality and sales reporting accuracy.',
+      'Supported process improvements and operational follow-through.'
+    ]
+  },
+  'marketing-coordinator': {
+    skills: ['Campaign Coordination', 'Content Calendar', 'Reporting', 'Project Coordination'],
+    summary: 'Campaign support, content planning, and marketing execution.',
+    baseExperience: 2,
+    salaryRange: [34000, 48000],
+    sectionTitle: 'Marketing Focus',
+    experienceLines: [
+      'Coordinated campaign schedules, calendars, and content support.',
+      'Tracked delivery timelines and campaign execution details.'
+    ]
+  },
+  'warehouse-supervisor': {
+    skills: ['Warehouse Operations', 'Inventory', 'People Supervision', 'Process Discipline'],
+    summary: 'Inventory flow, supervision, and warehouse coordination.',
+    baseExperience: 4,
+    salaryRange: [36000, 52000],
+    sectionTitle: 'Operations Focus',
+    experienceLines: [
+      'Managed shift flow, warehouse discipline, and inventory checks.',
+      'Coordinated people and processes across day-to-day operations.'
+    ]
+  },
+  'business-analyst': {
+    skills: ['Reporting', 'Data Analysis', 'Stakeholder Communication', 'Process Mapping'],
+    summary: 'Business analysis, reporting, and cross-functional recommendations.',
+    baseExperience: 3,
+    salaryRange: [62000, 86000],
+    sectionTitle: 'Analysis Focus',
+    experienceLines: [
+      'Prepared analysis and reporting for operational decisions.',
+      'Mapped workflows and supported process improvement initiatives.'
+    ]
+  },
+  'hr-generalist': {
+    skills: ['People Operations', 'Documentation', 'Employee Support', 'Onboarding'],
+    summary: 'People operations, employee support, and HR administration.',
+    baseExperience: 3,
+    salaryRange: [39000, 54000],
+    sectionTitle: 'HR Focus',
+    experienceLines: [
+      'Supported employee concerns and people process coordination.',
+      'Managed documentation, onboarding, and HR follow-through.'
+    ]
+  },
+  'procurement-officer': {
+    skills: ['Procurement', 'Vendor Management', 'Documentation', 'Purchasing'],
+    summary: 'Procurement workflows, vendor coordination, and purchasing support.',
+    baseExperience: 3,
+    salaryRange: [33000, 47000],
+    sectionTitle: 'Procurement Focus',
+    experienceLines: [
+      'Managed vendor coordination and purchasing records.',
+      'Handled supply requests and procurement documentation.'
+    ]
+  },
+  'operations-manager': {
+    skills: ['Operations Leadership', 'Process Improvement', 'People Management', 'Reporting'],
+    summary: 'Operations leadership, execution management, and workflow improvement.',
+    baseExperience: 6,
+    salaryRange: [90000, 122000],
+    sectionTitle: 'Leadership Focus',
+    experienceLines: [
+      'Led teams, delivery workflows, and operational targets.',
+      'Improved service performance through structured operations management.'
+    ]
+  }
+};
+
+const existingApplicantCounts = recruiterApplicants.reduce<Record<string, number>>((counts, applicant) => {
+  counts[applicant.jobSlug] = (counts[applicant.jobSlug] ?? 0) + 1;
+  return counts;
+}, {});
+
+let nextGeneratedApplicantId = Math.max(...recruiterApplicants.map((applicant) => applicant.id)) + 1;
+
+recruiterJobs.forEach((job, jobIndex) => {
+  const targetCount = generatedApplicantTargets[job.slug] ?? 0;
+  const currentCount = existingApplicantCounts[job.slug] ?? 0;
+  const template = applicantTemplates[job.slug];
+
+  if (!template || currentCount >= targetCount) {
+    return;
+  }
+
+  for (let index = currentCount; index < targetCount; index += 1) {
+    const applicantId = nextGeneratedApplicantId++;
+    const firstName = firstNames[(jobIndex * 5 + index) % firstNames.length];
+    const lastName = lastNames[(jobIndex * 3 + index) % lastNames.length];
+    const experienceYears = template.baseExperience + (index % 4);
+    const salaryStep = Math.round(
+      (template.salaryRange[1] - template.salaryRange[0]) /
+        Math.max(1, targetCount - 1)
+    );
+    const askingSalary = template.salaryRange[0] + salaryStep * index;
+    const appliedAt = buildAppliedAtLabel(job.postedDate, index);
+
+    recruiterApplicants.push({
+      id: applicantId,
+      name: `${firstName} ${lastName}`,
+      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${applicantId}@email.com`,
+      phone: `+63 9${String(170000000 + applicantId).slice(-9)}`,
+      jobTitle: job.title,
+      jobSlug: job.slug,
+      appliedAt,
+      status: statusPool[(jobIndex + index) % statusPool.length],
+      phase: phasePool[(jobIndex + index) % phasePool.length],
+      interviewLevel: interviewLevelPool[(jobIndex + index) % interviewLevelPool.length],
+      experience: `${experienceYears} years`,
+      location: locationPool[(jobIndex + index) % locationPool.length],
+      askingSalary: `PHP ${askingSalary.toLocaleString()} / month`,
+      noticePeriod: noticePool[(jobIndex + index) % noticePool.length],
+      education: educationPool[(jobIndex + index) % educationPool.length],
+      skills: template.skills,
+      notes: `${firstName} is in the ${job.title.toLowerCase()} pipeline and should be reviewed against current hiring demand.`,
+      cvFileName: `${firstName.toLowerCase()}-${lastName.toLowerCase()}-cv.pdf`,
+      cvFileType: 'PDF',
+      cvPreviewSections: [
+        {
+          heading: 'Professional Summary',
+          lines: [
+            `${job.title} candidate with ${experienceYears} years of relevant experience.`,
+            template.summary
+          ]
+        },
+        {
+          heading: 'Experience',
+          lines: template.experienceLines
+        },
+        {
+          heading: template.sectionTitle,
+          lines: template.skills
+        }
+      ],
+      auditTrail: [
+        {
+          time: appliedAt,
+          title: 'Application received',
+          detail: `Candidate applied for the ${job.title} role.`
+        },
+        {
+          time: `Apr 1, ${8 + (index % 6)}:${index % 2 === 0 ? '15' : '40'} AM`,
+          title: 'Recruiter review updated',
+          detail: `Application moved through ${phasePool[(jobIndex + index) % phasePool.length].toLowerCase()} with recruiter notes added.`
+        }
+      ],
+      summary: template.summary
+    });
+  }
+});
+
+const applicantCountsByJob = recruiterApplicants.reduce<Record<string, number>>((counts, applicant) => {
+  counts[applicant.jobSlug] = (counts[applicant.jobSlug] ?? 0) + 1;
+  return counts;
+}, {});
+
+recruiterJobs.forEach((job) => {
+  job.applicants = applicantCountsByJob[job.slug] ?? 0;
+});
+
+function buildAppliedAtLabel(postedDate: string | null, offset: number) {
+  if (!postedDate) {
+    return `Jan ${String((offset % 18) + 3).padStart(2, '0')}, 2026`;
+  }
+
+  const [year, month, day] = postedDate.split('-').map(Number);
+  const appliedDate = new Date(year, month - 1, Math.max(1, day - (offset % 12)));
+
+  return appliedDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
 
 export const recruiterCalendarEvents = [
   {

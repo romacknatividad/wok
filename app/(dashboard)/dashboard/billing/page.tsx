@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
@@ -59,7 +59,23 @@ const billingActions = [
   }
 ];
 
-const subscriptionHistory = [
+type SubscriptionRecord = {
+  date: string;
+  event: string;
+  plan: string;
+  billingType: string;
+  amount: string;
+  status: string;
+  notes: string;
+  utilization: {
+    jobs: number;
+    applicants: number;
+    schedules: number;
+    performance: string;
+  };
+};
+
+const subscriptionHistorySeeds: SubscriptionRecord[] = [
   {
     date: 'May 02, 2024',
     event: 'Subscribed',
@@ -422,8 +438,140 @@ const subscriptionHistory = [
   }
 ];
 
+const subscriptionHistory = buildSubscriptionHistory(subscriptionHistorySeeds);
+
+const HISTORY_PAGE_SIZE = 12;
+
+function buildSubscriptionHistory(seedHistory: SubscriptionRecord[]) {
+  const extraHistory: SubscriptionRecord[] = [];
+
+  for (let year = 2022; year <= 2023; year += 1) {
+    for (let month = 0; month < 12; month += 1) {
+      const basePlan = month < 5 ? 'Recruiter Basic' : 'Recruiter Pro';
+      const isQuarterlyAdjustment = month === 5;
+      const isDowngrade = month === 10;
+      const isOneTime = month === 2 || month === 8;
+      const date = new Date(year, month, isOneTime ? 14 : 1);
+      const jobs = basePlan === 'Recruiter Pro' ? 7 + (month % 3) : 3 + (month % 2);
+      const applicants =
+        basePlan === 'Recruiter Pro' ? 38 + month * 2 : 16 + month * 2;
+      const schedules =
+        basePlan === 'Recruiter Pro' ? 10 + (month % 5) : 4 + (month % 3);
+
+      extraHistory.push({
+        date: formatSubscriptionDate(date),
+        event: isOneTime
+          ? 'One-time job'
+          : isQuarterlyAdjustment
+            ? 'Upgraded'
+            : isDowngrade
+              ? 'Downgraded'
+              : month === 0 && year === 2022
+                ? 'Subscribed'
+                : 'Renewed',
+        plan: isOneTime
+          ? 'Recruiter Post Once'
+          : isDowngrade
+            ? 'Recruiter Basic'
+            : basePlan,
+        billingType: isOneTime ? 'One-time advertisement' : 'Monthly subscription',
+        amount: isOneTime
+          ? 'PHP 99'
+          : isDowngrade || (!isQuarterlyAdjustment && basePlan === 'Recruiter Basic')
+            ? 'PHP 499'
+            : 'PHP 999',
+        status: isOneTime
+          ? 'Ad completed'
+          : isDowngrade
+            ? 'Plan changed'
+            : isQuarterlyAdjustment
+              ? 'Plan upgraded'
+              : 'Billing successful',
+        notes: isOneTime
+          ? 'A one-time paid job advertisement was used for an extra role outside the monthly plan.'
+          : isQuarterlyAdjustment
+            ? 'The workspace moved up to a larger plan to support a broader hiring push.'
+            : isDowngrade
+              ? 'The subscription was reduced to match a lighter hiring workload.'
+              : 'The recurring subscription renewed successfully for the next billing cycle.',
+        utilization: {
+          jobs: isOneTime ? 1 : jobs,
+          applicants: isOneTime ? 8 + (month % 5) : applicants,
+          schedules: isOneTime ? 2 + (month % 2) : schedules,
+          performance: isOneTime
+            ? 'Supplemental one-time campaign that supported an extra vacancy outside the recurring plan.'
+            : `The ${basePlan.toLowerCase()} tier supported consistent recruiter usage during ${date.toLocaleDateString(
+                'en-US',
+                { month: 'long', year: 'numeric' }
+              )}.`
+        }
+      });
+    }
+  }
+
+  return [...extraHistory, ...seedHistory].sort(
+    (left, right) =>
+      new Date(right.date).getTime() - new Date(left.date).getTime()
+  );
+}
+
+function formatSubscriptionDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric'
+  });
+}
+
+function getReadableStatus(status: string) {
+  switch (status) {
+    case 'Completed':
+      return 'Billing successful';
+    case 'Scheduled end':
+      return 'Ending after current cycle';
+    case 'Ad completed':
+      return 'Ad completed';
+    case 'Plan changed':
+      return 'Plan changed';
+    case 'Plan upgraded':
+      return 'Plan upgraded';
+    default:
+      return status;
+  }
+}
+
+function getStatusBadgeClassName(status: string) {
+  switch (getReadableStatus(status)) {
+    case 'Billing successful':
+      return 'bg-emerald-50 text-emerald-700';
+    case 'Plan upgraded':
+      return 'bg-blue-50 text-blue-700';
+    case 'Plan changed':
+      return 'bg-amber-50 text-amber-700';
+    case 'Ad completed':
+      return 'bg-fuchsia-50 text-fuchsia-700';
+    case 'Ending after current cycle':
+      return 'bg-rose-50 text-rose-700';
+    default:
+      return 'bg-slate-100 text-slate-700';
+  }
+}
+
 export default function BillingPage() {
-  const [selectedRecord, setSelectedRecord] = useState<(typeof subscriptionHistory)[number] | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<SubscriptionRecord | null>(
+    null
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(subscriptionHistory.length / HISTORY_PAGE_SIZE)
+  );
+
+  const paginatedHistory = useMemo(() => {
+    const startIndex = (currentPage - 1) * HISTORY_PAGE_SIZE;
+    return subscriptionHistory.slice(startIndex, startIndex + HISTORY_PAGE_SIZE);
+  }, [currentPage]);
 
   return (
     <>
@@ -493,8 +641,11 @@ export default function BillingPage() {
                     <ShieldCheck className="h-5 w-5 text-blue-600" />
                   </div>
                   <p className="mt-3 text-sm leading-6 text-slate-600">
-                    {subscription.status} · {subscription.billingCycle} ·{' '}
-                    {subscription.activeJobs}
+                    {[
+                      subscription.status,
+                      subscription.billingCycle,
+                      subscription.activeJobs
+                    ].join(' | ')}
                   </p>
                 </div>
                 <div className="rounded-2xl border border-blue-100 bg-white p-5">
@@ -563,10 +714,10 @@ export default function BillingPage() {
         </DashboardPanel>
 
           <DashboardPanel className="shadow-sm">
-            <DashboardSection
-              title="Subscription History"
-              description="A two-year billing ledger of renewals, upgrades, downgrades, cancellations, re-subscriptions, and one-time job advertisements."
-            >
+          <DashboardSection
+            title="Subscription History"
+            description="A multi-year billing ledger of renewals, upgrades, downgrades, cancellations, re-subscriptions, and one-time job advertisements."
+          >
               <div className="overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white">
                 <div className="overflow-x-auto">
                   <table className="min-w-full border-collapse text-left">
@@ -580,7 +731,7 @@ export default function BillingPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {subscriptionHistory.map((entry) => (
+                      {paginatedHistory.map((entry) => (
                         <tr
                           key={`${entry.date}-${entry.event}-${entry.plan}`}
                           className="cursor-pointer border-t border-blue-50 align-top transition hover:bg-blue-50/40"
@@ -600,12 +751,53 @@ export default function BillingPage() {
                             {entry.amount}
                           </td>
                           <td className="px-4 py-4 text-sm text-slate-700">
-                            {entry.status}
+                            <span
+                              className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getStatusBadgeClassName(entry.status)}`}
+                            >
+                              {getReadableStatus(entry.status)}
+                            </span>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                </div>
+                <div className="flex flex-col gap-3 border-t border-blue-100 bg-slate-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-slate-500">
+                    Showing {(currentPage - 1) * HISTORY_PAGE_SIZE + 1} to{' '}
+                    {Math.min(
+                      currentPage * HISTORY_PAGE_SIZE,
+                      subscriptionHistory.length
+                    )}{' '}
+                    of {subscriptionHistory.length} records
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={currentPage === 1}
+                      onClick={() =>
+                        setCurrentPage((page) => Math.max(1, page - 1))
+                      }
+                      className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    >
+                      Previous
+                    </Button>
+                    <div className="rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-medium text-slate-700">
+                      Page {currentPage} of {totalPages}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={currentPage === totalPages}
+                      onClick={() =>
+                        setCurrentPage((page) => Math.min(totalPages, page + 1))
+                      }
+                      className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </div>
               </div>
             </DashboardSection>
@@ -748,7 +940,7 @@ function SubscriptionRecordPanel({
   record,
   onClose
 }: {
-  record: (typeof subscriptionHistory)[number];
+  record: SubscriptionRecord;
   onClose: () => void;
 }) {
   return (
@@ -762,7 +954,7 @@ function SubscriptionRecordPanel({
             {record.plan}
           </h2>
           <p className="mt-2 text-sm text-slate-500">
-            {record.date} · {record.event}
+            {[record.date, record.event].join(' | ')}
           </p>
         </div>
         <Button
@@ -787,8 +979,10 @@ function SubscriptionRecordPanel({
                 actually used across jobs, applicants, and schedules.
               </p>
             </div>
-            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-              {record.status}
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-medium ${getStatusBadgeClassName(record.status)}`}
+            >
+              {getReadableStatus(record.status)}
             </span>
           </div>
 
