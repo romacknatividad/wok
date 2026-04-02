@@ -1,0 +1,13 @@
+<svg width="240" height="72" viewBox="0 0 240 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="240" height="72" rx="20" fill="#F8FBFF"/>
+  <rect x="10" y="10" width="52" height="52" rx="16" fill="url(#a)"/>
+  <path d="M39 23L28 39H36L33 49L44 33H36L39 23Z" fill="white"/>
+  <text x="78" y="31" fill="#0F172A" font-family="Arial, sans-serif" font-size="18" font-weight="700">Meridian</text>
+  <text x="78" y="49" fill="#475569" font-family="Arial, sans-serif" font-size="14" font-weight="600">Energy</text>
+  <defs>
+    <linearGradient id="a" x1="10" y1="10" x2="62" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#0E7490"/>
+    </linearGradient>
+  </defs>
+</svg>

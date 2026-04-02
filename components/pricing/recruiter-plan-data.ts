@@ -31,7 +31,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     notes: [
       'This package covers one job post only',
       'It does not renew monthly',
-      'Upgrade to Basic or Pro if you need recurring job capacity'
+      'Upgrade to Basic if you need recurring job capacity'
     ],
     ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-post-once')
@@ -55,7 +55,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Receive applications and review candidates in one place',
       'Set up your own company information and employer profile',
       'Use recruiter tools without entering payment details',
-      'Upgrade to Basic or Pro after the trial period'
+      'Upgrade to Basic after the trial period'
     ],
     bestFor: [
       'First-time recruiters testing the platform',
@@ -80,12 +80,12 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     summary:
       'Recruiter Basic is designed for solo recruiters or lean hiring teams that need a professional workflow, active job listings, and a reliable applicant review process at a low monthly cost.',
     highlights: [
-      'Up to 5 active job posts',
+      'Up to 7 active job posts',
       'One recruiter seat',
       'Simple monthly pricing in PHP'
     ],
     features: [
-      'Keep up to 5 jobs active at the same time',
+      'Keep up to 7 jobs active at the same time',
       'Review applicants and organize hiring priorities',
       'Set up your own company information and employer branding',
       'Maintain a clean recruiter workflow for everyday hiring',
@@ -99,7 +99,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     notes: [
       'Best suited for one active recruiter seat',
       'Designed for smaller monthly hiring volume',
-      'Upgrade to Pro when you need more active jobs'
+      'Recruiter Pro is scheduled as a future higher-capacity release'
     ],
     ctaLabel: 'Register Now',
     ctaHref: buildCheckoutHref('recruiter-basic')
@@ -110,9 +110,9 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     price: 'PHP 999',
     interval: '/ month',
     description:
-      'A higher-capacity plan for recruiter teams handling more roles, more applicants, and more coordination.',
+      'A higher-capacity plan preview for recruiter teams handling more roles, more applicants, and more coordination.',
     summary:
-      'Recruiter Pro is built for teams that need a broader hiring workspace with more active jobs, shared recruiter access, and a workflow that can support ongoing hiring across departments.',
+      'Recruiter Pro is being positioned as a future higher-capacity package for teams that need a broader hiring workspace with more active jobs, shared recruiter access, and heavier coordination across departments.',
     highlights: [
       'Up to 30 active job posts',
       'Shared recruiter seats',
@@ -131,11 +131,13 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
       'Businesses that need more capacity than Basic'
     ],
     notes: [
-      'Recommended when multiple recruiters need access',
-      'Ideal for continuous monthly hiring activity',
-      'Best fit for companies scaling their recruiting operation'
+      'This plan is not open for registration yet',
+      'Planned for next year release',
+      'Current available plans are Post Once, Trial, and Basic'
     ],
-    ctaLabel: 'Register Now',
-    ctaHref: buildCheckoutHref('recruiter-pro')
+    ctaLabel: 'Coming Next Year',
+    ctaHref: '/pricing',
+    availability: 'upcoming',
+    availabilityNote: 'Planned release: next year'
   }
 };

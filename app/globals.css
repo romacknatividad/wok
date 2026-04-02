@@ -357,3 +357,27 @@
   font-size: 0.75rem;
   line-height: 1.2;
 }
+
+.logo-carousel-track {
+  animation: wok-logo-marquee 34s linear infinite;
+}
+
+.logo-carousel-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes wok-logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-carousel-track {
+    animation: none;
+  }
+}

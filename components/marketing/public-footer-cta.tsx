@@ -79,7 +79,7 @@ export function PublicFooterCta() {
                         Recruiter trial
                       </Link>
                       <Link href="/pricing/recruiter-pro" className="transition-colors hover:text-blue-700">
-                        Recruiter Pro
+                        Recruiter Pro preview
                       </Link>
                     </div>
                   </div>

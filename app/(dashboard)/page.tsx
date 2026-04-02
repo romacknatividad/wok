@@ -14,39 +14,51 @@ import {
 const companyLogos = [
   {
     name: 'Northstar Retail',
-    mark: 'NR',
-    markClassName: 'bg-[linear-gradient(135deg,#2563eb_0%,#1d4ed8_100%)] text-white',
-    dotClassName: 'bg-blue-200'
+    image: '/logos/northstar-retail.svg'
   },
   {
     name: 'HarborWorks',
-    mark: 'HW',
-    markClassName: 'bg-[linear-gradient(135deg,#0f766e_0%,#14b8a6_100%)] text-white',
-    dotClassName: 'bg-teal-200'
+    image: '/logos/harborworks.svg'
   },
   {
     name: 'SummitCare',
-    mark: 'SC',
-    markClassName: 'bg-[linear-gradient(135deg,#7c3aed_0%,#a855f7_100%)] text-white',
-    dotClassName: 'bg-violet-200'
+    image: '/logos/summitcare.svg'
   },
   {
     name: 'BluePeak Logistics',
-    mark: 'BP',
-    markClassName: 'bg-[linear-gradient(135deg,#0284c7_0%,#38bdf8_100%)] text-white',
-    dotClassName: 'bg-sky-200'
+    image: '/logos/bluepeak-logistics.svg'
   },
   {
     name: 'BrightLedger',
-    mark: 'BL',
-    markClassName: 'bg-[linear-gradient(135deg,#ea580c_0%,#f59e0b_100%)] text-white',
-    dotClassName: 'bg-amber-200'
+    image: '/logos/brightledger.svg'
   },
   {
     name: 'Pacific People Group',
-    mark: 'PG',
-    markClassName: 'bg-[linear-gradient(135deg,#334155_0%,#64748b_100%)] text-white',
-    dotClassName: 'bg-slate-200'
+    image: '/logos/pacific-people-group.svg'
+  },
+  {
+    name: 'AstraFoods',
+    image: '/logos/astrafoods.svg'
+  },
+  {
+    name: 'Crestline Health',
+    image: '/logos/crestline-health.svg'
+  },
+  {
+    name: 'Orbit Systems',
+    image: '/logos/orbit-systems.svg'
+  },
+  {
+    name: 'Luma Commerce',
+    image: '/logos/luma-commerce.svg'
+  },
+  {
+    name: 'Meridian Energy',
+    image: '/logos/meridian-energy.svg'
+  },
+  {
+    name: 'Atlas Support',
+    image: '/logos/atlas-support.svg'
   }
 ];
 
@@ -160,6 +172,8 @@ const featurePillars = [
 ];
 
 export default function HomePage() {
+  const carouselLogos = [...companyLogos, ...companyLogos];
+
   return (
     <main>
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_48%,#ffffff_100%)] py-20">
@@ -261,30 +275,24 @@ export default function HomePage() {
           <p className="text-center text-sm font-medium uppercase tracking-[0.22em] text-slate-500">
             Teams using wok
           </p>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {companyLogos.map((company) => (
-              <div
-                key={company.name}
-                className="flex min-h-20 items-center gap-3 rounded-2xl border border-blue-100 bg-white px-4 py-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              >
+          <p className="mt-3 text-center text-sm text-slate-500">
+            A rotating sample of organizations that fit the kinds of teams wok is built for.
+          </p>
+          <div className="mt-8 overflow-hidden rounded-[2rem] border border-blue-100 bg-white/80 p-4 shadow-sm">
+            <div className="logo-carousel-track flex w-max gap-4">
+              {carouselLogos.map((company, index) => (
                 <div
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-bold tracking-[0.14em] shadow-sm ${company.markClassName}`}
+                  key={`${company.name}-${index}`}
+                  className="flex min-h-24 min-w-[220px] items-center justify-center rounded-[1.5rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-6 py-5 shadow-sm"
                 >
-                  {company.mark}
+                  <img
+                    src={company.image}
+                    alt={`${company.name} logo`}
+                    className="h-10 w-auto max-w-[150px] object-contain opacity-90"
+                  />
                 </div>
-                <div className="min-w-0">
-                  <p className="truncate text-left text-sm font-semibold tracking-[0.04em] text-slate-700">
-                    {company.name}
-                  </p>
-                  <div className="mt-1 flex items-center gap-2">
-                    <span className={`h-2 w-2 rounded-full ${company.dotClassName}`} />
-                    <span className="text-xs uppercase tracking-[0.16em] text-slate-400">
-                      Hiring team
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>

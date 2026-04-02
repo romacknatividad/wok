@@ -50,7 +50,7 @@ const plans = [
     description:
       'For recruiters continuing after trial with a compact monthly plan.',
     features: [
-      'Up to 5 active job posts',
+      'Up to 7 active job posts',
       'Applicant inbox and review flow',
       'One recruiter seat',
       'Set up your company information and employer branding',
@@ -61,11 +61,10 @@ const plans = [
   {
     name: 'Recruiter Pro',
     href: '/pricing/recruiter-pro',
-    checkoutHref: buildCheckoutHref('recruiter-pro'),
     price: 'PHP 999',
     interval: 'month',
     description:
-      'For teams hiring at higher volume and managing more open roles.',
+      'For teams hiring at higher volume and managing more open roles. This plan is scheduled for next year release.',
     features: [
       'Up to 30 active job posts',
       'Shared recruiter seats',
@@ -73,15 +72,17 @@ const plans = [
       'Set up your company information and employer profile',
       'Priority support'
     ],
-    audience: 'Recruiters' as const
+    audience: 'Recruiters' as const,
+    availability: 'upcoming' as const,
+    cta: 'Planned release next year'
   }
 ];
 
 export default function PricingPage() {
   return (
     <main className="bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_48%,#f8fbff_100%)]">
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="max-w-3xl mx-auto text-center mb-12">
+      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto mb-12 max-w-3xl text-center">
           <p className="text-sm font-medium uppercase tracking-[0.25em] text-blue-700">
             wok pricing
           </p>
@@ -89,32 +90,37 @@ export default function PricingPage() {
             Flexible pricing for every recruiter workflow.
           </h1>
           <p className="text-lg text-slate-600">
-            Choose a one-time post, start with a free trial, or move into
-            monthly recruiter plans in Philippine pesos as your hiring grows.
+            Choose a one-time post, start with a free trial, or move into a
+            monthly recruiter plan in Philippine pesos as your hiring grows.
           </p>
         </div>
+
         <div className="mx-auto mb-10 max-w-4xl rounded-3xl border border-blue-100 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm">
-          Paid recruiter plans now continue to a dedicated checkout page after
-          account registration, where PayPal checkout is prepared for the
-          selected package.
+          Current live plans are Recruiter Post Once, Recruiter Trial, and
+          Recruiter Basic. Recruiter Pro stays visible as an upcoming package
+          planned for next year.
         </div>
-        <div className="grid gap-6 max-w-7xl mx-auto md:grid-cols-2 xl:grid-cols-4">
+
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => (
             <PricingCard key={plan.name} {...plan} />
           ))}
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-3xl border border-blue-100 bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_100%)] px-8 py-8 shadow-sm">
-            <h2 className="text-2xl font-semibold text-slate-950">What recruiters get</h2>
+            <h2 className="text-2xl font-semibold text-slate-950">
+              What recruiters get
+            </h2>
             <p className="mt-3 text-slate-600">
               Centralized job posting, applicant intake, shared review, and a
               branded workflow your team can use every day, including your own
               company information and employer profile.
             </p>
           </div>
+
           <div className="rounded-3xl border border-blue-100 bg-white px-8 py-8 shadow-sm">
             <h2 className="text-2xl font-semibold text-slate-950">
               Applicants use wok for free
@@ -142,7 +148,8 @@ function PricingCard({
   description,
   features,
   audience,
-  cta
+  cta,
+  availability
 }: {
   name: string;
   price: string;
@@ -153,25 +160,35 @@ function PricingCard({
   features: string[];
   audience: 'Recruiters' | 'Applicants';
   cta?: string;
+  availability?: 'live' | 'upcoming';
 }) {
   const needsPayment = audience === 'Recruiters' && Boolean(checkoutHref);
   const isTrial = audience === 'Recruiters' && !needsPayment && price === 'Free';
-  const isOneTime = audience === 'Recruiters' && needsPayment && interval === 'one-time';
+  const isOneTime =
+    audience === 'Recruiters' && needsPayment && interval === 'one-time';
+  const isUpcoming = availability === 'upcoming';
 
   return (
     <div
       className={`rounded-[2rem] border px-6 py-8 shadow-sm ${
-        needsPayment
-          ? 'border-blue-100 bg-white'
-          : isTrial
-          ? 'border-blue-200 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)]'
-          : 'border-sky-100 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)]'
+        isUpcoming
+          ? 'border-amber-200 bg-[linear-gradient(180deg,#fffdf5_0%,#ffffff_100%)]'
+          : needsPayment
+            ? 'border-blue-100 bg-white'
+            : isTrial
+              ? 'border-blue-200 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_100%)]'
+              : 'border-sky-100 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)]'
       }`}
     >
       <div className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-700">
           {audience}
         </p>
+        {isUpcoming ? (
+          <p className="mt-3 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">
+            Next year release
+          </p>
+        ) : null}
         <h2 className="mt-3 text-2xl font-medium text-slate-950">
           {href ? (
             <Link href={href} className="transition-colors hover:text-blue-700">
@@ -183,13 +200,15 @@ function PricingCard({
         </h2>
         <p className="mt-2 text-sm text-slate-600">{description}</p>
       </div>
+
       <p className="mb-6 text-4xl font-medium text-slate-950">
         {price}{' '}
         <span className="text-xl font-normal text-slate-600">
           {needsPayment && !isOneTime ? `/ ${interval}` : interval}
         </span>
       </p>
-      <ul className="space-y-4 mb-8">
+
+      <ul className="mb-8 space-y-4">
         {features.map((feature, index) => (
           <li key={index} className="flex items-start">
             <Check className="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600" />
@@ -197,7 +216,32 @@ function PricingCard({
           </li>
         ))}
       </ul>
-      {needsPayment ? (
+
+      {isUpcoming ? (
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Recruiter Pro is not available for registration yet. We&apos;re
+            keeping it visible so teams can plan for the expanded package when
+            it launches next year.
+          </p>
+          <Button
+            type="button"
+            disabled
+            className="w-full rounded-full bg-slate-200 text-slate-500 hover:bg-slate-200"
+          >
+            Coming Next Year
+          </Button>
+          {href ? (
+            <Button
+              asChild
+              variant="outline"
+              className="w-full rounded-full border-amber-200 bg-white text-slate-700 hover:border-amber-300 hover:bg-amber-50 hover:text-amber-700"
+            >
+              <Link href={href}>See plan preview</Link>
+            </Button>
+          ) : null}
+        </div>
+      ) : needsPayment ? (
         <div className="space-y-4">
           <p className="text-sm text-slate-600">
             {isOneTime

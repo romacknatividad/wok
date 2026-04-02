@@ -26,7 +26,7 @@ export const checkoutPlans: Record<string, CheckoutPlan> = {
     price: 'PHP 299',
     interval: '/ month',
     description:
-      'A monthly recruiter subscription for smaller hiring teams managing up to 5 active jobs.',
+      'A monthly recruiter subscription for smaller hiring teams managing up to 7 active jobs.',
     checkoutType: 'subscription',
     planId: process.env.NEXT_PUBLIC_PAYPAL_STARTER_PLAN_ID
   },

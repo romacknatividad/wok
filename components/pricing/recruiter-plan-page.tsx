@@ -16,6 +16,8 @@ export type RecruiterPlanPageData = {
   notes: string[];
   ctaLabel: string;
   ctaHref: string;
+  availability?: 'live' | 'upcoming';
+  availabilityNote?: string;
 };
 
 export function RecruiterPlanPage({
@@ -23,6 +25,8 @@ export function RecruiterPlanPage({
 }: {
   data: RecruiterPlanPageData;
 }) {
+  const isUpcoming = data.availability === 'upcoming';
+
   return (
     <main className="bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_48%,#f8fbff_100%)]">
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
@@ -46,17 +50,33 @@ export function RecruiterPlanPage({
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
               {data.summary}
             </p>
+            {isUpcoming && data.availabilityNote ? (
+              <div className="mt-6 inline-flex rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-700">
+                {data.availabilityNote}
+              </div>
+            ) : null}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
-              >
-                <Link href={data.ctaHref}>
+              {isUpcoming ? (
+                <Button
+                  type="button"
+                  size="lg"
+                  disabled
+                  className="rounded-full bg-slate-200 text-slate-500 hover:bg-slate-200"
+                >
                   {data.ctaLabel}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+                </Button>
+              ) : (
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                >
+                  <Link href={data.ctaHref}>
+                    {data.ctaLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              )}
               <Button
                 asChild
                 size="lg"
