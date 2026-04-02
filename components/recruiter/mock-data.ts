@@ -696,6 +696,7 @@ const generatedStatusCycle = [
 ] as const;
 
 recruiterJobs.push(...buildGeneratedRecruiterJobs(100));
+recruiterJobs.push(...buildGeneratedRecruiterJobs(200, { activeOnly: true, offset: 100 }));
 
 const generatedApplicantTargets: Record<string, number> = {
   'senior-full-stack-developer': 12,
@@ -1203,32 +1204,43 @@ export function getRecruiterApplicantsByJobSlug(slug: string) {
   return recruiterApplicants.filter((applicant) => applicant.jobSlug === slug);
 }
 
-function buildGeneratedRecruiterJobs(total: number): RecruiterJobRecord[] {
+function buildGeneratedRecruiterJobs(
+  total: number,
+  options?: {
+    activeOnly?: boolean;
+    offset?: number;
+  }
+): RecruiterJobRecord[] {
   const generatedJobs: RecruiterJobRecord[] = [];
+  const activeStatusCycle = ['Hiring', 'Hiring', 'Screening', 'Interviewing'] as const;
+  const offset = options?.offset ?? 0;
 
   for (let index = 0; index < total; index += 1) {
-    const titleBase = generatedJobTitles[index % generatedJobTitles.length];
-    const department = generatedDepartments[index % generatedDepartments.length];
-    const location = generatedLocations[index % generatedLocations.length];
-    const type = generatedTypes[index % generatedTypes.length];
-    const status = generatedStatusCycle[index % generatedStatusCycle.length];
-    const postedDate = buildGeneratedJobDate(index);
+    const sequence = index + offset;
+    const titleBase = generatedJobTitles[sequence % generatedJobTitles.length];
+    const department = generatedDepartments[sequence % generatedDepartments.length];
+    const location = generatedLocations[sequence % generatedLocations.length];
+    const type = generatedTypes[sequence % generatedTypes.length];
+    const status = options?.activeOnly
+      ? activeStatusCycle[sequence % activeStatusCycle.length]
+      : generatedStatusCycle[sequence % generatedStatusCycle.length];
+    const postedDate = buildGeneratedJobDate(sequence);
     const endDate =
       status === 'Filled' || status === 'Closed'
-        ? buildGeneratedJobEndDate(postedDate, 35 + (index % 28))
+        ? buildGeneratedJobEndDate(postedDate, 35 + (sequence % 28))
         : null;
-    const salaryFloor = 28000 + (index % 14) * 6000;
-    const salaryCeiling = salaryFloor + 18000 + (index % 5) * 7000;
+    const salaryFloor = 28000 + (sequence % 14) * 6000;
+    const salaryCeiling = salaryFloor + 18000 + (sequence % 5) * 7000;
     const seniority =
-      index % 6 === 0
+      sequence % 6 === 0
         ? 'Senior'
-        : index % 5 === 0
+        : sequence % 5 === 0
           ? 'Lead'
-          : index % 4 === 0
+          : sequence % 4 === 0
             ? 'Associate'
             : '';
     const title = [seniority, titleBase].filter(Boolean).join(' ');
-    const slug = `${slugify(title)}-${postedDate.slice(0, 4)}-${String(index + 1).padStart(3, '0')}`;
+    const slug = `${slugify(title)}-${postedDate.slice(0, 4)}-${String(sequence + 1).padStart(3, '0')}`;
 
     generatedJobs.push({
       slug,
