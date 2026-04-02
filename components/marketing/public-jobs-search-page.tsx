@@ -69,31 +69,29 @@ export function PublicJobsSearchPage() {
     <main className="min-h-screen bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_22%,#ffffff_100%)]">
       <section
         className={`relative overflow-hidden border-b border-blue-100/80 transition-all duration-300 ${
-          hasSearchIntent ? 'py-10' : 'py-20 sm:py-24'
+          hasSearchIntent ? 'py-8 sm:py-10' : 'py-24 sm:py-32'
         }`}
       >
         <div className="absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,_rgba(37,99,235,0.18),_transparent_60%)]" />
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div
             className={`transition-all duration-300 ${
-              hasSearchIntent ? 'max-w-5xl' : 'mx-auto max-w-4xl text-center'
+              hasSearchIntent ? 'max-w-5xl' : 'mx-auto max-w-3xl text-center'
             }`}
           >
             <p className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-4 py-1.5 text-sm font-medium text-blue-700 shadow-sm">
               <Sparkles className="h-4 w-4" />
-              Search public jobs on wok
+              wok jobs
             </p>
             <h1
               className={`mt-6 font-bold tracking-tight text-slate-950 transition-all duration-300 ${
-                hasSearchIntent ? 'text-3xl sm:text-4xl' : 'text-4xl sm:text-5xl md:text-6xl'
+                hasSearchIntent ? 'text-2xl sm:text-3xl' : 'text-3xl sm:text-4xl'
               }`}
             >
-              Find roles by keyword, then let the job list take over.
+              Search jobs
             </h1>
-            <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
-              Start with a search like a job engine, then narrow by category as the
-              live list surfaces matching openings and archived roles across the
-              public hiring archive.
+            <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
+              Search by role, keyword, location, or category.
             </p>
 
             <div
@@ -134,7 +132,7 @@ export function PublicJobsSearchPage() {
                   className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
                 >
                   <Link href="/product">
-                    See what wok can do
+                    Explore the product
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
@@ -151,108 +149,110 @@ export function PublicJobsSearchPage() {
         </div>
       </section>
 
-      <section className="py-10 sm:py-12">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-medium uppercase tracking-[0.18em] text-blue-700">
-                Public job listings
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold text-slate-950">
-                {filteredJobs.length === 0
-                  ? 'No jobs matched your search yet.'
-                  : `${filteredJobs.length} job${filteredJobs.length === 1 ? '' : 's'} found`}
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-6 text-slate-500">
-              Active openings stay at the top, while filled and closed roles remain visible as part of the recorded hiring archive.
-            </p>
-          </div>
-
-          {filteredJobs.length === 0 ? (
-            <div className="rounded-[2rem] border border-dashed border-blue-200 bg-white px-6 py-12 text-center shadow-sm">
-              <p className="text-lg font-semibold text-slate-950">
-                Try another keyword or category.
-              </p>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                Search by role title, department, location, or a skill mentioned in the listing.
+      {hasSearchIntent ? (
+        <section className="py-10 sm:py-12">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.18em] text-blue-700">
+                  Public job listings
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-slate-950">
+                  {filteredJobs.length === 0
+                    ? 'No jobs matched your search yet.'
+                    : `${filteredJobs.length} job${filteredJobs.length === 1 ? '' : 's'} found`}
+                </h2>
+              </div>
+              <p className="max-w-2xl text-sm leading-6 text-slate-500">
+                Active openings stay at the top, while filled and closed roles remain visible as part of the recorded hiring archive.
               </p>
             </div>
-          ) : (
-            <div className="grid gap-5">
-              {filteredJobs.map((job) => {
-                const archived = isArchivedStatus(job.status);
-                const publicHref = publicJobHrefBySlug[job.slug];
 
-                return (
-                  <article
-                    key={job.slug}
-                    className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                      <div className="max-w-3xl">
-                        <div className="flex flex-wrap items-center gap-3">
-                          <span
-                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClassName(job.status)}`}
-                          >
-                            {archived ? `${job.status} role` : job.status}
-                          </span>
-                          <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                            {job.department}
-                          </span>
-                          <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-                            {job.type}
-                          </span>
-                        </div>
+            {filteredJobs.length === 0 ? (
+              <div className="rounded-[2rem] border border-dashed border-blue-200 bg-white px-6 py-12 text-center shadow-sm">
+                <p className="text-lg font-semibold text-slate-950">
+                  Try another keyword or category.
+                </p>
+                <p className="mt-3 text-sm leading-7 text-slate-600">
+                  Search by role title, department, location, or a skill mentioned in the listing.
+                </p>
+              </div>
+            ) : (
+              <div className="grid gap-5">
+                {filteredJobs.map((job) => {
+                  const archived = isArchivedStatus(job.status);
+                  const publicHref = publicJobHrefBySlug[job.slug];
 
-                        <h3 className="mt-4 text-2xl font-semibold text-slate-950">
-                          {job.title}
-                        </h3>
-                        <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-                          {job.summary}
-                        </p>
-
-                        <div className="mt-5 grid gap-3 text-sm text-slate-600 sm:grid-cols-2 lg:grid-cols-4">
-                          <JobMeta icon={Building2} text={job.department} />
-                          <JobMeta icon={MapPin} text={job.location} />
-                          <JobMeta icon={BriefcaseBusiness} text={job.salary} />
-                          <JobMeta
-                            icon={Clock3}
-                            text={getLifecycleLabel(job.postedDate, job.endDate, archived)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-3 lg:min-w-[190px] lg:items-end">
-                        {publicHref ? (
-                          <Button
-                            asChild
-                            className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
-                          >
-                            <Link href={publicHref}>
-                              View public ad
-                              <ArrowRight className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                        ) : (
-                          <div className="rounded-full border border-blue-100 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-500">
-                            Listing summary only
+                  return (
+                    <article
+                      key={job.slug}
+                      className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    >
+                      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="max-w-3xl">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span
+                              className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClassName(job.status)}`}
+                            >
+                              {archived ? `${job.status} role` : job.status}
+                            </span>
+                            <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                              {job.department}
+                            </span>
+                            <span className="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                              {job.type}
+                            </span>
                           </div>
-                        )}
-                        <p className="max-w-[220px] text-right text-xs leading-6 text-slate-500">
-                          {archived
-                            ? 'This recorded job stays visible for public archive context.'
-                            : 'This opening is part of the current public jobs archive.'}
-                        </p>
+
+                          <h3 className="mt-4 text-2xl font-semibold text-slate-950">
+                            {job.title}
+                          </h3>
+                          <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+                            {job.summary}
+                          </p>
+
+                          <div className="mt-5 grid gap-3 text-sm text-slate-600 sm:grid-cols-2 lg:grid-cols-4">
+                            <JobMeta icon={Building2} text={job.department} />
+                            <JobMeta icon={MapPin} text={job.location} />
+                            <JobMeta icon={BriefcaseBusiness} text={job.salary} />
+                            <JobMeta
+                              icon={Clock3}
+                              text={getLifecycleLabel(job.postedDate, job.endDate, archived)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3 lg:min-w-[190px] lg:items-end">
+                          {publicHref ? (
+                            <Button
+                              asChild
+                              className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                            >
+                              <Link href={publicHref}>
+                                View public ad
+                                <ArrowRight className="h-4 w-4" />
+                              </Link>
+                            </Button>
+                          ) : (
+                            <div className="rounded-full border border-blue-100 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-500">
+                              Listing summary only
+                            </div>
+                          )}
+                          <p className="max-w-[220px] text-right text-xs leading-6 text-slate-500">
+                            {archived
+                              ? 'This recorded job stays visible for public archive context.'
+                              : 'This opening is part of the current public jobs archive.'}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
