@@ -629,6 +629,74 @@ const additionalRecruiterJobs: RecruiterJobRecord[] = [
 
 recruiterJobs.push(...additionalRecruiterJobs);
 
+const generatedJobTitles = [
+  'Frontend Engineer',
+  'Backend Engineer',
+  'QA Analyst',
+  'Data Analyst',
+  'HR Coordinator',
+  'Recruitment Specialist',
+  'Office Administrator',
+  'Executive Assistant',
+  'Operations Analyst',
+  'Finance Analyst',
+  'Payroll Specialist',
+  'Procurement Analyst',
+  'Customer Success Manager',
+  'Implementation Specialist',
+  'Account Manager',
+  'Business Development Associate',
+  'Digital Marketing Specialist',
+  'Content Strategist',
+  'Graphic Designer',
+  'Product Marketing Manager',
+  'Training Specialist',
+  'Compliance Officer',
+  'Legal Assistant',
+  'Supply Chain Planner',
+  'Inventory Controller'
+];
+
+const generatedDepartments = [
+  'Engineering',
+  'Finance',
+  'Operations',
+  'People Operations',
+  'Marketing',
+  'Revenue',
+  'Design',
+  'Strategy',
+  'Customer Experience',
+  'Administration',
+  'Legal',
+  'Logistics'
+];
+
+const generatedLocations = [
+  'Remote, Philippines',
+  'Hybrid, Makati City',
+  'Hybrid, Taguig City',
+  'Hybrid, Quezon City',
+  'On-site, Cebu City',
+  'On-site, Davao City',
+  'On-site, Laguna',
+  'Hybrid, Pasig City'
+];
+
+const generatedTypes = ['Full-time', 'Contract', 'Project-based'];
+
+const generatedStatusCycle = [
+  'Hiring',
+  'Hiring',
+  'Screening',
+  'Interviewing',
+  'Hiring',
+  'Filled',
+  'Closed'
+] as const;
+
+recruiterJobs.push(...buildGeneratedRecruiterJobs(100));
+
 const generatedApplicantTargets: Record<string, number> = {
   'senior-full-stack-developer': 12,
   'accounting-personnel': 10,
@@ -1133,4 +1201,85 @@ export function getRecruiterJobBySlug(slug: string) {
 
 export function getRecruiterApplicantsByJobSlug(slug: string) {
   return recruiterApplicants.filter((applicant) => applicant.jobSlug === slug);
+}
+
+function buildGeneratedRecruiterJobs(total: number): RecruiterJobRecord[] {
+  const generatedJobs: RecruiterJobRecord[] = [];
+
+  for (let index = 0; index < total; index += 1) {
+    const titleBase = generatedJobTitles[index % generatedJobTitles.length];
+    const department = generatedDepartments[index % generatedDepartments.length];
+    const location = generatedLocations[index % generatedLocations.length];
+    const type = generatedTypes[index % generatedTypes.length];
+    const status = generatedStatusCycle[index % generatedStatusCycle.length];
+    const postedDate = buildGeneratedJobDate(index);
+    const endDate =
+      status === 'Filled' || status === 'Closed'
+        ? buildGeneratedJobEndDate(postedDate, 35 + (index % 28))
+        : null;
+    const salaryFloor = 28000 + (index % 14) * 6000;
+    const salaryCeiling = salaryFloor + 18000 + (index % 5) * 7000;
+    const seniority =
+      index % 6 === 0
+        ? 'Senior'
+        : index % 5 === 0
+          ? 'Lead'
+          : index % 4 === 0
+            ? 'Associate'
+            : '';
+    const title = [seniority, titleBase].filter(Boolean).join(' ');
+    const slug = `${slugify(title)}-${postedDate.slice(0, 4)}-${String(index + 1).padStart(3, '0')}`;
+
+    generatedJobs.push({
+      slug,
+      title,
+      department,
+      location,
+      applicants: 0,
+      status,
+      type,
+      posted: formatGeneratedPostedLabel(postedDate),
+      postedDate,
+      endDate,
+      salary: `PHP ${salaryFloor.toLocaleString()} - PHP ${salaryCeiling.toLocaleString()} / month`,
+      summary: `Support ${department.toLowerCase()} outcomes as a ${title.toLowerCase()} working across a fast-moving team environment.`,
+      description: `We are hiring a ${title} to strengthen ${department.toLowerCase()} execution, improve day-to-day team output, and support cross-functional delivery in a growing organization.`,
+      responsibilities: `Own day-to-day ${department.toLowerCase()} workflows, coordinate with stakeholders, maintain reporting visibility, and help the team deliver consistent results.`,
+      requirements: `Relevant experience in ${department.toLowerCase()}, strong communication, organized execution, and comfort working in ${location.toLowerCase()} setups.`
+    });
+  }
+
+  return generatedJobs;
+}
+
+function buildGeneratedJobDate(index: number) {
+  const year = 2023 + (index % 4);
+  const month = (index * 3) % 12;
+  const day = ((index * 5) % 25) + 1;
+  const date = new Date(year, month, day);
+
+  return date.toISOString().slice(0, 10);
+}
+
+function buildGeneratedJobEndDate(postedDate: string, offsetDays: number) {
+  const posted = new Date(postedDate);
+  const ended = new Date(posted);
+  ended.setDate(ended.getDate() + offsetDays);
+
+  return ended.toISOString().slice(0, 10);
+}
+
+function formatGeneratedPostedLabel(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }

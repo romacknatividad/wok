@@ -65,10 +65,6 @@ export function PublicJobsSearchPage() {
     });
   }, [normalizedQuery, selectedCategory]);
 
-  const activeJobs = filteredJobs.filter((job) =>
-    ['Hiring', 'Screening', 'Interviewing'].includes(job.status)
-  ).length;
-
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_22%,#ffffff_100%)]">
       <section
@@ -96,7 +92,8 @@ export function PublicJobsSearchPage() {
             </h1>
             <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
               Start with a search like a job engine, then narrow by category as the
-              live list surfaces matching openings across the recorded job archive.
+              live list surfaces matching openings and archived roles across the
+              public hiring archive.
             </p>
 
             <div
@@ -128,12 +125,6 @@ export function PublicJobsSearchPage() {
                   </option>
                 ))}
               </select>
-            </div>
-
-            <div className="mt-6 grid gap-3 text-left text-sm text-slate-600 sm:grid-cols-3">
-              <SearchStat label="Recorded jobs" value={String(publicJobs.length)} />
-              <SearchStat label="Matching now" value={String(filteredJobs.length)} />
-              <SearchStat label="Actively hiring" value={String(activeJobs)} />
             </div>
 
             {!hasSearchIntent ? (
@@ -263,17 +254,6 @@ export function PublicJobsSearchPage() {
         </div>
       </section>
     </main>
-  );
-}
-
-function SearchStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-2xl border border-blue-100 bg-white px-4 py-4 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-        {label}
-      </p>
-      <p className="mt-2 text-2xl font-semibold text-slate-950">{value}</p>
-    </div>
   );
 }
 
