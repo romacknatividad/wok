@@ -71,6 +71,10 @@ const publicJobSlugs = new Set([
   'company-nurse'
 ]);
 
+function isArchivedJob(status: string) {
+  return status === 'Filled' || status === 'Closed';
+}
+
 function getStatusClassName(status: string) {
   switch (status) {
     case 'New':
@@ -488,6 +492,7 @@ export function RecruiterJobCandidatesWorkspace({
     (applicant) => applicant.status === 'Interview'
   ).length;
   const budgetRange = parseSalaryRange(job.salary);
+  const archivedJob = isArchivedJob(job.status);
 
   function updateSelectedApplicant(
     field: keyof RecruiterApplicant,
@@ -540,16 +545,38 @@ export function RecruiterJobCandidatesWorkspace({
                       <span>Public-facing job unavailable</span>
                     )}
                   </Button>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                  >
-                    <Link href={`/dashboard/jobs/${job.slug}/edit`}>
-                      Edit job details
-                    </Link>
-                  </Button>
+                  {archivedJob ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled
+                      className="rounded-full border-blue-100 bg-white text-slate-400"
+                    >
+                      Archived record
+                    </Button>
+                  ) : (
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    >
+                      <Link href={`/dashboard/jobs/${job.slug}/edit`}>
+                        Edit job details
+                      </Link>
+                    </Button>
+                  )}
                 </div>
+                {archivedJob && job.endDate ? (
+                  <div className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                    This job {job.status === 'Filled' ? 'was filled' : 'ended'} on{' '}
+                    {new Date(`${job.endDate}T00:00:00`).toLocaleDateString('en-US', {
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                    . The recruiter record is now frozen and no longer editable.
+                  </div>
+                ) : null}
               </div>
 
               <div className="grid grid-cols-2 gap-4">

@@ -32,13 +32,17 @@ export function RecruiterJobForm({
   description,
   submitLabel,
   cancelHref = '/dashboard/jobs',
-  initialValues
+  initialValues,
+  isArchived = false,
+  archivedReason
 }: {
   title: string;
   description: string;
   submitLabel: string;
   cancelHref?: string;
   initialValues: RecruiterJobFormValues;
+  isArchived?: boolean;
+  archivedReason?: string;
 }) {
   const [form, setForm] = useState(() => normalizeFormValues(initialValues));
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -77,6 +81,10 @@ export function RecruiterJobForm({
     field: K,
     value: RecruiterJobFormValues[K]
   ) {
+    if (isArchived) {
+      return;
+    }
+
     setForm((current) => ({ ...current, [field]: value }));
     if (savedMessage) {
       setSavedMessage('');
@@ -87,6 +95,10 @@ export function RecruiterJobForm({
   }
 
   function updateSalaryRange(field: 'min' | 'max', value: string) {
+    if (isArchived) {
+      return;
+    }
+
     setSalaryRange((current) => {
       const next = { ...current, [field]: value };
       const min = next.min.trim();
@@ -109,6 +121,10 @@ export function RecruiterJobForm({
   }
 
   function handleSave() {
+    if (isArchived) {
+      return;
+    }
+
     setSavedMessage(
       'Draft saved. Public-facing job advertisement is unchanged until you publish.'
     );
@@ -116,6 +132,10 @@ export function RecruiterJobForm({
   }
 
   function handlePublish() {
+    if (isArchived) {
+      return;
+    }
+
     setPublishedMessage(
       'Job published. Public-facing job advertisement is now using the latest draft.'
     );
@@ -123,6 +143,10 @@ export function RecruiterJobForm({
   }
 
   function toggleWorkMode(option: string) {
+    if (isArchived) {
+      return;
+    }
+
     const currentValues = form.workMode;
     const nextValues = currentValues.includes(option)
       ? currentValues.filter((item) => item !== option)
@@ -148,12 +172,13 @@ export function RecruiterJobForm({
               </p>
               <div className="mt-6 rounded-[1.75rem] border border-amber-200 bg-amber-50 px-5 py-4">
                 <p className="text-sm font-semibold text-amber-900">
-                  Draft and publish workflow
+                  {isArchived ? 'Archived job record' : 'Draft and publish workflow'}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-amber-800">
-                  Saving only updates the recruiter-side draft. Use Publish when
-                  you want the public-facing job advertisement to reflect the
-                  latest changes.
+                  {isArchived
+                    ? archivedReason ||
+                      'This job has already ended and the recruiter-side record is now frozen for editing.'
+                    : 'Saving only updates the recruiter-side draft. Use Publish when you want the public-facing job advertisement to reflect the latest changes.'}
                 </p>
               </div>
             </div>
@@ -181,6 +206,7 @@ export function RecruiterJobForm({
                     <Input
                       id="title"
                       value={form.title}
+                      disabled={isArchived}
                       onChange={(event) => updateField('title', event.target.value)}
                     />
                   </FormField>
@@ -188,6 +214,7 @@ export function RecruiterJobForm({
                     <select
                       id="type"
                       value={form.type}
+                      disabled={isArchived}
                       onChange={(event) => updateField('type', event.target.value)}
                       className="w-full rounded-md border border-blue-100 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 focus:border-blue-300"
                     >
@@ -217,6 +244,7 @@ export function RecruiterJobForm({
                           <input
                             type="checkbox"
                             checked={checked}
+                            disabled={isArchived}
                             onChange={() => toggleWorkMode(option)}
                             className="h-4 w-4 rounded border-blue-200"
                           />
@@ -236,6 +264,7 @@ export function RecruiterJobForm({
                         inputMode="numeric"
                         placeholder="25000"
                         value={salaryRange.min}
+                        disabled={isArchived}
                         onChange={(event) =>
                           updateSalaryRange('min', event.target.value.replace(/[^\d]/g, ''))
                         }
@@ -248,6 +277,7 @@ export function RecruiterJobForm({
                         inputMode="numeric"
                         placeholder="45000"
                         value={salaryRange.max}
+                        disabled={isArchived}
                         onChange={(event) =>
                           updateSalaryRange('max', event.target.value.replace(/[^\d]/g, ''))
                         }
@@ -265,6 +295,7 @@ export function RecruiterJobForm({
                     id="summary"
                     value={form.summary}
                     minHeightClassName="min-h-32"
+                    disabled={isArchived}
                     onChange={(value) => updateField('summary', value)}
                   />
                   <RichTextEditor
@@ -272,6 +303,7 @@ export function RecruiterJobForm({
                     id="description"
                     value={form.description}
                     minHeightClassName="min-h-44"
+                    disabled={isArchived}
                     onChange={(value) => updateField('description', value)}
                   />
                   <RichTextEditor
@@ -279,6 +311,7 @@ export function RecruiterJobForm({
                     id="responsibilities"
                     value={form.responsibilities}
                     minHeightClassName="min-h-40"
+                    disabled={isArchived}
                     onChange={(value) => updateField('responsibilities', value)}
                   />
                   <RichTextEditor
@@ -286,6 +319,7 @@ export function RecruiterJobForm({
                     id="requirements"
                     value={form.requirements}
                     minHeightClassName="min-h-40"
+                    disabled={isArchived}
                     onChange={(value) => updateField('requirements', value)}
                   />
                 </div>
@@ -305,6 +339,7 @@ export function RecruiterJobForm({
                 <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <Button
                     type="button"
+                    disabled={isArchived}
                     className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
                     onClick={handleSave}
                   >
@@ -314,6 +349,7 @@ export function RecruiterJobForm({
                   <Button
                     type="button"
                     variant="outline"
+                    disabled={isArchived}
                     className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                     onClick={handlePublish}
                   >

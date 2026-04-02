@@ -26,11 +26,31 @@ function getStatusClassName(status: string) {
       return 'bg-sky-50 text-sky-700';
     case 'Interviewing':
       return 'bg-indigo-50 text-indigo-700';
+    case 'Filled':
+      return 'bg-emerald-50 text-emerald-700';
+    case 'Closed':
+      return 'bg-amber-50 text-amber-700';
     case 'Draft':
       return 'bg-slate-100 text-slate-700';
     default:
       return 'bg-slate-100 text-slate-700';
   }
+}
+
+function isArchivedJob(status: string) {
+  return status === 'Filled' || status === 'Closed';
+}
+
+function formatLifecycleDate(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  return new Date(`${value}T00:00:00`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
 }
 
 export default function RecruiterJobsPage() {
@@ -251,6 +271,12 @@ export default function RecruiterJobsPage() {
                         <p className="mt-1 text-sm text-slate-500">
                           {job.department} | {job.location} | {job.type}
                         </p>
+                        {isArchivedJob(job.status) && job.endDate ? (
+                          <p className="mt-2 text-sm font-medium text-emerald-700">
+                            {job.status === 'Filled' ? 'Filled' : 'Ended'} on{' '}
+                            {formatLifecycleDate(job.endDate)}
+                          </p>
+                        ) : null}
                       </div>
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
@@ -267,6 +293,16 @@ export default function RecruiterJobsPage() {
                           Posted
                         </p>
                         <p className="text-sm text-slate-600">{job.posted}</p>
+                        {job.postedDate ? (
+                          <p className="mt-1 text-xs text-slate-400">
+                            Start: {formatLifecycleDate(job.postedDate)}
+                          </p>
+                        ) : null}
+                        {job.endDate ? (
+                          <p className="mt-1 text-xs text-slate-400">
+                            End: {formatLifecycleDate(job.endDate)}
+                          </p>
+                        ) : null}
                       </div>
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
@@ -308,15 +344,26 @@ export default function RecruiterJobsPage() {
                             Public View
                           </Button>
                         )}
-                        <Button
-                          asChild
-                          variant="outline"
-                          className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                        >
-                          <Link href={`/dashboard/jobs/${job.slug}/edit`}>
-                            Edit
-                          </Link>
-                        </Button>
+                        {isArchivedJob(job.status) ? (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            disabled
+                            className="rounded-full border-blue-100 bg-white text-slate-400"
+                          >
+                            Archived
+                          </Button>
+                        ) : (
+                          <Button
+                            asChild
+                            variant="outline"
+                            className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                          >
+                            <Link href={`/dashboard/jobs/${job.slug}/edit`}>
+                              Edit
+                            </Link>
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))

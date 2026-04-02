@@ -46,8 +46,8 @@ export function PublicFooterCta() {
                     size="lg"
                     className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    <Link href="/sign-up">
-                      Create Recruiter Account
+                    <Link href="/pricing">
+                      View Pricing Plans
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
@@ -69,6 +69,12 @@ export function PublicFooterCta() {
                   <div>
                     <p className="text-sm font-medium text-slate-500">Explore</p>
                     <div className="mt-3 grid gap-2 text-sm text-slate-600">
+                      <Link href="/" className="transition-colors hover:text-blue-700">
+                        Jobs
+                      </Link>
+                      <Link href="/product" className="transition-colors hover:text-blue-700">
+                        Product
+                      </Link>
                       <Link href="/features" className="transition-colors hover:text-blue-700">
                         Features
                       </Link>
@@ -119,14 +125,17 @@ export function PublicFooterCta() {
           <div className="flex flex-col gap-3 border-t border-blue-100 px-8 py-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-10">
             <p>wok helps teams post jobs, accept applications, and stay organized from opening to hire.</p>
             <div className="flex flex-wrap gap-4">
+              <Link href="/" className="transition-colors hover:text-blue-700">
+                Jobs
+              </Link>
+              <Link href="/product" className="transition-colors hover:text-blue-700">
+                Product
+              </Link>
               <Link href="/features" className="transition-colors hover:text-blue-700">
                 Features
               </Link>
               <Link href="/pricing" className="transition-colors hover:text-blue-700">
                 Pricing
-              </Link>
-              <Link href="/sign-up" className="transition-colors hover:text-blue-700">
-                Create account
               </Link>
             </div>
           </div>

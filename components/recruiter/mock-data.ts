@@ -1,4 +1,22 @@
-export const recruiterJobs = [
+export type RecruiterJobRecord = {
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  applicants: number;
+  status: string;
+  type: string;
+  posted: string;
+  postedDate: string | null;
+  endDate: string | null;
+  salary: string;
+  summary: string;
+  description: string;
+  responsibilities: string;
+  requirements: string;
+};
+
+export const recruiterJobs: RecruiterJobRecord[] = [
   {
     slug: 'senior-full-stack-developer',
     title: 'Senior Full Stack Developer',
@@ -9,6 +27,7 @@ export const recruiterJobs = [
     type: 'Full-time',
     posted: '2 days ago',
     postedDate: '2026-04-01',
+    endDate: null,
     salary: 'PHP 120,000 - PHP 180,000 / month',
     summary:
       'Lead full stack product delivery across frontend and backend systems.',
@@ -29,6 +48,7 @@ export const recruiterJobs = [
     type: 'Full-time',
     posted: '4 days ago',
     postedDate: '2026-03-29',
+    endDate: null,
     salary: 'PHP 28,000 - PHP 40,000 / month',
     summary:
       'Support finance operations, reconciliations, and reporting accuracy.',
@@ -49,6 +69,7 @@ export const recruiterJobs = [
     type: 'Full-time',
     posted: '1 week ago',
     postedDate: '2026-03-24',
+    endDate: null,
     salary: 'PHP 30,000 - PHP 45,000 / month',
     summary:
       'Handle customer questions, resolve issues, and keep response quality high.',
@@ -69,6 +90,7 @@ export const recruiterJobs = [
     type: 'Full-time',
     posted: 'Not published',
     postedDate: null,
+    endDate: null,
     salary: 'PHP 25,000 - PHP 35,000 / month',
     summary:
       'Assist with sourcing, interview coordination, and candidate communication.',
@@ -434,7 +456,7 @@ export const recruiterApplicants = [
   }
 ];
 
-const additionalRecruiterJobs = [
+const additionalRecruiterJobs: RecruiterJobRecord[] = [
   {
     slug: 'product-designer',
     title: 'Product Designer',
@@ -445,6 +467,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Feb 16, 2026',
     postedDate: '2026-02-16',
+    endDate: null,
     salary: 'PHP 70,000 - PHP 95,000 / month',
     summary:
       'Design product experiences from workflow mapping to polished interfaces.',
@@ -465,6 +488,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Oct 08, 2025',
     postedDate: '2025-10-08',
+    endDate: null,
     salary: 'PHP 45,000 - PHP 65,000 / month',
     summary:
       'Support pipeline reporting, CRM quality, and sales process execution.',
@@ -485,6 +509,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Aug 19, 2025',
     postedDate: '2025-08-19',
+    endDate: null,
     salary: 'PHP 32,000 - PHP 48,000 / month',
     summary:
       'Coordinate campaigns, content calendars, and execution across marketing initiatives.',
@@ -505,6 +530,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Jun 04, 2025',
     postedDate: '2025-06-04',
+    endDate: null,
     salary: 'PHP 35,000 - PHP 50,000 / month',
     summary:
       'Lead warehouse operations, inventory discipline, and shift coordination.',
@@ -525,6 +551,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Apr 15, 2025',
     postedDate: '2025-04-15',
+    endDate: '2025-06-27',
     salary: 'PHP 60,000 - PHP 85,000 / month',
     summary:
       'Support data-backed analysis, reporting, and business process improvements.',
@@ -545,6 +572,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Jan 22, 2025',
     postedDate: '2025-01-22',
+    endDate: '2025-03-14',
     salary: 'PHP 38,000 - PHP 52,000 / month',
     summary:
       'Handle employee support, HR administration, and people process coordination.',
@@ -565,6 +593,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'Sep 11, 2024',
     postedDate: '2024-09-11',
+    endDate: '2024-11-08',
     salary: 'PHP 32,000 - PHP 46,000 / month',
     summary:
       'Manage vendor coordination, purchasing records, and procurement workflows.',
@@ -585,6 +614,7 @@ const additionalRecruiterJobs = [
     type: 'Full-time',
     posted: 'May 13, 2024',
     postedDate: '2024-05-13',
+    endDate: '2024-08-02',
     salary: 'PHP 85,000 - PHP 120,000 / month',
     summary:
       'Lead service operations, team coordination, and process improvement initiatives.',

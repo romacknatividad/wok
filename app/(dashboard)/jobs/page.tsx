@@ -1,5 +1,5 @@
 import { PublicJobsSearchPage } from '@/components/marketing/public-jobs-search-page';
 
-export default function HomePage() {
+export default function JobsPage() {
   return <PublicJobsSearchPage />;
 }
