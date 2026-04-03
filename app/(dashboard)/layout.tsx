@@ -9,7 +9,16 @@ import {
 import Link from 'next/link';
 import { useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleIcon, Home, LogOut } from 'lucide-react';
+import {
+  CalendarDays,
+  CircleIcon,
+  CreditCard,
+  FileUser,
+  Home,
+  LogOut,
+  Settings,
+  BriefcaseBusiness
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -84,6 +93,36 @@ function UserMenu() {
           <Link href="/dashboard" className="flex w-full items-center">
             <Home className="mr-2 h-4 w-4" />
             <span>Dashboard</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/dashboard/jobs" className="flex w-full items-center">
+            <BriefcaseBusiness className="mr-2 h-4 w-4" />
+            <span>Jobs</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/dashboard/applicants" className="flex w-full items-center">
+            <FileUser className="mr-2 h-4 w-4" />
+            <span>Applicants</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/dashboard/calendar" className="flex w-full items-center">
+            <CalendarDays className="mr-2 h-4 w-4" />
+            <span>Calendar</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/dashboard/billing" className="flex w-full items-center">
+            <CreditCard className="mr-2 h-4 w-4" />
+            <span>Billing</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href="/dashboard/general" className="flex w-full items-center">
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
           </Link>
         </DropdownMenuItem>
         <SignOutButton>
