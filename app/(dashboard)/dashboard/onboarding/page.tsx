@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -79,6 +80,11 @@ const stepMeta = [
 ] as const;
 
 export default function RecruiterOnboardingPage() {
+  const { user } = useUser();
+  const recruiterPlaceholder =
+    user?.fullName || user?.firstName || 'Full name';
+  const recruiterEmailPlaceholder =
+    user?.primaryEmailAddress?.emailAddress || 'name@company.com';
   const [form, setForm] = useState<OnboardingState>(initialState);
   const [activeStep, setActiveStep] = useState(0);
   const [published, setPublished] = useState(false);
@@ -283,7 +289,7 @@ export default function RecruiterOnboardingPage() {
                         onChange={(event) =>
                           updateField('recruiterName', event.target.value)
                         }
-                        placeholder="Camille Reyes"
+                        placeholder={recruiterPlaceholder}
                       />
                     </FormField>
                     <FormField label="Work email" id="recruiterEmail">
@@ -294,7 +300,7 @@ export default function RecruiterOnboardingPage() {
                         onChange={(event) =>
                           updateField('recruiterEmail', event.target.value)
                         }
-                        placeholder="camille@company.com"
+                        placeholder={recruiterEmailPlaceholder}
                       />
                     </FormField>
                     <FormField label="Recruiter role" id="recruiterRole">

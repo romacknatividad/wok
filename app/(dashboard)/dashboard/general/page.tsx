@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,22 +21,40 @@ type OrganizationState = {
   description: string;
 };
 
-const initialState: OrganizationState = {
+const baseState: OrganizationState = {
   companyName: 'Harborline Consumer Group',
   website: 'https://harborline.example.com',
   industry: 'Consumer Goods',
   size: '51-200 employees',
   location: 'Makati City, Philippines',
-  contactName: 'Camille Reyes',
-  contactEmail: 'camille@harborline.example.com',
+  contactName: '',
+  contactEmail: '',
   contactPhone: '+63 917 555 0123',
   description:
     'Harborline Consumer Group builds and distributes fast-moving consumer products for retail and field operations teams across the Philippines.'
 };
 
 export default function GeneralPage() {
+  const { user } = useUser();
+  const initialState = useMemo(
+    () => ({
+      ...baseState,
+      contactName: user?.fullName || user?.firstName || baseState.contactName,
+      contactEmail:
+        user?.primaryEmailAddress?.emailAddress || baseState.contactEmail
+    }),
+    [user]
+  );
   const [form, setForm] = useState(initialState);
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      contactName: current.contactName || initialState.contactName,
+      contactEmail: current.contactEmail || initialState.contactEmail
+    }));
+  }, [initialState]);
 
   function updateField<K extends keyof OrganizationState>(
     field: K,

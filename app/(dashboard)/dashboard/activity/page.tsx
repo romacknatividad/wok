@@ -1,4 +1,6 @@
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
+import { useMemo } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
 import {
   BriefcaseBusiness,
@@ -20,60 +22,68 @@ const activitySummary = [
   { label: 'Applicant actions', value: '22 events' }
 ];
 
-const activityItems = [
-  {
-    title: 'Senior Full Stack Developer job was updated',
-    description:
-      'Camille Reyes edited responsibilities and changed the posting status to Hiring.',
-    time: '10 minutes ago',
-    category: 'Job update',
-    icon: BriefcaseBusiness
-  },
-  {
-    title: 'New applicant received for Accounting Personnel',
-    description:
-      'Angela Reyes submitted an application and uploaded a complete resume.',
-    time: '35 minutes ago',
-    category: 'Applicant',
-    icon: FileUser
-  },
-  {
-    title: 'Interview scheduled with Alyssa Ramos',
-    description:
-      'A technical interview was added for Today at 3:00 PM.',
-    time: '1 hour ago',
-    category: 'Interview',
-    icon: CalendarClock
-  },
-  {
-    title: 'Recruitment Associate draft job created',
-    description:
-      'A new draft role was added and saved for later review.',
-    time: '3 hours ago',
-    category: 'Draft',
-    icon: CirclePlus
-  },
-  {
-    title: 'Candidate moved to shortlist',
-    description:
-      'Tricia Santos was advanced after recruiter review.',
-    time: 'Yesterday',
-    category: 'Pipeline',
-    icon: CheckCircle2
-  },
-  {
-    title: 'Recruiter teammate invited',
-    description:
-      'Martin Cruz invited a new reviewer to help with applicant screening.',
-    time: 'Yesterday',
-    category: 'Team',
-    icon: Users
-  }
-];
-
 const quickFilters = ['All activity', 'Jobs', 'Applicants', 'Interviews', 'Team'];
 
 export default function ActivityPage() {
+  const { user } = useUser();
+  const displayName =
+    user?.fullName ||
+    user?.firstName ||
+    user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
+    'Recruiter';
+  const activityItems = useMemo(
+    () => [
+      {
+        title: 'Senior Full Stack Developer job was updated',
+        description: `${displayName} edited responsibilities and changed the posting status to Hiring.`,
+        time: '10 minutes ago',
+        category: 'Job update',
+        icon: BriefcaseBusiness
+      },
+      {
+        title: 'New applicant received for Accounting Personnel',
+        description:
+          'Angela Reyes submitted an application and uploaded a complete resume.',
+        time: '35 minutes ago',
+        category: 'Applicant',
+        icon: FileUser
+      },
+      {
+        title: 'Interview scheduled with Alyssa Ramos',
+        description:
+          'A technical interview was added for Today at 3:00 PM.',
+        time: '1 hour ago',
+        category: 'Interview',
+        icon: CalendarClock
+      },
+      {
+        title: 'Recruitment Associate draft job created',
+        description:
+          'A new draft role was added and saved for later review.',
+        time: '3 hours ago',
+        category: 'Draft',
+        icon: CirclePlus
+      },
+      {
+        title: 'Candidate moved to shortlist',
+        description:
+          'Tricia Santos was advanced after recruiter review.',
+        time: 'Yesterday',
+        category: 'Pipeline',
+        icon: CheckCircle2
+      },
+      {
+        title: 'Recruiter teammate invited',
+        description:
+          'Martin Cruz invited a new reviewer to help with applicant screening.',
+        time: 'Yesterday',
+        category: 'Team',
+        icon: Users
+      }
+    ],
+    [displayName]
+  );
+
   return (
     <section className="flex-1 p-4 lg:p-8">
       <div className="grid gap-6">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
@@ -125,12 +126,8 @@ const priorities = [
   'Invite one teammate to help review finance candidates.'
 ];
 
-const recruiterUser = {
-  name: 'Camille'
-};
-
 const recruiterTeamMembers = [
-  { id: 1, user: { name: 'Camille Reyes', email: 'camille@wok.ph' }, role: 'owner' },
+  { id: 1, user: { name: 'Account Owner', email: 'owner@company.com' }, role: 'owner' },
   { id: 2, user: { name: 'Martin Cruz', email: 'martin@wok.ph' }, role: 'admin' },
   { id: 3, user: { name: 'Alyssa Lim', email: 'alyssa@wok.ph' }, role: 'member' }
 ];
@@ -142,8 +139,23 @@ const onboardingStatus = {
 };
 
 export default function DashboardPage() {
-  const teamMembers = recruiterTeamMembers;
-  const displayName = recruiterUser.name;
+  const { user } = useUser();
+  const displayName =
+    user?.firstName ||
+    user?.fullName ||
+    user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
+    'there';
+  const teamMembers = recruiterTeamMembers.map((member, index) =>
+    index === 0 && user
+      ? {
+          ...member,
+          user: {
+            name: user.fullName || user.firstName || member.user.name,
+            email: user.primaryEmailAddress?.emailAddress || member.user.email
+          }
+        }
+      : member
+  );
 
   return (
     <section className="flex-1 p-4 lg:p-8">
