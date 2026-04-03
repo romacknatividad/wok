@@ -115,6 +115,23 @@ const applicantPhases = [
   'Offer Discussion'
 ];
 
+const applicantPhaseDescriptions: Record<string, string> = {
+  'Application Review':
+    'Initial pass to confirm basic fit, role alignment, and required qualifications.',
+  'Recruiter Screen':
+    'Recruiter-led call or review to validate experience, interest, and key details.',
+  Assessment:
+    'Skills test or take-home assessment to verify capability for the role.',
+  'Hiring Manager Review':
+    'Hiring manager reviews the profile and decides if the candidate moves forward.',
+  'Technical Interview':
+    'Deep dive on role-specific skills, problem-solving, and practical experience.',
+  'Panel Interview':
+    'Cross-functional interview to validate collaboration, depth, and team fit.',
+  'Offer Discussion':
+    'Compensation alignment, final checks, and preparation for the offer stage.'
+};
+
 const interviewLevels = [
   'Not started',
   'Initial screen',
@@ -518,6 +535,7 @@ export function RecruiterJobCandidatesWorkspace({
 }) {
   const [selectedApplicantId, setSelectedApplicantId] = useState<number | null>(null);
   const [previewApplicantId, setPreviewApplicantId] = useState<number | null>(null);
+  const [showPhaseInfo, setShowPhaseInfo] = useState(false);
   const list = useListData<RecruiterApplicant>({
     initialItems: applicants,
     getKey: (item) => item.id
@@ -669,6 +687,36 @@ export function RecruiterJobCandidatesWorkspace({
               description="Drag applicant cards across stages to keep the recruitment flow current. Click a card to open the recruiter review sidebar."
             >
               <div className="rounded-[1.75rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm text-slate-600">
+                    Use the phases to keep everyone aligned on what comes next.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                    onClick={() => setShowPhaseInfo((current) => !current)}
+                  >
+                    {showPhaseInfo ? 'Hide phase details' : 'Show phase details'}
+                  </Button>
+                </div>
+                {showPhaseInfo ? (
+                  <div className="mb-5 grid gap-3 rounded-[1.5rem] border border-blue-100 bg-white p-4 text-sm text-slate-600 sm:grid-cols-2">
+                    {applicantPhases.map((phase) => (
+                      <div
+                        key={phase}
+                        className="rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] px-4 py-3"
+                      >
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                          {phase}
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-600">
+                          {applicantPhaseDescriptions[phase]}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
                 {boardApplicants.length > 0 ? (
                   <div className="overflow-x-auto pb-2">
                     <div className="grid min-w-[1480px] grid-cols-7 gap-4">
@@ -710,9 +758,19 @@ export function RecruiterJobCandidatesWorkspace({
           <DashboardPanel className="shadow-sm">
             <DashboardSection
               title="Salary vs Experience"
-              description="A scatter plot comparing years of experience and asking salary across applicants for this job."
+              description="A scatter plot plus quick distribution charts for salary, experience, education, and sex."
             >
-              <ApplicantSalaryScatterPlot applicants={boardApplicants} />
+              <div className="grid gap-6">
+                <ApplicantSalaryScatterPlot applicants={boardApplicants} />
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <ApplicantSalaryBarChart applicants={boardApplicants} />
+                  <ApplicantExperienceBarChart applicants={boardApplicants} />
+                </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <ApplicantEducationPieChart applicants={boardApplicants} />
+                  <ApplicantSexPieChart applicants={boardApplicants} />
+                </div>
+              </div>
             </DashboardSection>
           </DashboardPanel>
 
@@ -815,6 +873,14 @@ function ApplicantStageLane({
 
   const { dragAndDropHooks } = useDragAndDrop({
     isDisabled: archivedJob,
+    renderDropIndicator(target) {
+      return (
+        <DropIndicator
+          target={target}
+          className="mx-3 h-2 rounded-full bg-blue-400/40"
+        />
+      );
+    },
     getItems(keys) {
       return Array.from(keys).map((key) => ({
         'applicant-id': String(key),
@@ -885,12 +951,6 @@ function ApplicantStageLane({
           onAction={(key) => onSelectApplicant(Number(key))}
           dragAndDropHooks={dragAndDropHooks}
           className="flex flex-1 flex-col gap-3"
-          renderDropIndicator={(target) => (
-            <DropIndicator
-              target={target}
-              className="mx-3 h-2 rounded-full bg-blue-400/40"
-            />
-          )}
           renderEmptyState={() => (
             <div className="flex flex-1 items-center justify-center rounded-[1.4rem] border border-dashed border-blue-200 bg-blue-50/40 px-4 py-6 text-center text-sm leading-6 text-slate-500">
               {archivedJob
@@ -1677,6 +1737,236 @@ function ApplicantSalaryScatterPlot({
             Asking salary
           </text>
         </svg>
+      </div>
+    </div>
+  );
+}
+
+function ApplicantSalaryBarChart({
+  applicants
+}: {
+  applicants: RecruiterApplicant[];
+}) {
+  const buckets = [
+    { label: '< 30k', min: 0, max: 30000 },
+    { label: '30-50k', min: 30000, max: 50000 },
+    { label: '50-80k', min: 50000, max: 80000 },
+    { label: '80-120k', min: 80000, max: 120000 },
+    { label: '120k+', min: 120000, max: Infinity }
+  ];
+  const counts = buckets.map(
+    (bucket) =>
+      applicants.filter((applicant) => {
+        const salary = parseCurrencyAmount(applicant.askingSalary);
+        return salary >= bucket.min && salary < bucket.max;
+      }).length
+  );
+  const maxCount = Math.max(...counts, 1);
+
+  return (
+    <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+      <p className="text-sm font-semibold text-slate-950">Salary distribution</p>
+      <p className="mt-2 text-sm text-slate-600">
+        Grouped asking salaries across the applicant pool.
+      </p>
+      <div className="mt-5 grid gap-3">
+        {buckets.map((bucket, index) => (
+          <div key={bucket.label} className="grid gap-2">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-slate-500">
+              <span>{bucket.label}</span>
+              <span>{counts[index]}</span>
+            </div>
+            <div className="h-3 rounded-full bg-slate-100">
+              <div
+                className="h-3 rounded-full bg-blue-500"
+                style={{ width: `${(counts[index] / maxCount) * 100}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ApplicantExperienceBarChart({
+  applicants
+}: {
+  applicants: RecruiterApplicant[];
+}) {
+  const buckets = [
+    { label: '0-1 yrs', min: 0, max: 1 },
+    { label: '2-3 yrs', min: 1, max: 3 },
+    { label: '4-6 yrs', min: 3, max: 6 },
+    { label: '7-9 yrs', min: 6, max: 9 },
+    { label: '10+ yrs', min: 9, max: Infinity }
+  ];
+  const counts = buckets.map(
+    (bucket) =>
+      applicants.filter((applicant) => {
+        const years = parseExperienceYears(applicant.experience);
+        return years >= bucket.min && years < bucket.max;
+      }).length
+  );
+  const maxCount = Math.max(...counts, 1);
+
+  return (
+    <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+      <p className="text-sm font-semibold text-slate-950">Experience distribution</p>
+      <p className="mt-2 text-sm text-slate-600">
+        Years of experience grouped into common ranges.
+      </p>
+      <div className="mt-5 grid gap-3">
+        {buckets.map((bucket, index) => (
+          <div key={bucket.label} className="grid gap-2">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-slate-500">
+              <span>{bucket.label}</span>
+              <span>{counts[index]}</span>
+            </div>
+            <div className="h-3 rounded-full bg-slate-100">
+              <div
+                className="h-3 rounded-full bg-indigo-500"
+                style={{ width: `${(counts[index] / maxCount) * 100}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ApplicantEducationPieChart({
+  applicants
+}: {
+  applicants: RecruiterApplicant[];
+}) {
+  const buckets = applicants.reduce<Record<string, number>>((acc, applicant) => {
+    const education = applicant.education.toLowerCase();
+    let key = 'Other';
+    if (education.includes('phd') || education.includes('doctor')) {
+      key = 'Doctorate';
+    } else if (education.includes('master') || education.includes('msc') || education.includes('mba')) {
+      key = 'Master’s';
+    } else if (education.includes('bs') || education.includes('ba') || education.includes('bsc') || education.includes('bachelor')) {
+      key = 'Bachelor’s';
+    } else if (education.includes('associate')) {
+      key = 'Associate';
+    }
+    acc[key] = (acc[key] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <PieChart
+      title="Academic achievement"
+      description="Highest reported education level."
+      data={buckets}
+    />
+  );
+}
+
+function ApplicantSexPieChart({
+  applicants
+}: {
+  applicants: RecruiterApplicant[];
+}) {
+  const buckets = applicants.reduce<Record<string, number>>((acc) => {
+    const key = 'Not specified';
+    acc[key] = (acc[key] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <PieChart
+      title="Sex"
+      description="Based on reported applicant data."
+      data={buckets}
+    />
+  );
+}
+
+function PieChart({
+  title,
+  description,
+  data
+}: {
+  title: string;
+  description: string;
+  data: Record<string, number>;
+}) {
+  const total = Math.max(
+    Object.values(data).reduce((sum, value) => sum + value, 0),
+    1
+  );
+  const colors = ['#2563eb', '#7c3aed', '#0ea5e9', '#14b8a6', '#f59e0b'];
+  let currentAngle = 0;
+  const slices = Object.entries(data).map(([label, value], index) => {
+    const angle = (value / total) * 360;
+    const slice = {
+      label,
+      value,
+      color: colors[index % colors.length],
+      startAngle: currentAngle,
+      endAngle: currentAngle + angle
+    };
+    currentAngle += angle;
+    return slice;
+  });
+
+  function polarToCartesian(angle: number) {
+    const rad = ((angle - 90) * Math.PI) / 180.0;
+    return { x: 50 + 50 * Math.cos(rad), y: 50 + 50 * Math.sin(rad) };
+  }
+
+  function describeArc(startAngle: number, endAngle: number) {
+    const start = polarToCartesian(endAngle);
+    const end = polarToCartesian(startAngle);
+    const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+
+    return [
+      'M',
+      50,
+      50,
+      'L',
+      start.x,
+      start.y,
+      'A',
+      50,
+      50,
+      0,
+      largeArcFlag,
+      0,
+      end.x,
+      end.y,
+      'Z'
+    ].join(' ');
+  }
+
+  return (
+    <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+      <p className="text-sm font-semibold text-slate-950">{title}</p>
+      <p className="mt-2 text-sm text-slate-600">{description}</p>
+      <div className="mt-5 grid gap-4 sm:grid-cols-[140px_1fr] sm:items-center">
+        <svg viewBox="0 0 100 100" className="h-32 w-32">
+          {slices.map((slice) => (
+            <path key={slice.label} d={describeArc(slice.startAngle, slice.endAngle)} fill={slice.color} />
+          ))}
+        </svg>
+        <div className="grid gap-2 text-sm text-slate-600">
+          {slices.map((slice) => (
+            <div key={slice.label} className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span
+                  className="h-3 w-3 rounded-full"
+                  style={{ backgroundColor: slice.color }}
+                />
+                <span>{slice.label}</span>
+              </div>
+              <span className="font-medium text-slate-900">{slice.value}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

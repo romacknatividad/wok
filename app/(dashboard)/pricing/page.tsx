@@ -59,22 +59,20 @@ const plans = [
     audience: 'Recruiters' as const
   },
   {
-    name: 'Recruiter Pro',
-    href: '/pricing/recruiter-pro',
-    price: 'PHP 999',
-    interval: 'month',
+    name: 'Wok Head Hunter',
+    price: 'Custom',
+    interval: 'call for pricing',
     description:
-      'For teams hiring at higher volume and managing more open roles. This plan is scheduled for next year release.',
+      'Outsourced head-hunter service for companies that want hiring done for them, without using the recruiter platform.',
     features: [
-      'Up to 30 active job posts',
-      'Shared recruiter seats',
-      'Priority applicant review workflows',
-      'Set up your company information and employer profile',
-      'Priority support'
+      'Dedicated sourcing, screening, and shortlisting support',
+      'Recruiter-led hiring coordination and follow-up',
+      'Candidate summaries and shortlists delivered to your team',
+      'Head hunter service only, no recruiter platform access',
+      'Pricing quoted after a quick discovery call'
     ],
-    audience: 'Recruiters' as const,
-    availability: 'upcoming' as const,
-    cta: 'Planned release next year'
+    audience: 'Services' as const,
+    cta: 'Register for Head Hunter'
   }
 ];
 
@@ -96,9 +94,9 @@ export default function PricingPage() {
         </div>
 
         <div className="mx-auto mb-10 max-w-4xl rounded-3xl border border-blue-100 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm">
-          Current live plans are Recruiter Post Once, Recruiter Trial, and
-          Recruiter Basic. Recruiter Pro stays visible as an upcoming package
-          planned for next year.
+          Current live plans are Recruiter Post Once, Recruiter Trial, Recruiter
+          Basic, and the Wok Head Hunter service for teams that want outsourcing
+          support instead of platform access.
         </div>
 
         <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -158,7 +156,7 @@ function PricingCard({
   interval: string;
   description: string;
   features: string[];
-  audience: 'Recruiters' | 'Applicants';
+  audience: 'Recruiters' | 'Applicants' | 'Services';
   cta?: string;
   availability?: 'live' | 'upcoming';
 }) {
@@ -167,6 +165,7 @@ function PricingCard({
   const isOneTime =
     audience === 'Recruiters' && needsPayment && interval === 'one-time';
   const isUpcoming = availability === 'upcoming';
+  const isService = audience === 'Services';
 
   return (
     <div
@@ -187,6 +186,10 @@ function PricingCard({
         {isUpcoming ? (
           <p className="mt-3 inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">
             Next year release
+          </p>
+        ) : isService ? (
+          <p className="mt-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">
+            Service plan
           </p>
         ) : null}
         <h2 className="mt-3 text-2xl font-medium text-slate-950">
@@ -293,6 +296,24 @@ function PricingCard({
               <Link href={href}>See plan details</Link>
             </Button>
           ) : null}
+        </div>
+      ) : isService ? (
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Register interest and our team will reach out to scope the roles and
+            provide a custom quote. This plan does not include recruiter
+            platform access.
+          </p>
+          <Button
+            asChild
+            className="w-full rounded-full bg-blue-600 text-white hover:bg-blue-700"
+          >
+            <Link href="/sign-up?plan=head-hunter">Register Interest</Link>
+          </Button>
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/60 px-4 py-3 text-sm text-blue-800">
+            After registration, your account will show as enrolled in the Head
+            Hunter plan while pricing is finalized.
+          </div>
         </div>
       ) : null}
     </div>
