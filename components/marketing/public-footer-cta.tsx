@@ -73,7 +73,7 @@ export function PublicFooterCta() {
                         Jobs
                       </Link>
                       <Link href="/product" className="transition-colors hover:text-blue-700">
-                        Product
+                        About Wok
                       </Link>
                       <Link href="/features" className="transition-colors hover:text-blue-700">
                         Features
@@ -129,7 +129,7 @@ export function PublicFooterCta() {
                 Jobs
               </Link>
               <Link href="/product" className="transition-colors hover:text-blue-700">
-                Product
+                About Wok
               </Link>
               <Link href="/features" className="transition-colors hover:text-blue-700">
                 Features

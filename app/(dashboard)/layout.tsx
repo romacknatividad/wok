@@ -34,7 +34,7 @@ function UserMenu() {
           href="/product"
           className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
         >
-          Product
+          About Wok
         </Link>
         <Link
           href="/features"
