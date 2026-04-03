@@ -10,7 +10,7 @@ import {
   Sparkles
 } from 'lucide-react';
 
-const signupHighlights = [
+const recruiterHighlights = [
   {
     title: 'Organize every applicant',
     description:
@@ -31,6 +31,27 @@ const signupHighlights = [
   }
 ];
 
+const headHunterHighlights = [
+  {
+    title: 'Outsourced recruiting',
+    description:
+      'We source, screen, and shortlist candidates so your team can focus on final interviews.',
+    icon: FileSearch
+  },
+  {
+    title: 'Faster hiring momentum',
+    description:
+      'We keep hiring moving with structured updates, scheduling support, and follow-through.',
+    icon: CalendarDays
+  },
+  {
+    title: 'Less internal overhead',
+    description:
+      'Ideal for companies that do not have HR yet and need hands-on help.',
+    icon: Sparkles
+  }
+];
+
 const signupPlanOptions = {
   ...checkoutPlans,
   'recruiter-trial': {
@@ -40,6 +61,14 @@ const signupPlanOptions = {
     interval: 'for 1 month',
     description:
       'Start with a 30-day recruiter trial to publish jobs and review applicants before moving to a paid plan.'
+  },
+  'head-hunter': {
+    slug: 'head-hunter',
+    name: 'Wok Head Hunter',
+    price: 'Custom',
+    interval: 'call for pricing',
+    description:
+      'Outsourced head-hunter service for companies without an HR team. We handle sourcing, screening, and shortlisting.'
   }
 };
 
@@ -52,6 +81,7 @@ export async function SignUpPageContent({
   const forceRedirectUrl =
     redirect && redirect.startsWith('/') ? redirect : '/dashboard';
   const selectedPlan = getSelectedPlan(plan, redirect);
+  const isHeadHunter = selectedPlan?.slug === 'head-hunter';
   const selectedPlanSummary = selectedPlan
     ? `${selectedPlan.price} ${
         selectedPlan.interval === 'one-time'
@@ -59,6 +89,7 @@ export async function SignUpPageContent({
           : selectedPlan.interval
       }`
     : 'Start free and choose your plan when you are ready';
+  const highlights = isHeadHunter ? headHunterHighlights : recruiterHighlights;
 
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_42%,#ffffff_100%)]">
@@ -71,15 +102,17 @@ export async function SignUpPageContent({
 
               <div className="relative">
                 <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-1 text-sm font-medium tracking-[0.08em] text-blue-50 backdrop-blur">
-                  Recruiter sign up
+                  {isHeadHunter ? 'Head hunter intake' : 'Recruiter sign up'}
                 </p>
                 <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-tight text-white">
-                  Build a cleaner hiring workflow your team will actually use.
+                  {isHeadHunter
+                    ? 'Let Wok handle the hiring work for you.'
+                    : 'Build a cleaner hiring workflow your team will actually use.'}
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-8 text-blue-50/90">
-                  Create your recruiter account to publish jobs, review applicants,
-                  coordinate schedules, and make stronger hiring decisions from
-                  one shared workspace.
+                  {isHeadHunter
+                    ? 'Register for the Wok Head Hunter service so our team can source, screen, and shortlist candidates on your behalf.'
+                    : 'Create your recruiter account to publish jobs, review applicants, coordinate schedules, and make stronger hiring decisions from one shared workspace.'}
                 </p>
 
                 <div className="mt-6 rounded-[1.75rem] border border-white/12 bg-white/10 p-5 backdrop-blur">
@@ -113,13 +146,15 @@ export async function SignUpPageContent({
                   {selectedPlan ? (
                     <div className="mt-4 flex items-center gap-2 text-sm text-blue-50">
                       <CheckCircle2 className="h-4 w-4 text-blue-100" />
-                      Your sign-up will continue into the selected recruiter package flow.
+                      {isHeadHunter
+                        ? 'Your registration will place you in the Head Hunter intake flow.'
+                        : 'Your sign-up will continue into the selected recruiter package flow.'}
                     </div>
                   ) : null}
                 </div>
 
                 <div className="mt-8 grid gap-4">
-                  {signupHighlights.map((item) => {
+                  {highlights.map((item) => {
                     const Icon = item.icon;
 
                     return (
@@ -171,7 +206,9 @@ export async function SignUpPageContent({
                         Why teams switch
                       </p>
                       <p className="mt-3 text-lg font-semibold text-white">
-                        Less spreadsheet chasing, more hiring momentum.
+                        {isHeadHunter
+                          ? 'Outsource the heavy lift, keep hiring moving.'
+                          : 'Less spreadsheet chasing, more hiring momentum.'}
                       </p>
                       <Link
                         href="/features"
