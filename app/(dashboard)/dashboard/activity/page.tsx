@@ -1,8 +1,8 @@
-import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 'use client';
 
 import { useMemo } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
 import {
   BriefcaseBusiness,
