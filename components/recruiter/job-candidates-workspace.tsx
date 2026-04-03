@@ -2,6 +2,19 @@
 
 import { useMemo, useState } from 'react';
 import type { ComponentType } from 'react';
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  closestCorners,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent
+} from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
@@ -45,6 +58,54 @@ const applicantStatuses = [
   'Offer',
   'Rejected'
 ];
+
+const statusPhaseDefaults: Record<string, string> = {
+  New: 'Application Review',
+  Review: 'Recruiter Screen',
+  Screening: 'Assessment',
+  Shortlist: 'Hiring Manager Review',
+  Interview: 'Technical Interview',
+  Offer: 'Offer Discussion',
+  Rejected: 'Application Review'
+};
+
+const applicantBoardLanes = [
+  {
+    status: 'New',
+    title: 'New',
+    description: 'Fresh applications waiting for first-pass review.'
+  },
+  {
+    status: 'Review',
+    title: 'In Review',
+    description: 'Profiles recruiters are actively screening.'
+  },
+  {
+    status: 'Screening',
+    title: 'Screening',
+    description: 'Applicants moving through calls, tests, and checks.'
+  },
+  {
+    status: 'Shortlist',
+    title: 'Shortlist',
+    description: 'Strong candidates prepared for deeper evaluation.'
+  },
+  {
+    status: 'Interview',
+    title: 'Interview',
+    description: 'Applicants currently in structured interview rounds.'
+  },
+  {
+    status: 'Offer',
+    title: 'Offer',
+    description: 'Candidates close to final decision and offer handling.'
+  },
+  {
+    status: 'Rejected',
+    title: 'Rejected',
+    description: 'Closed-out applicants kept for record visibility.'
+  }
+] as const;
 
 const applicantPhases = [
   'Application Review',
@@ -461,8 +522,16 @@ export function RecruiterJobCandidatesWorkspace({
     null
   );
   const [previewApplicantId, setPreviewApplicantId] = useState<number | null>(null);
+  const [draggedApplicantId, setDraggedApplicantId] = useState<number | null>(null);
   const [drafts, setDrafts] = useState<Record<number, RecruiterApplicant>>(() =>
     Object.fromEntries(applicants.map((applicant) => [applicant.id, applicant]))
+  );
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8
+      }
+    })
   );
 
   const selectedApplicant = useMemo(() => {
@@ -481,18 +550,28 @@ export function RecruiterJobCandidatesWorkspace({
     return drafts[previewApplicantId] ?? null;
   }, [drafts, previewApplicantId]);
 
-  const totalApplicants = applicants.length;
-  const shortlisted = applicants.filter(
+  const boardApplicants = useMemo(() => Object.values(drafts), [drafts]);
+  const totalApplicants = boardApplicants.length;
+  const shortlisted = boardApplicants.filter(
     (applicant) =>
       applicant.status === 'Shortlist' ||
       applicant.status === 'Interview' ||
       applicant.status === 'Offer'
   ).length;
-  const inInterview = applicants.filter(
+  const inInterview = boardApplicants.filter(
     (applicant) => applicant.status === 'Interview'
   ).length;
   const budgetRange = parseSalaryRange(job.salary);
   const archivedJob = isArchivedJob(job.status);
+  const boardLanes = useMemo(
+    () =>
+      applicantBoardLanes.map((lane) => ({
+        ...lane,
+        applicants: boardApplicants.filter((applicant) => applicant.status === lane.status)
+      })),
+    [boardApplicants]
+  );
+  const draggedApplicant = draggedApplicantId ? drafts[draggedApplicantId] ?? null : null;
 
   function updateSelectedApplicant(
     field: keyof RecruiterApplicant,
@@ -511,6 +590,44 @@ export function RecruiterJobCandidatesWorkspace({
     }));
   }
 
+  function moveApplicantToStatus(applicantId: number, nextStatus: string) {
+    if (archivedJob) {
+      return;
+    }
+
+    setDrafts((current) => {
+      const applicant = current[applicantId];
+
+      if (!applicant || applicant.status === nextStatus) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [applicantId]: {
+          ...applicant,
+          status: nextStatus,
+          phase: statusPhaseDefaults[nextStatus] ?? applicant.phase
+        }
+      };
+    });
+  }
+
+  function handleDragStart(event: DragStartEvent) {
+    setDraggedApplicantId(Number(event.active.id));
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const applicantId = Number(event.active.id);
+    const nextStatus = event.over ? String(event.over.id) : null;
+
+    if (nextStatus && Number.isFinite(applicantId)) {
+      moveApplicantToStatus(applicantId, nextStatus);
+    }
+
+    setDraggedApplicantId(null);
+  }
+
   return (
     <>
       <section className="flex-1 p-4 lg:p-8">
@@ -526,9 +643,10 @@ export function RecruiterJobCandidatesWorkspace({
                   {job.title}
                 </h1>
                 <p className="mt-4 max-w-2xl leading-8 text-slate-600">
-                  Scan applicants in one table, compare asking salaries against
-                  the job budget, and open a recruiter sidebar to review the
-                  full application record.
+                  Monitor the applicant pipeline in draggable swimlanes, move
+                  candidates between stages, compare asking salaries against the
+                  job budget, and open a recruiter sidebar to review the full
+                  application record.
                 </p>
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                   <Button
@@ -590,93 +708,61 @@ export function RecruiterJobCandidatesWorkspace({
 
           <DashboardPanel className="shadow-sm">
             <DashboardSection
-              title="Applicants"
-              description="Click any applicant row to open the recruiter review sidebar."
+              title="Applicant Pipeline"
+              description="Drag applicant cards across stages to keep the recruitment flow current. Click a card to open the recruiter review sidebar."
             >
-              <div className="overflow-hidden rounded-[1.75rem] border border-blue-100 bg-white">
-                <div className="hidden grid-cols-[minmax(0,1.35fr)_130px_140px_190px_72px] gap-4 border-b border-blue-100 bg-slate-50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 md:grid">
-                  <p>Applicant</p>
-                  <p>Status</p>
-                  <p>Budget fit</p>
-                  <p>Phase</p>
-                  <p className="text-center">CV</p>
-                </div>
-                <div className="divide-y divide-blue-100">
-                  {applicants.length > 0 ? (
-                    applicants.map((applicant) => {
-                      const draft = drafts[applicant.id] ?? applicant;
-                      const isActive = applicant.id === selectedApplicantId;
-                      const budgetFit = getBudgetFit(draft.askingSalary, job.salary);
-
-                      return (
-                        <button
-                          key={applicant.id}
-                          type="button"
-                          onClick={() => setSelectedApplicantId(applicant.id)}
-                          className={`grid w-full gap-4 px-5 py-4 text-left transition md:grid-cols-[minmax(0,1.35fr)_130px_140px_190px_72px] md:items-center ${
-                            isActive ? 'bg-blue-50/70' : 'bg-white hover:bg-blue-50/40'
-                          }`}
-                        >
-                          <div className="min-w-0">
-                            <p className="font-semibold text-slate-950">
-                              {applicant.name}
-                            </p>
-                            <p className="mt-1 text-sm text-slate-500">
-                              {applicant.email}
-                            </p>
-                            <p className="mt-2 text-sm text-slate-600 md:hidden">
-                              {applicant.location} | {applicant.experience}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
-                              Status
-                            </p>
-                            <span
-                              className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${getStatusClassName(
-                                draft.status
-                              )}`}
-                            >
-                              {draft.status}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
-                              Budget fit
-                            </p>
-                            <span
-                              className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${budgetFit.className}`}
-                            >
-                              {budgetFit.label}
-                            </span>
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400 md:hidden">
-                              Phase
-                            </p>
-                            <p className="text-sm text-slate-700">{draft.phase}</p>
-                          </div>
-                          <div className="flex md:justify-center">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                setPreviewApplicantId(applicant.id);
-                              }}
-                            >
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </button>
-                      );
-                    })
-                  ) : (
-                    <div className="p-5 text-sm text-slate-600">
-                      No applicants have been added to this job record yet.
+              <div className="rounded-[1.75rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+                {boardApplicants.length > 0 ? (
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCorners}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onDragCancel={() => setDraggedApplicantId(null)}
+                  >
+                    <div className="overflow-x-auto pb-2">
+                      <div className="grid min-w-[1480px] grid-cols-7 gap-4">
+                        {boardLanes.map((lane) => (
+                          <ApplicantStageLane
+                            key={lane.status}
+                            lane={lane}
+                            archivedJob={archivedJob}
+                            job={job}
+                            selectedApplicantId={selectedApplicantId}
+                            draggedApplicantId={draggedApplicantId}
+                            onSelectApplicant={setSelectedApplicantId}
+                            onPreviewApplicant={setPreviewApplicantId}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  )}
+                    <DragOverlay>
+                      {draggedApplicant ? (
+                        <div className="w-[270px] rotate-1">
+                          <ApplicantBoardCardContent
+                            applicant={draggedApplicant}
+                            budgetFit={getBudgetFit(draggedApplicant.askingSalary, job.salary)}
+                            isActive={false}
+                          />
+                        </div>
+                      ) : null}
+                    </DragOverlay>
+                  </DndContext>
+                ) : (
+                  <div className="rounded-[1.4rem] border border-dashed border-blue-200 bg-blue-50/40 p-8 text-sm text-slate-600">
+                    No applicants have been added to this job record yet.
+                  </div>
+                )}
+
+                <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+                  <p className="text-sm leading-6 text-slate-500">
+                    Dragging a card updates its application stage in this job workspace.
+                    Open the sidebar to adjust the detailed phase, interview level,
+                    compensation notes, and audit context.
+                  </p>
+                  <div className="rounded-full border border-blue-100 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 shadow-sm">
+                    {archivedJob ? 'Archived board' : 'Drag and drop enabled'}
+                  </div>
                 </div>
               </div>
             </DashboardSection>
@@ -687,7 +773,7 @@ export function RecruiterJobCandidatesWorkspace({
               title="Salary vs Experience"
               description="A scatter plot comparing years of experience and asking salary across applicants for this job."
             >
-              <ApplicantSalaryScatterPlot applicants={Object.values(drafts)} />
+              <ApplicantSalaryScatterPlot applicants={boardApplicants} />
             </DashboardSection>
           </DashboardPanel>
 
@@ -761,6 +847,211 @@ export function RecruiterJobCandidatesWorkspace({
         ) : null}
       </div>
     </>
+  );
+}
+
+function ApplicantStageLane({
+  lane,
+  archivedJob,
+  job,
+  selectedApplicantId,
+  draggedApplicantId,
+  onSelectApplicant,
+  onPreviewApplicant
+}: {
+  lane: (typeof applicantBoardLanes)[number] & { applicants: RecruiterApplicant[] };
+  archivedJob: boolean;
+  job: RecruiterJob;
+  selectedApplicantId: number | null;
+  draggedApplicantId: number | null;
+  onSelectApplicant: (applicantId: number) => void;
+  onPreviewApplicant: (applicantId: number) => void;
+}) {
+  const { isOver, setNodeRef } = useDroppable({
+    id: lane.status,
+    disabled: archivedJob
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`flex min-h-[32rem] flex-col rounded-[1.5rem] border p-3 transition ${
+        isOver ? 'border-blue-300 bg-blue-50/70' : 'border-blue-100 bg-white/85'
+      }`}
+    >
+      <div className="rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4 shadow-sm">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-slate-950">{lane.title}</p>
+            <p className="mt-2 text-xs leading-5 text-slate-500">{lane.description}</p>
+          </div>
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusClassName(
+              lane.status
+            )}`}
+          >
+            {lane.applicants.length}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-1 flex-col gap-3">
+        {lane.applicants.length > 0 ? (
+          lane.applicants.map((applicant) => (
+            <ApplicantBoardCard
+              key={applicant.id}
+              applicant={applicant}
+              budgetFit={getBudgetFit(applicant.askingSalary, job.salary)}
+              isActive={applicant.id === selectedApplicantId}
+              isDragging={applicant.id === draggedApplicantId}
+              dragDisabled={archivedJob}
+              onSelect={() => onSelectApplicant(applicant.id)}
+              onPreview={() => onPreviewApplicant(applicant.id)}
+            />
+          ))
+        ) : (
+          <div className="flex flex-1 items-center justify-center rounded-[1.4rem] border border-dashed border-blue-200 bg-blue-50/40 px-4 py-6 text-center text-sm leading-6 text-slate-500">
+            {archivedJob
+              ? 'No applicants are stored in this stage.'
+              : 'Drop an applicant card here to move them into this stage.'}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ApplicantBoardCard({
+  applicant,
+  budgetFit,
+  isActive,
+  isDragging,
+  dragDisabled,
+  onSelect,
+  onPreview
+}: {
+  applicant: RecruiterApplicant;
+  budgetFit: { label: string; className: string };
+  isActive: boolean;
+  isDragging: boolean;
+  dragDisabled: boolean;
+  onSelect: () => void;
+  onPreview: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: applicant.id,
+    disabled: dragDisabled
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform)
+  };
+
+  return (
+    <article
+      ref={setNodeRef}
+      style={style}
+      className={isDragging ? 'opacity-50' : 'opacity-100'}
+    >
+      <div
+        {...attributes}
+        {...listeners}
+        className={dragDisabled ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}
+      >
+        <ApplicantBoardCardContent
+          applicant={applicant}
+          budgetFit={budgetFit}
+          isActive={isActive}
+          onSelect={onSelect}
+          onPreview={onPreview}
+        />
+      </div>
+    </article>
+  );
+}
+
+function ApplicantBoardCardContent({
+  applicant,
+  budgetFit,
+  isActive,
+  onSelect,
+  onPreview
+}: {
+  applicant: RecruiterApplicant;
+  budgetFit: { label: string; className: string };
+  isActive: boolean;
+  onSelect?: () => void;
+  onPreview?: () => void;
+}) {
+  return (
+    <div
+      className={`rounded-[1.4rem] border p-4 text-left shadow-sm transition ${
+        isActive
+          ? 'border-blue-300 bg-blue-50/80'
+          : 'border-blue-100 bg-white hover:-translate-y-0.5 hover:shadow-md'
+      }`}
+    >
+      <button
+        type="button"
+        onClick={onSelect}
+        className="block w-full text-left"
+        disabled={!onSelect}
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="truncate font-semibold text-slate-950">{applicant.name}</p>
+            <p className="mt-1 truncate text-sm text-slate-500">{applicant.email}</p>
+          </div>
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${budgetFit.className}`}
+          >
+            {budgetFit.label}
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-3">
+          <div className="rounded-2xl bg-slate-50 px-3 py-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+              Current phase
+            </p>
+            <p className="mt-1 text-sm text-slate-700">{applicant.phase}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="rounded-2xl bg-slate-50 px-3 py-2">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Experience
+              </p>
+              <p className="mt-1 text-slate-700">{applicant.experience}</p>
+            </div>
+            <div className="rounded-2xl bg-slate-50 px-3 py-2">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                Applied
+              </p>
+              <p className="mt-1 text-slate-700">{applicant.appliedAt}</p>
+            </div>
+          </div>
+          <p className="line-clamp-3 text-sm leading-6 text-slate-600">
+            {applicant.summary}
+          </p>
+        </div>
+      </button>
+
+      <div className="mt-4 flex items-center justify-between gap-2">
+        <span className="rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-700">
+          {applicant.interviewLevel}
+        </span>
+        {onPreview ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+            onClick={onPreview}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+        ) : null}
+      </div>
+    </div>
   );
 }
 

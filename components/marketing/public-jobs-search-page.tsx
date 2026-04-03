@@ -9,6 +9,7 @@ import {
   BriefcaseBusiness,
   Building2,
   Clock3,
+  Handshake,
   MapPin,
   Search,
   Sparkles
@@ -32,6 +33,30 @@ const publicJobHrefBySlug: Record<string, string> = {
   'senior-full-stack-developer': '/demo/job/senior-full-stack-developer',
   'accounting-personnel': '/demo/job/accounting-personnel'
 };
+
+const wokSignals = [
+  {
+    title: 'Wok Platform',
+    description: 'Job publishing, applicant tracking, recruiter workflows, and hiring coordination tools.',
+    href: '/product',
+    cta: 'Explore product',
+    icon: BriefcaseBusiness
+  },
+  {
+    title: 'Wok Head Hunter',
+    description: 'Outsourced recruiting support for companies that need hiring help but do not have HR yet.',
+    href: '/head-hunter',
+    cta: 'View service',
+    icon: Handshake
+  },
+  {
+    title: 'Recruiter Plans',
+    description: 'See how Wok supports teams that want software, workflow structure, and room to grow.',
+    href: '/pricing',
+    cta: 'See pricing',
+    icon: Building2
+  }
+];
 
 export function PublicJobsSearchPage() {
   const [query, setQuery] = useState('');
@@ -148,6 +173,68 @@ export function PublicJobsSearchPage() {
           </div>
         </div>
       </section>
+
+      {!hasSearchIntent ? (
+        <section className="py-8 sm:py-10">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="rounded-[2rem] border border-blue-100 bg-white p-5 shadow-sm sm:p-6">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                <div className="max-w-2xl">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-700">
+                    More from wok
+                  </p>
+                  <h2 className="mt-2 text-xl font-semibold text-slate-950">
+                    Search jobs first, and know there is more behind the brand.
+                  </h2>
+                  <p className="mt-2 text-sm leading-7 text-slate-600">
+                    Wok is still job-search-first here, but companies can also use the
+                    Wok platform and Wok Head Hunter service for hiring support.
+                  </p>
+                </div>
+                <Link
+                  href="/product"
+                  className="text-sm font-semibold text-blue-700 transition hover:text-blue-800"
+                >
+                  See the full Wok overview
+                </Link>
+              </div>
+
+              <div className="mt-5 grid gap-4 lg:grid-cols-3">
+                {wokSignals.map((signal) => {
+                  const Icon = signal.icon;
+
+                  return (
+                    <Link
+                      key={signal.title}
+                      href={signal.href}
+                      className="group rounded-[1.5rem] border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          wok
+                        </span>
+                      </div>
+                      <h3 className="mt-4 text-lg font-semibold text-slate-950">
+                        {signal.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-7 text-slate-600">
+                        {signal.description}
+                      </p>
+                      <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 transition group-hover:translate-x-0.5">
+                        {signal.cta}
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {hasSearchIntent ? (
         <section className="py-10 sm:py-12">

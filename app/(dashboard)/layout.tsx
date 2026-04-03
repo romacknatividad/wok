@@ -43,6 +43,12 @@ function UserMenu() {
           Features
         </Link>
         <Link
+          href="/head-hunter"
+          className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
+        >
+          Head Hunter
+        </Link>
+        <Link
           href="/pricing"
           className="text-sm font-medium text-slate-600 transition-colors hover:text-blue-700"
         >
@@ -96,7 +102,7 @@ function UserMenu() {
 function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-blue-100 bg-white/90 backdrop-blur">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <div className="flex w-full items-center justify-between px-4 py-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
         <Link href="/" className="flex items-center">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#2563eb_0%,#0ea5e9_100%)] shadow-[0_12px_30px_-18px_rgba(37,99,235,0.85)]">
             <CircleIcon className="h-5 w-5 text-white" />

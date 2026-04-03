@@ -20,7 +20,7 @@ export function RecruiterLayoutShell({
     'Recruiter';
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-68px)] w-full max-w-7xl flex-col">
+    <div className="flex min-h-[calc(100dvh-68px)] w-full flex-col">
       <div className="flex items-center justify-between border-b border-blue-100 bg-white p-4 lg:hidden">
         <div className="flex items-center">
           <span className="font-medium text-slate-900">{activeItem}</span>
@@ -92,7 +92,7 @@ export function RecruiterLayoutShell({
           </nav>
         </aside>
 
-        <main className="flex-1 overflow-y-auto p-0 lg:p-4">{children}</main>
+        <main className="flex-1 overflow-y-auto p-0">{children}</main>
       </div>
     </div>
   );
