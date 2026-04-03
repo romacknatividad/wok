@@ -1,9 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
-import { createArrayFilter, FilterBar } from '@svar-ui/react-filter';
-import '@svar-ui/react-filter/all.css';
+import { useDeferredValue, useMemo, useState } from 'react';
 import { recruiterJobs } from '@/components/recruiter/mock-data';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +11,7 @@ import {
   Clock3,
   Handshake,
   MapPin,
+  Search,
   Sparkles
 } from 'lucide-react';
 
@@ -25,12 +24,10 @@ const publicJobs = recruiterJobs
     return rightDate - leftDate;
   });
 
-type PublicJob = (typeof recruiterJobs)[number];
-
-const departments = Array.from(new Set(publicJobs.map((job) => job.department))).sort();
-const locations = Array.from(new Set(publicJobs.map((job) => job.location))).sort();
-const jobTypes = Array.from(new Set(publicJobs.map((job) => job.type))).sort();
-const jobStatuses = Array.from(new Set(publicJobs.map((job) => job.status))).sort();
+const categories = [
+  'All categories',
+  ...Array.from(new Set(publicJobs.map((job) => job.department))).sort()
+];
 
 const publicJobHrefBySlug: Record<string, string> = {
   'senior-full-stack-developer': '/demo/job/senior-full-stack-developer',
@@ -62,69 +59,36 @@ const wokSignals = [
 ];
 
 export function PublicJobsSearchPage() {
-  const [filterValue, setFilterValue] = useState<Record<string, unknown> | null>(
-    null
-  );
+  const [query, setQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All categories');
+  const deferredQuery = useDeferredValue(query);
 
-  const filterFields = useMemo(
-    () => [
-      {
-        type: 'all',
-        label: 'Search roles',
-        by: ['title', 'department', 'location', 'type', 'status']
-      },
-      {
-        id: 'department',
-        type: 'text',
-        label: 'Department',
-        options: departments
-      },
-      {
-        id: 'location',
-        type: 'text',
-        label: 'Location',
-        options: locations
-      },
-      {
-        id: 'type',
-        type: 'text',
-        label: 'Type',
-        options: jobTypes
-      },
-      {
-        id: 'status',
-        type: 'text',
-        label: 'Status',
-        options: jobStatuses
-      }
-    ],
-    []
-  );
+  const normalizedQuery = deferredQuery.trim().toLowerCase();
+  const hasSearchIntent =
+    normalizedQuery.length > 0 || selectedCategory !== 'All categories';
 
-  const filteredJobs = useMemo<PublicJob[]>(() => {
-    if (!filterValue) {
-      return publicJobs;
-    }
+  const filteredJobs = useMemo(() => {
+    return publicJobs.filter((job) => {
+      const matchesCategory =
+        selectedCategory === 'All categories' || job.department === selectedCategory;
+      const searchableText = [
+        job.title,
+        job.department,
+        job.location,
+        job.summary,
+        job.description,
+        job.requirements,
+        job.type,
+        job.status
+      ]
+        .join(' ')
+        .toLowerCase();
+      const matchesQuery =
+        normalizedQuery.length === 0 || searchableText.includes(normalizedQuery);
 
-    const filter = createArrayFilter(filterValue);
-    return filter(publicJobs) as PublicJob[];
-  }, [filterValue]);
-
-  const hasSearchIntent = useMemo(() => {
-    if (!filterValue) {
-      return false;
-    }
-
-    const hasRules =
-      Array.isArray((filterValue as { rules?: unknown[] }).rules) &&
-      (filterValue as { rules?: unknown[] }).rules!.length > 0;
-
-    if (hasRules) {
-      return true;
-    }
-
-    return filteredJobs.length !== publicJobs.length;
-  }, [filterValue, filteredJobs.length]);
+      return matchesCategory && matchesQuery;
+    });
+  }, [normalizedQuery, selectedCategory]);
 
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#f4f9ff_0%,#ffffff_22%,#ffffff_100%)]">
@@ -162,15 +126,28 @@ export function PublicJobsSearchPage() {
                   : 'lg:grid-cols-[minmax(0,1fr)_240px]'
               }`}
             >
-              <div className="rounded-[1.5rem] border border-blue-100 bg-slate-50/80 px-4 py-4">
-                <FilterBar
-                  fields={filterFields}
-                  value={filterValue ?? undefined}
-                  onChange={({ value }) =>
-                    setFilterValue(value as Record<string, unknown>)
-                  }
+              <label className="flex items-center gap-3 rounded-[1.5rem] border border-blue-100 bg-slate-50/80 px-4 py-4 focus-within:border-blue-300 focus-within:bg-white">
+                <Search className="h-5 w-5 text-blue-700" />
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search roles, departments, locations, or keywords"
+                  className="w-full border-0 bg-transparent text-base text-slate-950 outline-none placeholder:text-slate-400"
                 />
-              </div>
+              </label>
+
+              <select
+                value={selectedCategory}
+                onChange={(event) => setSelectedCategory(event.target.value)}
+                className="rounded-[1.5rem] border border-blue-100 bg-slate-50/80 px-4 py-4 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-300 focus:bg-white"
+              >
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {!hasSearchIntent ? (
