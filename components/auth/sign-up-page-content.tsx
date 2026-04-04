@@ -83,11 +83,7 @@ export async function SignUpPageContent({
   const selectedPlan = getSelectedPlan(plan, redirect);
   const isHeadHunter = selectedPlan?.slug === 'head-hunter';
   const selectedPlanSummary = selectedPlan
-    ? `${selectedPlan.price} ${
-        selectedPlan.interval === 'one-time'
-          ? selectedPlan.interval
-          : selectedPlan.interval
-      }`
+    ? `${selectedPlan.price} ${selectedPlan.interval}`
     : 'Start free and choose your plan when you are ready';
   const highlights = isHeadHunter ? headHunterHighlights : recruiterHighlights;
 

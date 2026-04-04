@@ -28,3 +28,7 @@ export const recruiterNavItems: RecruiterNavItem[] = [
   { href: '/dashboard/activity', icon: Activity, label: 'Activity' },
   { href: '/dashboard/security', icon: Shield, label: 'Security' }
 ];
+
+export const recruiterTopNavItems = recruiterNavItems.filter(
+  (item) => item.href !== '/dashboard/general' && item.href !== '/dashboard/security'
+);

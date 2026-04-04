@@ -49,13 +49,6 @@ const billingActions = [
       'Switch to a lower monthly plan if you need fewer active roles and a lighter billing commitment.',
     href: buildCheckoutHref('recruiter-basic'),
     cta: 'Switch to Basic'
-  },
-  {
-    title: 'One-time job advertisement',
-    description:
-      'Purchase a single post without moving the whole workspace to a monthly subscription.',
-    href: buildCheckoutHref('recruiter-post-once'),
-    cta: 'Buy one-time post'
   }
 ];
 
@@ -122,21 +115,6 @@ const subscriptionHistorySeeds: SubscriptionRecord[] = [
     }
   },
   {
-    date: 'Aug 12, 2024',
-    event: 'One-time job',
-    plan: 'Recruiter Post Once',
-    billingType: 'One-time advertisement',
-    amount: 'PHP 99',
-    status: 'Completed',
-    notes: 'Temporary role posted outside monthly seat limits.',
-    utilization: {
-      jobs: 1,
-      applicants: 9,
-      schedules: 2,
-      performance: 'One-time campaign produced a focused batch of role-specific applicants.'
-    }
-  },
-  {
     date: 'Sep 01, 2024',
     event: 'Renewed',
     plan: 'Recruiter Basic',
@@ -182,21 +160,6 @@ const subscriptionHistorySeeds: SubscriptionRecord[] = [
     }
   },
   {
-    date: 'Dec 18, 2024',
-    event: 'One-time job',
-    plan: 'Recruiter Post Once',
-    billingType: 'One-time advertisement',
-    amount: 'PHP 99',
-    status: 'Completed',
-    notes: 'Holiday urgent vacancy campaign.',
-    utilization: {
-      jobs: 1,
-      applicants: 7,
-      schedules: 1,
-      performance: 'Short-term urgent opening generated a compact holiday applicant batch.'
-    }
-  },
-  {
     date: 'Jan 01, 2025',
     event: 'Downgraded',
     plan: 'Recruiter Basic',
@@ -239,21 +202,6 @@ const subscriptionHistorySeeds: SubscriptionRecord[] = [
       applicants: 10,
       schedules: 2,
       performance: 'Cancellation followed a quieter month and reduced recruiting demand.'
-    }
-  },
-  {
-    date: 'Apr 14, 2025',
-    event: 'One-time job',
-    plan: 'Recruiter Post Once',
-    billingType: 'One-time advertisement',
-    amount: 'PHP 99',
-    status: 'Completed',
-    notes: 'Used while subscription remained inactive.',
-    utilization: {
-      jobs: 1,
-      applicants: 6,
-      schedules: 1,
-      performance: 'Used as a low-commitment option while recurring billing was paused.'
     }
   },
   {
@@ -317,21 +265,6 @@ const subscriptionHistorySeeds: SubscriptionRecord[] = [
     }
   },
   {
-    date: 'Sep 09, 2025',
-    event: 'One-time job',
-    plan: 'Recruiter Post Once',
-    billingType: 'One-time advertisement',
-    amount: 'PHP 99',
-    status: 'Completed',
-    notes: 'Short-term contract role published.',
-    utilization: {
-      jobs: 1,
-      applicants: 8,
-      schedules: 2,
-      performance: 'One-time posting helped support a short-term contract search.'
-    }
-  },
-  {
     date: 'Oct 01, 2025',
     event: 'Renewed',
     plan: 'Recruiter Pro',
@@ -392,21 +325,6 @@ const subscriptionHistorySeeds: SubscriptionRecord[] = [
     }
   },
   {
-    date: 'Jan 22, 2026',
-    event: 'One-time job',
-    plan: 'Recruiter Post Once',
-    billingType: 'One-time advertisement',
-    amount: 'PHP 99',
-    status: 'Completed',
-    notes: 'Used during paused recurring billing.',
-    utilization: {
-      jobs: 1,
-      applicants: 5,
-      schedules: 1,
-      performance: 'Kept one urgent vacancy live while recurring subscription was paused.'
-    }
-  },
-  {
     date: 'Feb 05, 2026',
     event: 'Re-subscribed',
     plan: 'Recruiter Pro',
@@ -450,8 +368,7 @@ function buildSubscriptionHistory(seedHistory: SubscriptionRecord[]) {
       const basePlan = month < 5 ? 'Recruiter Basic' : 'Recruiter Pro';
       const isQuarterlyAdjustment = month === 5;
       const isDowngrade = month === 10;
-      const isOneTime = month === 2 || month === 8;
-      const date = new Date(year, month, isOneTime ? 14 : 1);
+      const date = new Date(year, month, 1);
       const jobs = basePlan === 'Recruiter Pro' ? 7 + (month % 3) : 3 + (month % 2);
       const applicants =
         basePlan === 'Recruiter Pro' ? 38 + month * 2 : 16 + month * 2;
@@ -460,50 +377,37 @@ function buildSubscriptionHistory(seedHistory: SubscriptionRecord[]) {
 
       extraHistory.push({
         date: formatSubscriptionDate(date),
-        event: isOneTime
-          ? 'One-time job'
-          : isQuarterlyAdjustment
-            ? 'Upgraded'
-            : isDowngrade
-              ? 'Downgraded'
-              : month === 0 && year === 2022
-                ? 'Subscribed'
-                : 'Renewed',
-        plan: isOneTime
-          ? 'Recruiter Post Once'
+        event: isQuarterlyAdjustment
+          ? 'Upgraded'
           : isDowngrade
-            ? 'Recruiter Basic'
-            : basePlan,
-        billingType: isOneTime ? 'One-time advertisement' : 'Monthly subscription',
-        amount: isOneTime
-          ? 'PHP 99'
-          : isDowngrade || (!isQuarterlyAdjustment && basePlan === 'Recruiter Basic')
+            ? 'Downgraded'
+            : month === 0 && year === 2022
+              ? 'Subscribed'
+              : 'Renewed',
+        plan: isDowngrade ? 'Recruiter Basic' : basePlan,
+        billingType: 'Monthly subscription',
+        amount:
+          isDowngrade || (!isQuarterlyAdjustment && basePlan === 'Recruiter Basic')
             ? 'PHP 499'
             : 'PHP 999',
-        status: isOneTime
-          ? 'Ad completed'
-          : isDowngrade
-            ? 'Plan changed'
-            : isQuarterlyAdjustment
-              ? 'Plan upgraded'
-              : 'Billing successful',
-        notes: isOneTime
-          ? 'A one-time paid job advertisement was used for an extra role outside the monthly plan.'
+        status: isDowngrade
+          ? 'Plan changed'
           : isQuarterlyAdjustment
-            ? 'The workspace moved up to a larger plan to support a broader hiring push.'
-            : isDowngrade
-              ? 'The subscription was reduced to match a lighter hiring workload.'
-              : 'The recurring subscription renewed successfully for the next billing cycle.',
+            ? 'Plan upgraded'
+            : 'Billing successful',
+        notes: isQuarterlyAdjustment
+          ? 'The workspace moved up to a larger plan to support a broader hiring push.'
+          : isDowngrade
+            ? 'The subscription was reduced to match a lighter hiring workload.'
+            : 'The recurring subscription renewed successfully for the next billing cycle.',
         utilization: {
-          jobs: isOneTime ? 1 : jobs,
-          applicants: isOneTime ? 8 + (month % 5) : applicants,
-          schedules: isOneTime ? 2 + (month % 2) : schedules,
-          performance: isOneTime
-            ? 'Supplemental one-time campaign that supported an extra vacancy outside the recurring plan.'
-            : `The ${basePlan.toLowerCase()} tier supported consistent recruiter usage during ${date.toLocaleDateString(
-                'en-US',
-                { month: 'long', year: 'numeric' }
-              )}.`
+          jobs,
+          applicants,
+          schedules,
+          performance: `The ${basePlan.toLowerCase()} tier supported consistent recruiter usage during ${date.toLocaleDateString(
+            'en-US',
+            { month: 'long', year: 'numeric' }
+          )}.`
         }
       });
     }
@@ -529,8 +433,6 @@ function getReadableStatus(status: string) {
       return 'Billing successful';
     case 'Scheduled end':
       return 'Ending after current cycle';
-    case 'Ad completed':
-      return 'Ad completed';
     case 'Plan changed':
       return 'Plan changed';
     case 'Plan upgraded':
@@ -548,8 +450,6 @@ function getStatusBadgeClassName(status: string) {
       return 'bg-blue-50 text-blue-700';
     case 'Plan changed':
       return 'bg-amber-50 text-amber-700';
-    case 'Ad completed':
-      return 'bg-fuchsia-50 text-fuchsia-700';
     case 'Ending after current cycle':
       return 'bg-rose-50 text-rose-700';
     default:
@@ -588,9 +488,8 @@ export default function BillingPage() {
                 Manage recruiter billing and subscription changes
               </h1>
               <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-                Review your current plan, update billing details, purchase a
-                one-time job advertisement, or change your subscription when
-                your hiring volume changes.
+                Review your current plan, update billing details, and change
+                your subscription when your hiring volume changes.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -687,9 +586,9 @@ export default function BillingPage() {
         <DashboardPanel className="shadow-sm">
           <DashboardSection
             title="Plan Changes"
-            description="Upgrade, downgrade, or use a one-time advertisement package based on current hiring needs."
+            description="Upgrade or downgrade the workspace subscription based on current hiring needs."
           >
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-2">
               {billingActions.map((action) => (
                 <div
                   key={action.title}
@@ -716,7 +615,7 @@ export default function BillingPage() {
           <DashboardPanel className="shadow-sm">
           <DashboardSection
             title="Subscription History"
-            description="A multi-year billing ledger of renewals, upgrades, downgrades, cancellations, re-subscriptions, and one-time job advertisements."
+            description="A multi-year billing ledger of renewals, upgrades, downgrades, cancellations, and re-subscriptions."
           >
               <div className="overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white">
                 <div className="overflow-x-auto">
@@ -803,35 +702,7 @@ export default function BillingPage() {
             </DashboardSection>
           </DashboardPanel>
 
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <DashboardPanel className="shadow-sm">
-            <DashboardSection
-              title="One-Time Job Advertisement"
-              description="Use a one-time payment if you only need to publish a single role."
-            >
-              <div className="rounded-2xl border border-blue-100 bg-white p-5">
-                <p className="text-xs uppercase tracking-[0.18em] text-blue-700">
-                  Recruiter Post Once
-                </p>
-                <p className="mt-2 text-2xl font-semibold text-slate-950">
-                  PHP 99 one-time
-                </p>
-                <p className="mt-3 text-sm leading-6 text-slate-600">
-                  Publish one job advertisement without committing the whole
-                  recruiter workspace to a recurring subscription.
-                </p>
-                <Button
-                  asChild
-                  className="mt-5 rounded-full bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  <Link href={buildCheckoutHref('recruiter-post-once')}>
-                    Continue to one-time payment
-                  </Link>
-                </Button>
-              </div>
-            </DashboardSection>
-          </DashboardPanel>
-
+        <div className="grid gap-6">
           <DashboardPanel className="border-rose-200 bg-[linear-gradient(135deg,#fff1f2_0%,#ffffff_70%,#fff7ed_100%)] shadow-sm">
             <DashboardSection
               title="Cancel Subscription"

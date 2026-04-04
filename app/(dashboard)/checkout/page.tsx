@@ -87,8 +87,8 @@ export default async function CheckoutPage({
             </h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">
               Use the PayPal checkout below to activate this recruiter package.
-              Monthly plans start a subscription. The post-once package is a
-              one-time purchase.
+              Available recruiter plans start a recurring subscription after
+              checkout is approved.
             </p>
             <div className="mt-6 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-5">
               <PayPalCheckoutCard clientId={paypalClientId} plan={plan} />

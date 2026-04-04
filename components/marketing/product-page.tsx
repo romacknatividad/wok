@@ -109,7 +109,7 @@ const productHighlights = [
   {
     title: 'Billing and subscriptions',
     description:
-      'Manage plans, upgrades, downgrades, one-time job ads, and subscription usage history from one place.',
+      'Manage plans, upgrades, downgrades, and subscription usage history from one place.',
     icon: HandCoins,
     tone: 'bg-blue-900'
   }

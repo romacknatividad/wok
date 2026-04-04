@@ -31,7 +31,7 @@ const featureGroups = [
       },
       {
         title: 'Operational admin',
-        detail: 'Track billing, subscription changes, and one-time job advertisements without leaving the workspace.'
+        detail: 'Track billing, subscription changes, and account administration without leaving the workspace.'
       }
     ]
   },

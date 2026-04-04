@@ -10,16 +10,6 @@ export type CheckoutPlan = {
 };
 
 export const checkoutPlans: Record<string, CheckoutPlan> = {
-  'recruiter-post-once': {
-    slug: 'recruiter-post-once',
-    name: 'Recruiter Post Once',
-    price: 'PHP 99',
-    interval: 'one-time',
-    description:
-      'Pay once to publish a single job post without starting a recurring subscription.',
-    checkoutType: 'order',
-    amount: '99.00'
-  },
   'recruiter-basic': {
     slug: 'recruiter-basic',
     name: 'Recruiter Basic',

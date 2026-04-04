@@ -70,38 +70,31 @@ const statusPhaseDefaults: Record<string, string> = {
 const applicantBoardLanes = [
   {
     status: 'New',
-    title: 'New',
-    description: 'Fresh applications waiting for first-pass review.'
+    title: 'New'
   },
   {
     status: 'Review',
-    title: 'In Review',
-    description: 'Profiles recruiters are actively screening.'
+    title: 'In Review'
   },
   {
     status: 'Screening',
-    title: 'Screening',
-    description: 'Applicants moving through calls, tests, and checks.'
+    title: 'Screening'
   },
   {
     status: 'Shortlist',
-    title: 'Shortlist',
-    description: 'Strong candidates prepared for deeper evaluation.'
+    title: 'Shortlist'
   },
   {
     status: 'Interview',
-    title: 'Interview',
-    description: 'Applicants currently in structured interview rounds.'
+    title: 'Interview'
   },
   {
     status: 'Offer',
-    title: 'Offer',
-    description: 'Candidates close to final decision and offer handling.'
+    title: 'Offer'
   },
   {
     status: 'Rejected',
-    title: 'Rejected',
-    description: 'Closed-out applicants kept for record visibility.'
+    title: 'Rejected'
   }
 ] as const;
 
@@ -931,7 +924,6 @@ function ApplicantStageLane({
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-slate-950">{lane.title}</p>
-            <p className="mt-2 text-xs leading-5 text-slate-500">{lane.description}</p>
           </div>
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusClassName(
@@ -977,49 +969,26 @@ function ApplicantStageLane({
                     {applicant.name}
                   </p>
                   <p className="mt-1 truncate text-sm text-slate-500">
-                    {applicant.email}
+                    {applicant.experience} | {applicant.location}
                   </p>
                 </div>
                 <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${getBudgetFit(
-                    applicant.askingSalary,
-                    job.salary
-                  ).className}`}
+                  className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold ${getStatusClassName(
+                    lane.status
+                  )}`}
                 >
-                  {getBudgetFit(applicant.askingSalary, job.salary).label}
+                  {lane.title}
                 </span>
               </div>
 
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-2xl bg-slate-50 px-3 py-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                    Current phase
-                  </p>
-                  <p className="mt-1 text-sm text-slate-700">{applicant.phase}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="rounded-2xl bg-slate-50 px-3 py-2">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                      Experience
-                    </p>
-                    <p className="mt-1 text-slate-700">{applicant.experience}</p>
-                  </div>
-                  <div className="rounded-2xl bg-slate-50 px-3 py-2">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                      Applied
-                    </p>
-                    <p className="mt-1 text-slate-700">{applicant.appliedAt}</p>
-                  </div>
-                </div>
-                <Text className="line-clamp-3 text-sm leading-6 text-slate-600">
+              <div className="mt-3 grid gap-2">
+                <p className="text-sm text-slate-600">{applicant.appliedAt}</p>
+                <Text className="line-clamp-2 text-sm leading-6 text-slate-600">
                   {applicant.summary}
                 </Text>
               </div>
 
-              <div className="mt-4 flex items-center justify-between gap-2">
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-700">
-                  {applicant.interviewLevel}
-                </span>
+              <div className="mt-4 flex items-center justify-end gap-2">
                 <div className="flex items-center gap-2">
                   <AriaButton
                     slot="drag"

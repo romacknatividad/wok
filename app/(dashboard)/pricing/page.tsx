@@ -6,24 +6,6 @@ import { buildCheckoutHref } from '@/components/pricing/checkout-plans';
 
 const plans = [
   {
-    name: 'Recruiter Post Once',
-    href: '/pricing/recruiter-post-once',
-    checkoutHref: buildCheckoutHref('recruiter-post-once'),
-    price: 'PHP 99',
-    interval: 'one-time',
-    description:
-      'A one-time package for recruiters who only need to publish a single job.',
-    features: [
-      'Post 1 job only',
-      'No monthly subscription',
-      'Receive applicants for one opening',
-      'Set up your company information and employer profile',
-      'Upgrade later if needed'
-    ],
-    audience: 'Recruiters' as const,
-    cta: 'Pay once and publish one job'
-  },
-  {
     name: 'Recruiter Trial',
     href: '/pricing/recruiter-trial',
     checkoutHref: '/sign-up?plan=recruiter-trial',
@@ -88,18 +70,18 @@ export default function PricingPage() {
             Flexible pricing for every recruiter workflow.
           </h1>
           <p className="text-lg text-slate-600">
-            Choose a one-time post, start with a free trial, or move into a
-            monthly recruiter plan in Philippine pesos as your hiring grows.
+            Start with a free trial, then move into a monthly recruiter plan in
+            Philippine pesos as your hiring grows.
           </p>
         </div>
 
         <div className="mx-auto mb-10 max-w-4xl rounded-3xl border border-blue-100 bg-white px-6 py-5 text-sm text-slate-600 shadow-sm">
-          Current live plans are Recruiter Post Once, Recruiter Trial, Recruiter
-          Basic, and the Wok Head Hunter service for teams that want outsourcing
-          support instead of platform access.
+          Current live plans are Recruiter Trial, Recruiter Basic, and the Wok
+          Head Hunter service for teams that want outsourcing support instead of
+          platform access.
         </div>
 
-        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 xl:grid-cols-3">
           {plans.map((plan) => (
             <PricingCard key={plan.name} {...plan} />
           ))}
@@ -162,8 +144,6 @@ function PricingCard({
 }) {
   const needsPayment = audience === 'Recruiters' && Boolean(checkoutHref);
   const isTrial = audience === 'Recruiters' && !needsPayment && price === 'Free';
-  const isOneTime =
-    audience === 'Recruiters' && needsPayment && interval === 'one-time';
   const isUpcoming = availability === 'upcoming';
   const isService = audience === 'Services';
 
@@ -207,7 +187,7 @@ function PricingCard({
       <p className="mb-6 text-4xl font-medium text-slate-950">
         {price}{' '}
         <span className="text-xl font-normal text-slate-600">
-          {needsPayment && !isOneTime ? `/ ${interval}` : interval}
+          {needsPayment ? `/ ${interval}` : interval}
         </span>
       </p>
 
@@ -247,7 +227,7 @@ function PricingCard({
       ) : needsPayment ? (
         <div className="space-y-4">
           <p className="text-sm text-slate-600">
-            {isOneTime
+            {cta
               ? `${cta}. You will be redirected to a checkout page after creating your recruiter account.`
               : 'Choose this plan and continue to checkout after account registration.'}
           </p>

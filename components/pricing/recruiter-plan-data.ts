@@ -2,48 +2,6 @@ import { buildCheckoutHref } from './checkout-plans';
 import type { RecruiterPlanPageData } from './recruiter-plan-page';
 
 export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
-  'recruiter-post-once': {
-    eyebrow: 'Recruiter plan',
-    name: 'Recruiter Post Once',
-    price: 'PHP 99',
-    interval: 'one-time',
-    description:
-      'A simple one-time option for recruiters who only need to publish a single job without starting a subscription.',
-    summary:
-      'This package is designed for small businesses or occasional recruiters who want a lightweight entry point. Pay once, publish one job, and receive applicants without committing to a monthly plan.',
-    highlights: [
-      'One job post only',
-      'No subscription required',
-      'Low-cost one-time payment'
-    ],
-    features: [
-      'Publish one job advertisement on wok',
-      'Receive applications for that single role',
-      'Set up your own company information and employer profile',
-      'Use the same recruiter-facing job structure as the main plans',
-      'Upgrade later if you need more active jobs'
-    ],
-    bestFor: [
-      'Small businesses with a one-off hiring need',
-      'Recruiters testing the platform without a subscription',
-      'Occasional hiring for a single position'
-    ],
-    notes: [
-      'This package covers one job post only',
-      'It does not renew monthly',
-      'Upgrade to Basic if you need recurring job capacity'
-    ],
-    sandboxTestingNote: {
-      title: 'PayPal sandbox card for test checkout',
-      lines: [
-        'Use card number 4032038996592097 during PayPal sandbox testing.',
-        'Set any future expiration date and any 3-digit CVV.',
-        'Only use this in sandbox mode, never on a live checkout.'
-      ]
-    },
-    ctaLabel: 'Register Now',
-    ctaHref: buildCheckoutHref('recruiter-post-once')
-  },
   'recruiter-trial': {
     eyebrow: 'Recruiter plan',
     name: 'Recruiter Trial',
@@ -149,7 +107,7 @@ export const recruiterPlanPages: Record<string, RecruiterPlanPageData> = {
     notes: [
       'This plan is not open for registration yet',
       'Planned for next year release',
-      'Current available plans are Post Once, Trial, and Basic'
+      'Current available plans are Trial and Basic'
     ],
     ctaLabel: 'Coming Next Year',
     ctaHref: '/pricing',
