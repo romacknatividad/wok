@@ -1,8 +1,4 @@
-# Next.js SaaS Starter
-
-This is a starter template for building a SaaS application using **Next.js** with support for authentication, Postgres, and a dashboard for logged-in users.
-
-**Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
+# Wok
 
 ## Features
 
@@ -20,69 +16,65 @@ This is a starter template for building a SaaS application using **Next.js** wit
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Database**: [Postgres](https://www.postgresql.org/)
 - **ORM**: [Drizzle](https://orm.drizzle.team/)
-- **UI Library**: [shadcn/ui](https://ui.shadcn.com/)
+- **UI Library**: shadcn/ui
 
 ## Getting Started
 
 ```bash
-git clone https://github.com/nextjs/saas-starter
-cd saas-starter
+git clone <your-repo-url>
+cd wok.inphormatik.com
 pnpm install
 ```
 
-## Running Locally
+## Bootstrap (Local Setup)
 
-Use the included setup script to create your `.env` file:
+These steps get a full local environment running with the web app, database, and seeded data.
+
+1. Create your `.env` file
+
+You can copy the template or let the setup script generate it:
 
 ```bash
+cp .env.example .env
+# or
 pnpm db:setup
 ```
 
-Run the database migrations and seed the database with a default user and team:
+2. Fill required environment variables
+
+At minimum for local boot:
+
+- `POSTGRES_URL`
+- `AUTH_SECRET`
+
+Common integrations used in this project:
+
+- Clerk: `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
+- PayPal: `NEXT_PUBLIC_PAYPAL_*`, `PAYPAL_*`
+- Algolia: `NEXT_PUBLIC_ALGOLIA_*`, `ALGOLIA_ADMIN_API_KEY`
+- Upstash Redis (if used): `WOK_STORAGE_*` (see `.env.example`)
+- Turso (if used): `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
+
+3. Run migrations and seed demo data
 
 ```bash
 pnpm db:migrate
 pnpm db:seed
 ```
 
-This will create the following user and team:
+This creates the default user:
 
 - User: `test@test.com`
 - Password: `admin123`
 
-You can also create new users through the `/sign-up` route.
-
-Finally, run the Next.js development server:
+4. Start the dev server
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+Open http://localhost:3000
 
-## Going to Production
+## Production
 
-When you're ready to deploy your SaaS application to production, follow these steps:
-
-### Deploy to Vercel
-
-1. Push your code to a GitHub repository.
-2. Connect your repository to [Vercel](https://vercel.com/) and deploy it.
-3. Follow the Vercel deployment process, which will guide you through setting up your project.
-
-### Add environment variables
-
-In your Vercel project settings (or during deployment), add all the necessary environment variables. Make sure to update the values for the production environment, including:
-
-1. `POSTGRES_URL`: Set this to your production database URL.
-2. `AUTH_SECRET`: Set this to a random string. `openssl rand -base64 32` will generate one.
-
-## Other Templates
-
-While this template is intentionally minimal and to be used as a learning resource, there are other paid versions in the community which are more full-featured:
-
-- https://achromatic.dev
-- https://shipfa.st
-- https://makerkit.dev
-- https://zerotoshipped.com
-- https://turbostarter.dev
+Deploy using your preferred provider, then set the same environment variables in the production environment.

@@ -1,6 +1,6 @@
-﻿'use client';
+'use client';
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   flexRender,
@@ -14,32 +14,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DashboardPanel } from '@/components/recruiter/dashboard-panel';
 import { DashboardSection } from '@/components/recruiter/dashboard-section';
-import { recruiterApplicants } from '@/components/recruiter/mock-data';
+import {
+  recruiterApplicants,
+  recruiterJobs
+} from '@/components/recruiter/mock-data';
 import {
   ArrowRight,
   BriefcaseBusiness,
   ChevronLeft,
   ChevronRight,
+  FileText,
   FileUser,
-  MessagesSquare,
   Search,
   X
 } from 'lucide-react';
 
 type ApplicantRecord = (typeof recruiterApplicants)[number];
-
-type ApplicantEvaluation = {
-  recommendation: string;
-  fitScore: string;
-  communication: string;
-  capability: string;
-  salaryFit: string;
-  noticeFit: string;
-  strengths: string;
-  concerns: string;
-  recruiterAnalysis: string;
-  nextStep: string;
-};
 
 const applicantSummary = [
   { label: 'Total applicants', value: recruiterApplicants.length },
@@ -80,40 +70,6 @@ function getStatusClassName(status: string) {
   }
 }
 
-function buildDefaultEvaluation(applicant: ApplicantRecord): ApplicantEvaluation {
-  return {
-    recommendation:
-      applicant.status === 'Interview'
-        ? 'Strong proceed'
-        : applicant.status === 'Shortlist'
-          ? 'Proceed with caution'
-          : 'Needs more review',
-    fitScore:
-      applicant.status === 'Interview'
-        ? '84'
-        : applicant.status === 'Shortlist'
-          ? '76'
-          : '68',
-    communication:
-      applicant.jobTitle.includes('Support') || applicant.jobTitle.includes('Recruit')
-        ? 'Strong'
-        : 'Good',
-    capability:
-      applicant.experience.includes('7') || applicant.experience.includes('8')
-        ? 'Advanced'
-        : 'Qualified',
-    salaryFit: applicant.askingSalary,
-    noticeFit: applicant.noticePeriod,
-    strengths: applicant.skills.slice(0, 3).join(', '),
-    concerns: 'Validate current expectations, compensation alignment, and role-specific depth.',
-    recruiterAnalysis: `${applicant.name} appears aligned for ${applicant.jobTitle}. Current review should focus on ${applicant.phase.toLowerCase()}, salary expectations, and whether the documented strengths map well to the team’s immediate hiring need.`,
-    nextStep:
-      applicant.status === 'Interview'
-        ? 'Confirm final interviewer availability and capture structured feedback.'
-        : 'Review profile details, align on recruiter notes, and decide whether to move forward.'
-  };
-}
-
 export default function RecruiterApplicantsPage() {
   const [globalFilter, setGlobalFilter] = useState('');
   const [selectedApplicant, setSelectedApplicant] =
@@ -122,16 +78,6 @@ export default function RecruiterApplicantsPage() {
     pageIndex: 0,
     pageSize: 10
   });
-  const [evaluations, setEvaluations] = useState<
-    Record<number, ApplicantEvaluation>
-  >(() =>
-    Object.fromEntries(
-      recruiterApplicants.map((applicant) => [
-        applicant.id,
-        buildDefaultEvaluation(applicant)
-      ])
-    )
-  );
 
   const columns = useMemo<ColumnDef<ApplicantRecord>[]>(
     () => [
@@ -214,7 +160,7 @@ export default function RecruiterApplicantsPage() {
                 className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                 onClick={() => setSelectedApplicant(applicant)}
               >
-                <MessagesSquare className="h-4 w-4" />
+                <FileText className="h-4 w-4" />
                 Review
               </Button>
             </div>
@@ -258,32 +204,11 @@ export default function RecruiterApplicantsPage() {
     getPaginationRowModel: getPaginationRowModel()
   });
 
-  const selectedEvaluation = selectedApplicant
-    ? evaluations[selectedApplicant.id]
-    : null;
-
   function handleGlobalFilterChange(value: string) {
     setGlobalFilter(value);
     setPagination((current) => ({
       ...current,
       pageIndex: 0
-    }));
-  }
-
-  function updateEvaluation<K extends keyof ApplicantEvaluation>(
-    field: K,
-    value: ApplicantEvaluation[K]
-  ) {
-    if (!selectedApplicant) {
-      return;
-    }
-
-    setEvaluations((current) => ({
-      ...current,
-      [selectedApplicant.id]: {
-        ...current[selectedApplicant.id],
-        [field]: value
-      }
     }));
   }
 
@@ -494,12 +419,10 @@ export default function RecruiterApplicantsPage() {
           selectedApplicant ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {selectedApplicant && selectedEvaluation ? (
+        {selectedApplicant ? (
           <ApplicantReviewPanel
             applicant={selectedApplicant}
-            evaluation={selectedEvaluation}
             onClose={() => setSelectedApplicant(null)}
-            onChange={updateEvaluation}
           />
         ) : null}
       </aside>
@@ -509,24 +432,20 @@ export default function RecruiterApplicantsPage() {
 
 function ApplicantReviewPanel({
   applicant,
-  evaluation,
-  onClose,
-  onChange
+  onClose
 }: {
   applicant: ApplicantRecord;
-  evaluation: ApplicantEvaluation;
   onClose: () => void;
-  onChange: <K extends keyof ApplicantEvaluation>(
-    field: K,
-    value: ApplicantEvaluation[K]
-  ) => void;
 }) {
+  const relatedJob = recruiterJobs.find((job) => job.slug === applicant.jobSlug);
+  const latestUpdate = applicant.auditTrail[applicant.auditTrail.length - 1];
+
   return (
     <div className="p-5 lg:p-7">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-blue-700">
-            Applicant review
+            Application review
           </p>
           <h2 className="mt-3 text-2xl font-semibold text-slate-950">
             {applicant.name}
@@ -547,19 +466,144 @@ function ApplicantReviewPanel({
 
       <div className="mt-6 grid gap-6">
         <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
-          <p className="text-sm font-semibold text-slate-950">
-            Applicant snapshot
+          <div className="flex flex-wrap items-center gap-3">
+            <span
+              className={`inline-flex rounded-full px-3 py-1 text-sm font-medium ${getStatusClassName(
+                applicant.status
+              )}`}
+            >
+              {applicant.status}
+            </span>
+            <span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+              {applicant.phase}
+            </span>
+          </div>
+
+          <p className="mt-4 text-sm font-semibold text-slate-950">
+            Application overview
           </p>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <SnapshotCard
+              label="Applied on"
+              value={formatTimelineDate(applicant.appliedAt)}
+            />
+            <SnapshotCard
+              label="Latest status update"
+              value={
+                latestUpdate
+                  ? formatTimelineDate(latestUpdate.time)
+                  : 'No updates yet'
+              }
+            />
+            <SnapshotCard label="Applied role" value={applicant.jobTitle} />
+            <SnapshotCard
+              label="Job posted"
+              value={
+                relatedJob?.postedDate
+                  ? formatIsoDate(relatedJob.postedDate)
+                  : 'Not available'
+              }
+            />
+            <SnapshotCard label="Interview stage" value={applicant.interviewLevel} />
+            <SnapshotCard label="Experience" value={applicant.experience} />
+            <SnapshotCard label="Location" value={applicant.location} />
+            <SnapshotCard label="Education" value={applicant.education} />
+            <SnapshotCard label="Expected salary" value={applicant.askingSalary} />
+            <SnapshotCard label="Notice period" value={applicant.noticePeriod} />
             <SnapshotCard label="Email" value={applicant.email} />
             <SnapshotCard label="Phone" value={applicant.phone} />
-            <SnapshotCard label="Location" value={applicant.location} />
-            <SnapshotCard label="Experience" value={applicant.experience} />
-            <SnapshotCard label="Asking salary" value={applicant.askingSalary} />
-            <SnapshotCard label="Notice period" value={applicant.noticePeriod} />
-            <SnapshotCard label="Status" value={applicant.status} />
-            <SnapshotCard label="Interview level" value={applicant.interviewLevel} />
           </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+          <p className="text-sm font-semibold text-slate-950">
+            Submitted application
+          </p>
+          <p className="mt-2 text-sm leading-7 text-slate-600">
+            {applicant.summary}
+          </p>
+
+          <div className="mt-5 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+              Skills highlighted
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {applicant.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="rounded-full border border-blue-100 bg-white px-3 py-1 text-sm text-slate-700"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+              Submitted file
+            </p>
+            <p className="mt-2 text-sm font-medium text-slate-950">
+              {applicant.cvFileName}
+            </p>
+            <p className="mt-1 text-sm text-slate-500">{applicant.cvFileType}</p>
+          </div>
+
+          <div className="mt-4 grid gap-4">
+            {applicant.cvPreviewSections.map((section) => (
+              <div
+                key={section.heading}
+                className="rounded-2xl border border-blue-100 bg-slate-50 p-4"
+              >
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                  {section.heading}
+                </p>
+                <div className="mt-3 grid gap-2">
+                  {section.lines.map((line) => (
+                    <p key={line} className="text-sm leading-6 text-slate-700">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
+          <p className="text-sm font-semibold text-slate-950">Status timeline</p>
+          <p className="mt-2 text-sm leading-7 text-slate-600">
+            A compiled view of the applicant&apos;s own submission and every dated
+            status movement recorded so far.
+          </p>
+
+          <div className="mt-5 grid gap-4">
+            {applicant.auditTrail.map((entry, index) => (
+              <div
+                key={`${entry.time}-${entry.title}`}
+                className="relative rounded-2xl border border-blue-100 bg-slate-50 p-4"
+              >
+                {index < applicant.auditTrail.length - 1 ? (
+                  <div className="absolute bottom-[-1rem] left-7 top-12 w-px bg-blue-100" />
+                ) : null}
+                <div className="flex gap-3">
+                  <div className="mt-1 h-3 w-3 rounded-full bg-blue-600 ring-4 ring-blue-100" />
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                      {formatTimelineDate(entry.time)}
+                    </p>
+                    <p className="mt-2 text-sm font-semibold text-slate-950">
+                      {entry.title}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                      {entry.detail}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <div className="mt-4 rounded-2xl border border-blue-100 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-4">
             <p className="text-xs uppercase tracking-[0.18em] text-slate-500">
               Recruiter notes
@@ -570,142 +614,22 @@ function ApplicantReviewPanel({
           </div>
         </div>
 
-        <div className="rounded-[1.75rem] border border-blue-100 bg-white p-5">
-          <p className="text-sm font-semibold text-slate-950">
-            Recruiter evaluation
-          </p>
-          <p className="mt-2 text-sm leading-7 text-slate-600">
-            Capture your evaluation and analysis for this applicant while
-            reviewing their current profile and application details.
-          </p>
-
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            <FormField label="Recommendation">
-              <select
-                value={evaluation.recommendation}
-                onChange={(event) =>
-                  onChange('recommendation', event.target.value)
-                }
-                className="h-11 w-full rounded-xl border border-blue-100 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              >
-                <option>Strong proceed</option>
-                <option>Proceed with caution</option>
-                <option>Needs more review</option>
-                <option>Hold</option>
-                <option>Not aligned</option>
-              </select>
-            </FormField>
-
-            <FormField label="Fit score">
-              <Input
-                value={evaluation.fitScore}
-                onChange={(event) => onChange('fitScore', event.target.value)}
-                placeholder="0-100"
-                className="h-11 rounded-xl border-blue-100 bg-white"
-              />
-            </FormField>
-
-            <FormField label="Communication assessment">
-              <select
-                value={evaluation.communication}
-                onChange={(event) =>
-                  onChange('communication', event.target.value)
-                }
-                className="h-11 w-full rounded-xl border border-blue-100 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              >
-                <option>Strong</option>
-                <option>Good</option>
-                <option>Fair</option>
-                <option>Needs validation</option>
-              </select>
-            </FormField>
-
-            <FormField label="Capability assessment">
-              <select
-                value={evaluation.capability}
-                onChange={(event) => onChange('capability', event.target.value)}
-                className="h-11 w-full rounded-xl border border-blue-100 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              >
-                <option>Advanced</option>
-                <option>Qualified</option>
-                <option>Promising</option>
-                <option>Needs validation</option>
-              </select>
-            </FormField>
-
-            <FormField label="Salary fit">
-              <Input
-                value={evaluation.salaryFit}
-                onChange={(event) => onChange('salaryFit', event.target.value)}
-                className="h-11 rounded-xl border-blue-100 bg-white"
-              />
-            </FormField>
-
-            <FormField label="Notice fit">
-              <Input
-                value={evaluation.noticeFit}
-                onChange={(event) => onChange('noticeFit', event.target.value)}
-                className="h-11 rounded-xl border-blue-100 bg-white"
-              />
-            </FormField>
-          </div>
-
-          <div className="mt-4 grid gap-4">
-            <FormField label="Key strengths">
-              <textarea
-                value={evaluation.strengths}
-                onChange={(event) => onChange('strengths', event.target.value)}
-                rows={3}
-                className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              />
-            </FormField>
-
-            <FormField label="Risks or concerns">
-              <textarea
-                value={evaluation.concerns}
-                onChange={(event) => onChange('concerns', event.target.value)}
-                rows={3}
-                className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              />
-            </FormField>
-
-            <FormField label="Recruiter analysis">
-              <textarea
-                value={evaluation.recruiterAnalysis}
-                onChange={(event) =>
-                  onChange('recruiterAnalysis', event.target.value)
-                }
-                rows={5}
-                className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              />
-            </FormField>
-
-            <FormField label="Recommended next step">
-              <textarea
-                value={evaluation.nextStep}
-                onChange={(event) => onChange('nextStep', event.target.value)}
-                rows={3}
-                className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
-              />
-            </FormField>
-          </div>
-
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Button
-              type="button"
-              className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
-            >
-              Save Evaluation
-            </Button>
-            <Button
-              asChild
-              type="button"
-              variant="outline"
-              className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-            >
-              <Link href={`/dashboard/jobs/${applicant.jobSlug}`}>Open Job</Link>
-            </Button>
-          </div>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button
+            asChild
+            type="button"
+            className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+          >
+            <Link href={`/dashboard/jobs/${applicant.jobSlug}`}>Open Job</Link>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full border-blue-100 bg-white text-slate-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+            onClick={onClose}
+          >
+            Close review
+          </Button>
         </div>
       </div>
     </div>
@@ -727,17 +651,75 @@ function SnapshotCard({
   );
 }
 
-function FormField({
-  label,
-  children
-}: {
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <label className="grid gap-2 text-sm font-medium text-slate-700">
-      {label}
-      {children}
-    </label>
-  );
+function formatIsoDate(value: string) {
+  const date = new Date(`${value}T00:00:00`);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function formatTimelineDate(value: string) {
+  const parsed = parseApplicantDate(value);
+
+  if (!parsed) {
+    return value;
+  }
+
+  return parsed.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  });
+}
+
+function parseApplicantDate(value: string) {
+  const now = new Date();
+  const trimmed = value.trim();
+
+  if (trimmed.startsWith('Today,')) {
+    return parseRelativeDate(now, trimmed.replace('Today,', '').trim());
+  }
+
+  if (trimmed.startsWith('Yesterday,')) {
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    return parseRelativeDate(yesterday, trimmed.replace('Yesterday,', '').trim());
+  }
+
+  const normalized = /\b\d{4}\b/.test(trimmed)
+    ? trimmed
+    : `${trimmed}, ${now.getFullYear()}`;
+  const parsed = new Date(normalized);
+
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function parseRelativeDate(baseDate: Date, timePart: string) {
+  const match = timePart.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+
+  if (!match) {
+    return null;
+  }
+
+  let hours = Number(match[1]) % 12;
+  const minutes = Number(match[2]);
+
+  if (match[3].toUpperCase() === 'PM') {
+    hours += 12;
+  }
+
+  const date = new Date(baseDate);
+  date.setHours(hours, minutes, 0, 0);
+
+  return date;
 }
